@@ -1,42 +1,29 @@
 var Board = {};
 
 
-Board.elements = {};
-
-// Initialize board elements dynamically
-for (var i = 1; i <= 15; i++) {
-    var element = document.getElementById('board-item-' + i);
-    if (element) {
-        Board.elements[i.toString()] = element;
-        // Also add hex values for 15-puzzle
-        if (i > 9) {
-            Board.elements[i.toString(16).toUpperCase()] = element;
-        }
-    }
-}
+Board.elements = {
+    '1': document.getElementById('board-item-1'),
+    '2': document.getElementById('board-item-2'),
+    '3': document.getElementById('board-item-3'),
+    '4': document.getElementById('board-item-4'),
+    '5': document.getElementById('board-item-5'),
+    '6': document.getElementById('board-item-6'),
+    '7': document.getElementById('board-item-7'),
+    '8': document.getElementById('board-item-8')
+};
 
 
 Board.draw = function(state) {
-    var boardSize = PuzzleManager.getBoardSize();
-    var tileSize = PuzzleManager.getTileSize();
-    
     state.split('').forEach(function(item, index) {
         if (item == '0') return;
 
         var element = Board.elements[item];
-        if (!element) return;
-        
-        var row = Math.floor(index / boardSize);
-        var column = index % boardSize;
+        var row = Math.floor(index / 3);
+        var column = index % 3;
 
-        element.style.top = (row * tileSize) + 'px';
-        element.style.left = (column * tileSize) + 'px';
+        element.style.top = (row * element.offsetHeight) + 'px';
+        element.style.left = (column * element.offsetWidth) + 'px';
     });
-    
-    // Update 3D visualization if enabled
-    if (typeof ThreeDManager !== 'undefined' && ThreeDManager.enabled) {
-        ThreeDManager.update3DPositions();
-    }
 }
 
 Board.replayTimeout = null;

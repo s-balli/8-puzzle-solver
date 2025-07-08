@@ -12,6 +12,7 @@ var depthLimitInput = document.getElementById('depthLimit');
 var searchButton = document.getElementById('search');
 var searchStopButton = document.getElementById('searchStop');
 var searchStepButton = document.getElementById('searchStep');
+
 var expandedNodeCheckbox = document.getElementById('expandedNodeCheck');
 var searchResultDiv = document.getElementById('searchResult');
 var visualizationCheckbox = document.getElementById('visualizationCheck');
@@ -26,15 +27,21 @@ var timeLimitInput = document.getElementById('timeLimit');
 var heuristicFunctionSelect = document.getElementById('heuristicFunction');
 
 // Disable body scroll for mobile
-bodyScrollLock.disableBodyScroll(controlsDiv);
+if (typeof bodyScrollLock !== 'undefined') {
+    bodyScrollLock.disableBodyScroll(controlsDiv);
+}
 
 randomizeButton.addEventListener('click', function() {
     Board.clearReplay();
     game.randomize();
     Board.draw(game.state);
     searchResultDiv.innerHTML = '';
-    NavigationManager.init([]);
-    SoundManager.play('click');
+    if (typeof NavigationManager !== 'undefined') {
+        NavigationManager.init([]);
+    }
+    if (typeof SoundManager !== 'undefined') {
+        SoundManager.play('click');
+    }
 }, false);
 
 customInputButton.addEventListener('click', function() {
@@ -42,8 +49,12 @@ customInputButton.addEventListener('click', function() {
     game.state = prompt('Enter game state, from top-left to right-bottom, 10 characters, e.g. "012345678"');
     Board.draw(game.state);
     searchResultDiv.innerHTML = '';
-    NavigationManager.init([]);
-    SoundManager.play('click');
+    if (typeof NavigationManager !== 'undefined') {
+        NavigationManager.init([]);
+    }
+    if (typeof SoundManager !== 'undefined') {
+        SoundManager.play('click');
+    }
 }, false);
 
 searchButton.addEventListener('click', function() {
@@ -53,8 +64,8 @@ searchButton.addEventListener('click', function() {
     var initialNode = new Node({state: game.state});
     var iterationLimit = parseInt(iterationLimitInput.value, 10);
     var depthLimit = parseInt(depthLimitInput.value, 10);
-    var timeLimit = parseInt(timeLimitInput.value, 10) * 1000; // Convert to milliseconds
-    var heuristicType = heuristicFunctionSelect.value;
+    var timeLimit = timeLimitInput ? parseInt(timeLimitInput.value, 10) * 1000 : 30000;
+    var heuristicType = heuristicFunctionSelect ? heuristicFunctionSelect.value : 'manhattan';
 
     if (isNaN(iterationLimit))
         return alert('Invalid iteration limit');
@@ -62,14 +73,16 @@ searchButton.addEventListener('click', function() {
     if (isNaN(depthLimit))
         return alert('Invalid depth limit');
 
-    if (isNaN(timeLimit))
-        return alert('Invalid time limit');
+    if (isNaN(timeLimit) || timeLimit <= 0)
+        timeLimit = 30000;
 
     searchResultDiv.innerHTML = '';
     searchButton.style.display = 'none';
     searchStopButton.style.display = 'block';
 
-    SoundManager.play('click');
+    if (typeof SoundManager !== 'undefined') {
+        SoundManager.play('click');
+    }
     search({
         node: initialNode,
         iterationLimit: iterationLimit,
@@ -91,8 +104,8 @@ searchStepButton.addEventListener('click', function() {
     var initialNode = new Node({state: game.state});
     var iterationLimit = parseInt(iterationLimitInput.value, 10);
     var depthLimit = parseInt(depthLimitInput.value, 10);
-    var timeLimit = parseInt(timeLimitInput.value, 10) * 1000; // Convert to milliseconds
-    var heuristicType = heuristicFunctionSelect.value;
+    var timeLimit = timeLimitInput ? parseInt(timeLimitInput.value, 10) * 1000 : 30000;
+    var heuristicType = heuristicFunctionSelect ? heuristicFunctionSelect.value : 'manhattan';
 
     if (isNaN(iterationLimit))
         return alert('Invalid iteration limit');
@@ -100,8 +113,8 @@ searchStepButton.addEventListener('click', function() {
     if (isNaN(depthLimit))
         return alert('Invalid depth limit');
 
-    if (isNaN(timeLimit))
-        return alert('Invalid time limit');
+    if (isNaN(timeLimit) || timeLimit <= 0)
+        timeLimit = 30000;
 
     search({
         node: initialNode,
@@ -157,11 +170,19 @@ function searchCallback(err, options) {
     
     // Initialize navigation with solution path
     if (!err && options.node) {
-        NavigationManager.init(getSolutionPath(options.node));
-        SoundManager.play('solve');
+        if (typeof NavigationManager !== 'undefined') {
+            NavigationManager.init(getSolutionPath(options.node));
+        }
+        if (typeof SoundManager !== 'undefined') {
+            SoundManager.play('solve');
+        }
     } else {
+        if (typeof NavigationManager !== 'undefined') {
         NavigationManager.init([]);
-        SoundManager.play('error');
+    }
+        if (typeof SoundManager !== 'undefined') {
+            SoundManager.play('error');
+        }
     }
 
     // Draw
@@ -240,7 +261,9 @@ themeToggleButton.addEventListener('click', function() {
     themeToggleButton.textContent = newTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
     
     localStorage.setItem('theme', newTheme);
-    SoundManager.play('click');
+    if (typeof SoundManager !== 'undefined') {
+        SoundManager.play('click');
+    }
 }, false);
 
 // Sound toggle functionality
@@ -251,15 +274,21 @@ soundEnabledCheckbox.addEventListener('change', function() {
 
 // Navigation button functionality
 prevStepButton.addEventListener('click', function() {
-    NavigationManager.prevStep();
+    if (typeof NavigationManager !== 'undefined') {
+        NavigationManager.prevStep();
+    }
 }, false);
 
 nextStepButton.addEventListener('click', function() {
-    NavigationManager.nextStep();
+    if (typeof NavigationManager !== 'undefined') {
+        NavigationManager.nextStep();
+    }
 }, false);
 
 resetStepsButton.addEventListener('click', function() {
-    NavigationManager.reset();
+    if (typeof NavigationManager !== 'undefined') {
+        NavigationManager.reset();
+    }
 }, false);
 
 // Load saved settings

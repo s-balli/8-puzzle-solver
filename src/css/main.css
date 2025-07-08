@@ -34,19 +34,14 @@ html, body {
 
 #board {
     position: absolute;
-    width: 200px;
-    height: 200px;
-    top: 0;
-    left: 0;
+    width: 150px;
+    height: 150px;
+    top: 10px;
+    left: 240px;
     /*box-sizing: border-box;*/
     border: 10px solid var(--board-border);
     background-color: var(--board-bg);
     transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-#board.size-4x4 {
-    width: 200px;
-    height: 200px;
 }
 
 .board-item {
@@ -54,23 +49,16 @@ html, body {
     border: 2px solid var(--text-color);
     font-size: 36px;
     font-weight: 800;
-    line-height: 62px;
+    line-height: 46px;
     text-align: center;
-    width: 66px;
-    height: 66px;
+    width: 50px;
+    height: 50px;
     box-sizing: border-box;
     top: 0;
     left: 0;
     background-color: var(--button-bg);
     color: var(--text-color);
     transition: all 0.3s ease;
-}
-
-.board-item.size-4x4 {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    line-height: 46px;
 }
 
 #board.animation .board-item {
@@ -86,7 +74,7 @@ html, body {
 #controls {
     position: absolute;
     width: 220px;
-    top: 220px;
+    top: 0;
     left: 0;
     bottom: 0;
     overflow-y: auto;
@@ -147,7 +135,7 @@ html, body {
 .keyboard-help {
     position: fixed;
     bottom: 10px;
-    right: 10px;
+    right: 420px;
     background-color: var(--result-bg);
     border: 1px solid var(--result-border);
     border-radius: 4px;
@@ -155,6 +143,7 @@ html, body {
     font-size: 12px;
     opacity: 0.8;
     transition: opacity 0.3s ease;
+    z-index: 999;
 }
 
 .keyboard-help:hover {
@@ -452,7 +441,7 @@ html, body {
 
 #visualization {
     position: absolute;
-    top: 0;
+    top: 180px;
     left: 230px;
     right: 0;
     bottom: 0;
@@ -462,10 +451,10 @@ html, body {
 /* Performance Analysis Panel */
 .performance-panel {
     position: fixed;
-    top: 10px;
+    bottom: 10px;
     right: 10px;
     width: 400px;
-    max-height: 80vh;
+    max-height: 60vh;
     background-color: var(--result-bg);
     border: 1px solid var(--result-border);
     border-radius: 8px;
@@ -548,8 +537,8 @@ html, body {
 /* Real-time Graphs Panel */
 .graph-panel {
     position: fixed;
-    top: 10px;
-    left: 240px;
+    top: 190px;
+    right: 10px;
     width: 400px;
     background-color: var(--result-bg);
     border: 1px solid var(--result-border);
@@ -638,86 +627,3 @@ html, body {
     color: #2196F3;
 }
 
-/* 3D Visualization Panel */
-.threed-panel {
-    position: fixed;
-    bottom: 10px;
-    left: 240px;
-    width: 350px;
-    background-color: var(--result-bg);
-    border: 1px solid var(--result-border);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 1000;
-    transition: all 0.3s ease;
-    display: none;
-}
-
-.threed-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: var(--button-bg);
-    border-bottom: 1px solid var(--border-color);
-    border-radius: 8px 8px 0 0;
-}
-
-.threed-header h3 {
-    margin: 0;
-    color: var(--text-color);
-    font-size: 18px;
-}
-
-.threed-header button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--text-color);
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
-}
-
-.threed-header button:hover {
-    background-color: var(--button-hover);
-}
-
-.threed-content {
-    padding: 20px;
-}
-
-.threed-container {
-    width: 300px;
-    height: 200px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    margin-bottom: 10px;
-    background-color: var(--board-bg);
-}
-
-.threed-controls {
-    display: flex;
-    gap: 10px;
-}
-
-.threed-controls button {
-    flex: 1;
-    padding: 8px;
-    background-color: var(--button-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.threed-controls button:hover {
-    background-color: var(--button-hover);
-}
