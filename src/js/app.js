@@ -31,33 +31,38 @@ if (typeof bodyScrollLock !== 'undefined') {
     bodyScrollLock.disableBodyScroll(controlsDiv);
 }
 
-randomizeButton.addEventListener('click', function() {
-    Board.clearReplay();
-    game.randomize();
-    Board.draw(game.state);
-    searchResultDiv.innerHTML = '';
-    if (typeof NavigationManager !== 'undefined') {
-        NavigationManager.init([]);
-    }
-    if (typeof SoundManager !== 'undefined') {
-        SoundManager.play('click');
-    }
-}, false);
+if (randomizeButton) {
+    randomizeButton.addEventListener('click', function() {
+        Board.clearReplay();
+        game.randomize();
+        Board.draw(game.state);
+        searchResultDiv.innerHTML = '';
+        if (typeof NavigationManager !== 'undefined') {
+            NavigationManager.init([]);
+        }
+        if (typeof SoundManager !== 'undefined') {
+            SoundManager.play('click');
+        }
+    }, false);
+}
 
-customInputButton.addEventListener('click', function() {
-    Board.clearReplay();
-    game.state = prompt('Enter game state, from top-left to right-bottom, 10 characters, e.g. "012345678"');
-    Board.draw(game.state);
-    searchResultDiv.innerHTML = '';
-    if (typeof NavigationManager !== 'undefined') {
-        NavigationManager.init([]);
-    }
-    if (typeof SoundManager !== 'undefined') {
-        SoundManager.play('click');
-    }
-}, false);
+if (customInputButton) {
+    customInputButton.addEventListener('click', function() {
+        Board.clearReplay();
+        game.state = prompt('Enter game state, from top-left to right-bottom, 10 characters, e.g. "012345678"');
+        Board.draw(game.state);
+        searchResultDiv.innerHTML = '';
+        if (typeof NavigationManager !== 'undefined') {
+            NavigationManager.init([]);
+        }
+        if (typeof SoundManager !== 'undefined') {
+            SoundManager.play('click');
+        }
+    }, false);
+}
 
-searchButton.addEventListener('click', function() {
+if (searchButton) {
+    searchButton.addEventListener('click', function() {
     Board.clearReplay();
     searchStepOptions = null;
 
@@ -94,8 +99,10 @@ searchButton.addEventListener('click', function() {
         callback: searchCallback
     });
 }, false);
+}
 
-searchStepButton.addEventListener('click', function() {
+if (searchStepButton) {
+    searchStepButton.addEventListener('click', function() {
     Board.clearReplay();
 
     if (searchStepOptions)
@@ -128,8 +135,10 @@ searchStepButton.addEventListener('click', function() {
         callback: searchCallback
     });
 }, false);
+}
 
-searchStopButton.addEventListener('click', function() {
+if (searchStopButton) {
+    searchStopButton.addEventListener('click', function() {
     Board.clearReplay();
     searchResultDiv.innerHTML = '';
     searchButton.style.display = 'block';
@@ -143,6 +152,7 @@ searchStopButton.addEventListener('click', function() {
 
     Board.draw(game.state);
 }, false);
+}
 
 function searchCallback(err, options) {
     document.getElementById('board').classList.remove('search-animation');
@@ -253,7 +263,8 @@ function replayWinnerNode() {
 }
 
 // Theme toggle functionality
-themeToggleButton.addEventListener('click', function() {
+if (themeToggleButton) {
+    themeToggleButton.addEventListener('click', function() {
     var currentTheme = document.documentElement.getAttribute('data-theme');
     var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
@@ -265,31 +276,40 @@ themeToggleButton.addEventListener('click', function() {
         SoundManager.play('click');
     }
 }, false);
+}
 
 // Sound toggle functionality
-soundEnabledCheckbox.addEventListener('change', function() {
-    SoundManager.enabled = this.checked;
-    localStorage.setItem('soundEnabled', this.checked);
-}, false);
+if (soundEnabledCheckbox) {
+    soundEnabledCheckbox.addEventListener('change', function() {
+        SoundManager.enabled = this.checked;
+        localStorage.setItem('soundEnabled', this.checked);
+    }, false);
+}
 
 // Navigation button functionality
-prevStepButton.addEventListener('click', function() {
-    if (typeof NavigationManager !== 'undefined') {
-        NavigationManager.prevStep();
-    }
-}, false);
+if (prevStepButton) {
+    prevStepButton.addEventListener('click', function() {
+        if (typeof NavigationManager !== 'undefined') {
+            NavigationManager.prevStep();
+        }
+    }, false);
+}
 
-nextStepButton.addEventListener('click', function() {
-    if (typeof NavigationManager !== 'undefined') {
-        NavigationManager.nextStep();
-    }
-}, false);
+if (nextStepButton) {
+    nextStepButton.addEventListener('click', function() {
+        if (typeof NavigationManager !== 'undefined') {
+            NavigationManager.nextStep();
+        }
+    }, false);
+}
 
-resetStepsButton.addEventListener('click', function() {
-    if (typeof NavigationManager !== 'undefined') {
-        NavigationManager.reset();
-    }
-}, false);
+if (resetStepsButton) {
+    resetStepsButton.addEventListener('click', function() {
+        if (typeof NavigationManager !== 'undefined') {
+            NavigationManager.reset();
+        }
+    }, false);
+}
 
 // Load saved settings
 document.addEventListener('DOMContentLoaded', function() {

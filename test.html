@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test 8-Puzzle</title>
+</head>
+<body>
+    <button id="testButton">Test Button</button>
+    <div id="output"></div>
+    
+    <script>
+        console.log('Script loaded');
+        
+        var button = document.getElementById('testButton');
+        var output = document.getElementById('output');
+        
+        console.log('Button:', button);
+        
+        if (button) {
+            button.addEventListener('click', function() {
+                console.log('Button clicked!');
+                output.innerHTML = 'Button works!';
+            });
+        }
+        
+        // Test if we can access search button
+        setTimeout(function() {
+            var searchButton = document.getElementById('search');
+            console.log('Search button found:', searchButton);
+            output.innerHTML += '<br>Search button: ' + (searchButton ? 'Found' : 'Not found');
+        }, 100);
+    </script>
+</body>
+</html>
