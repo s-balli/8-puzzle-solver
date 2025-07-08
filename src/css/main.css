@@ -134,16 +134,17 @@ html, body {
 /* Keyboard shortcuts help */
 .keyboard-help {
     position: fixed;
-    bottom: 10px;
-    right: 420px;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: var(--result-bg);
-    border: 1px solid var(--result-border);
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 12px;
-    opacity: 0.8;
+    border-top: 1px solid var(--result-border);
+    padding: 5px 10px;
+    font-size: 11px;
+    opacity: 0.9;
     transition: opacity 0.3s ease;
     z-index: 999;
+    text-align: center;
 }
 
 .keyboard-help:hover {
@@ -151,18 +152,22 @@ html, body {
 }
 
 .keyboard-help h4 {
-    margin: 0 0 8px 0;
+    display: inline;
+    margin: 0 10px 0 0;
     color: var(--text-color);
+    font-size: 11px;
 }
 
 .keyboard-help ul {
+    display: inline;
     margin: 0;
-    padding-left: 15px;
+    padding: 0;
     list-style: none;
 }
 
 .keyboard-help li {
-    margin: 2px 0;
+    display: inline;
+    margin: 0 15px 0 0;
     color: var(--text-color);
 }
 
@@ -170,17 +175,17 @@ html, body {
     background-color: var(--button-bg);
     border: 1px solid var(--border-color);
     border-radius: 3px;
-    padding: 2px 6px;
-    margin-right: 5px;
+    padding: 1px 4px;
+    margin-right: 3px;
     font-family: monospace;
-    font-size: 11px;
+    font-size: 10px;
 }
 
 /* Education Panel */
 .education-panel {
     position: fixed;
     top: 10px;
-    right: 200px;
+    right: 380px;
     width: 350px;
     max-height: 80vh;
     background-color: var(--result-bg);
@@ -190,6 +195,12 @@ html, body {
     z-index: 1000;
     overflow-y: auto;
     transition: all 0.3s ease;
+}
+
+.education-panel.dragging {
+    transition: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    z-index: 1001;
 }
 
 .education-header {
@@ -465,6 +476,12 @@ html, body {
     display: none;
 }
 
+.performance-panel.dragging {
+    transition: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    z-index: 1001;
+}
+
 .performance-header {
     display: flex;
     justify-content: space-between;
@@ -537,9 +554,9 @@ html, body {
 /* Real-time Graphs Panel */
 .graph-panel {
     position: fixed;
-    top: 190px;
+    top: 10px;
     right: 10px;
-    width: 400px;
+    width: 350px;
     background-color: var(--result-bg);
     border: 1px solid var(--result-border);
     border-radius: 8px;
@@ -547,6 +564,12 @@ html, body {
     z-index: 1000;
     transition: all 0.3s ease;
     display: none;
+}
+
+.graph-panel.dragging {
+    transition: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    z-index: 1001;
 }
 
 .graph-header {
@@ -625,5 +648,224 @@ html, body {
     font-size: 18px;
     font-weight: bold;
     color: #2196F3;
+}
+
+/* Algorithm Comparison Panel */
+.comparison-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    max-height: 80vh;
+    background-color: var(--result-bg);
+    border: 1px solid var(--result-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    z-index: 1002;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+.comparison-panel.dragging {
+    transition: none;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    z-index: 1003;
+}
+
+.comparison-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--button-bg);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 8px 8px 0 0;
+    cursor: move;
+}
+
+.comparison-header h3 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 18px;
+}
+
+.comparison-header button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.comparison-header button:hover {
+    background-color: var(--button-hover);
+}
+
+.comparison-content {
+    padding: 20px;
+}
+
+.comparison-section {
+    margin-bottom: 20px;
+}
+
+.comparison-section h4 {
+    margin: 0 0 15px 0;
+    color: var(--text-color);
+    font-size: 16px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.config-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px 0;
+}
+
+.config-row label {
+    color: var(--text-color);
+    font-weight: bold;
+    flex: 1;
+}
+
+.config-row input, .config-row span {
+    flex: 0 0 120px;
+    text-align: right;
+}
+
+.config-row input {
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 5px 8px;
+}
+
+.run-comparison-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.run-comparison-btn:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.run-comparison-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.comparison-progress {
+    margin-top: 15px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2196F3, #21CBF3);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+#currentAlgorithm {
+    text-align: center;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.comparison-results {
+    min-height: 200px;
+}
+
+.no-results {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 40px 20px;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.results-table th,
+.results-table td {
+    padding: 10px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.results-table th {
+    background-color: var(--button-bg);
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.results-table td {
+    font-size: 12px;
+}
+
+.results-table tr:hover {
+    background-color: var(--button-hover);
+}
+
+.status-success {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.status-failed {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.status-timeout {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+.best-result {
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.algorithm-name {
+    font-weight: bold;
+    color: var(--text-color);
 }
 

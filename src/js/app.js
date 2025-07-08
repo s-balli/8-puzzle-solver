@@ -311,14 +311,81 @@ if (resetStepsButton) {
     }, false);
 }
 
+// Panel toggle functionality
+var educationModeCheckbox = document.getElementById('educationMode');
+var performanceModeCheckbox = document.getElementById('performanceMode');
+var realTimeGraphsCheckbox = document.getElementById('realTimeGraphs');
+
+if (educationModeCheckbox) {
+    educationModeCheckbox.addEventListener('change', function() {
+        if (typeof EducationManager !== 'undefined') {
+            EducationManager.enabled = this.checked;
+            if (this.checked) {
+                EducationManager.show();
+            } else {
+                EducationManager.hide();
+            }
+        }
+    });
+}
+
+if (performanceModeCheckbox) {
+    performanceModeCheckbox.addEventListener('change', function() {
+        if (typeof PerformanceManager !== 'undefined') {
+            if (this.checked) {
+                PerformanceManager.show();
+            } else {
+                PerformanceManager.hide();
+            }
+        }
+    });
+}
+
+if (realTimeGraphsCheckbox) {
+    realTimeGraphsCheckbox.addEventListener('change', function() {
+        if (typeof GraphManager !== 'undefined') {
+            if (this.checked) {
+                GraphManager.show();
+            } else {
+                GraphManager.hide();
+            }
+        }
+    });
+}
+
 // Load saved settings
 document.addEventListener('DOMContentLoaded', function() {
     var savedTheme = localStorage.getItem('theme') || 'light';
     var savedSoundEnabled = localStorage.getItem('soundEnabled') !== 'false';
     
     document.documentElement.setAttribute('data-theme', savedTheme);
-    themeToggleButton.textContent = savedTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    if (themeToggleButton) {
+        themeToggleButton.textContent = savedTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
     
-    soundEnabledCheckbox.checked = savedSoundEnabled;
-    SoundManager.enabled = savedSoundEnabled;
+    if (soundEnabledCheckbox) {
+        soundEnabledCheckbox.checked = savedSoundEnabled;
+    }
+    if (typeof SoundManager !== 'undefined') {
+        SoundManager.enabled = savedSoundEnabled;
+    }
+    
+    // Initialize managers
+    if (typeof PerformanceManager !== 'undefined') {
+        PerformanceManager.init();
+    }
+    if (typeof GraphManager !== 'undefined') {
+        GraphManager.init();
+    }
+    if (typeof EducationManager !== 'undefined') {
+        EducationManager.init();
+    }
+    if (typeof ComparisonManager !== 'undefined') {
+        ComparisonManager.init();
+    }
+    
+    // Initialize draggable panels
+    if (typeof DraggableManager !== 'undefined') {
+        DraggableManager.init();
+    }
 });

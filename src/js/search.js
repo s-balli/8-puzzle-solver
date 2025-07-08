@@ -26,25 +26,38 @@ function search(opt_options) {
         heuristicType: 'manhattan'
     }, opt_options || {});
 
-    // Start performance measurement
+    // Start performance measurement (skip during comparison tests)
     if (options.iteration === 0) {
-        PerformanceManager.startMeasurement();
+        if (!options.isComparisonTest && typeof PerformanceManager !== 'undefined') {
+            PerformanceManager.startMeasurement();
+        }
         options.searchStartTime = performance.now();
     }
 
-    document.getElementById('board').classList.add('search-animation');
-    Board.draw(options.node.state);
-
-    // Education mode updates
-    if (options.iteration === 0) {
-        EducationManager.onSearchStart();
+    // Skip board updates during comparison tests
+    if (!options.isComparisonTest) {
+        document.getElementById('board').classList.add('search-animation');
+        Board.draw(options.node.state);
     }
-    EducationManager.onNodeExpanded(options.node, options.iteration);
+
+    // Education mode updates (skip during comparison tests)
+    if (!options.isComparisonTest && typeof EducationManager !== 'undefined') {
+        if (options.iteration === 0) {
+            EducationManager.onSearchStart();
+        }
+        EducationManager.onNodeExpanded(options.node, options.iteration);
+    }
 
     if (options.node.game.isFinished()) {
-        document.getElementById('board').classList.remove('search-animation');
-        EducationManager.onSolutionFound(options.node);
-        PerformanceManager.endMeasurement(true, options.node.depth);
+        if (!options.isComparisonTest) {
+            document.getElementById('board').classList.remove('search-animation');
+        }
+        if (!options.isComparisonTest && typeof EducationManager !== 'undefined') {
+            EducationManager.onSolutionFound(options.node);
+        }
+        if (!options.isComparisonTest && typeof PerformanceManager !== 'undefined') {
+            PerformanceManager.endMeasurement(true, options.node.depth);
+        }
         return options.callback(null, options);
     }
 
@@ -96,15 +109,21 @@ function search(opt_options) {
     // Next call
     var nextNode = getNextNode(options);
     if (!nextNode) {
-        EducationManager.onSearchFailed();
+        if (!options.isComparisonTest && typeof EducationManager !== 'undefined') {
+            EducationManager.onSearchFailed();
+        }
         return options.callback(new Error('Frontier list is empty'), options);
     }
 
     // Iteration check
     options.iteration++;
     if (options.iterationLimit && options.iteration > options.iterationLimit) {
-        EducationManager.onSearchFailed();
-        PerformanceManager.endMeasurement(false, 0);
+        if (!options.isComparisonTest && typeof EducationManager !== 'undefined') {
+            EducationManager.onSearchFailed();
+        }
+        if (!options.isComparisonTest && typeof PerformanceManager !== 'undefined') {
+            PerformanceManager.endMeasurement(false, 0);
+        }
         return options.callback(new Error('Iteration limit reached'), options);
     }
 
@@ -112,24 +131,34 @@ function search(opt_options) {
     if (options.searchStartTime && options.timeLimit) {
         var elapsed = performance.now() - options.searchStartTime;
         if (elapsed > options.timeLimit) {
-            EducationManager.onSearchFailed();
-            PerformanceManager.endMeasurement(false, 0);
+            if (!options.isComparisonTest && typeof EducationManager !== 'undefined') {
+                EducationManager.onSearchFailed();
+            }
+            if (!options.isComparisonTest && typeof PerformanceManager !== 'undefined') {
+                PerformanceManager.endMeasurement(false, 0);
+            }
             return options.callback(new Error('Time limit reached'), options);
         }
     }
 
-    if (window.searchStopped) {
+    if (window.searchStopped && !options.isComparisonTest) {
         window.searchStopped = false;
-        EducationManager.updateCurrentStep('Search stopped by user');
-        PerformanceManager.endMeasurement(false, 0);
+        if (typeof EducationManager !== 'undefined') {
+            EducationManager.updateCurrentStep('Search stopped by user');
+        }
+        if (typeof PerformanceManager !== 'undefined') {
+            PerformanceManager.endMeasurement(false, 0);
+        }
         return options.callback(new Error('Search stopped'), options);
     }
 
-    // Update performance metrics
-    PerformanceManager.updateMetrics(options);
+    // Update performance metrics (skip during comparison tests)
+    if (!options.isComparisonTest && typeof PerformanceManager !== 'undefined') {
+        PerformanceManager.updateMetrics(options);
+    }
     
-    // Update real-time graphs
-    if (typeof GraphManager !== 'undefined') {
+    // Update real-time graphs (skip during comparison tests)
+    if (!options.isComparisonTest && typeof GraphManager !== 'undefined') {
         GraphManager.updateChart(options);
     }
 
