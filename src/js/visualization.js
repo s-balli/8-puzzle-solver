@@ -56,14 +56,18 @@ Visualization.importData = function(expandedNodes, frontierList, opt_winnerNode,
             id: node.state,//012345678
             label: node.state.splice(6, 0, '\n').splice(3, 0, '\n'),
             // label: node.state + '\n (D:' + node.depth + ', MD:' + node.game.getManhattanDistance() + ')',
-            color: winners[node.state] ? (opt_winnerColor || '#ccff33') : color
+            color: winners[node.state] ? (opt_winnerColor || '#4CAF50') : color,
+            borderWidth: winners[node.state] ? 3 : 1,
+            font: winners[node.state] ? {color: '#fff', size: 14, face: 'bold'} : {color: '#333', size: 12}
         });
 
         if (node.parent) {
             data.edges.push({
                 from: node.parent.state,
                 to: node.state,
-                id: node.parent.state + node.state
+                id: node.parent.state + node.state,
+                color: winners[node.state] && winners[node.parent.state] ? '#4CAF50' : '#848484',
+                width: winners[node.state] && winners[node.parent.state] ? 3 : 1
             });
         }
 

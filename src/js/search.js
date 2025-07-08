@@ -15,18 +15,36 @@ function search(opt_options) {
         iteration: 0,
         iterationLimit: 1000,
         depthLimit: 0,
+        timeLimit: 30000, // 30 seconds default
         expandCheckOptimization: false,
         callback: function() {},
         stepCallback: null,
         type: SearchType.BREADTH_FIRST,
         maxFrontierListLength: 0,
         maxExpandedNodesLength: 0,
-        iterativeDeepeningIndex: 0
+        iterativeDeepeningIndex: 0,
+        heuristicType: 'manhattan'
     }, opt_options || {});
 
+    // Start performance measurement
+    if (options.iteration === 0) {
+        PerformanceManager.startMeasurement();
+        options.searchStartTime = performance.now();
+    }
+
+    document.getElementById('board').classList.add('search-animation');
     Board.draw(options.node.state);
 
+    // Education mode updates
+    if (options.iteration === 0) {
+        EducationManager.onSearchStart();
+    }
+    EducationManager.onNodeExpanded(options.node, options.iteration);
+
     if (options.node.game.isFinished()) {
+        document.getElementById('board').classList.remove('search-animation');
+        EducationManager.onSolutionFound(options.node);
+        PerformanceManager.endMeasurement(true, options.node.depth);
         return options.callback(null, options);
     }
 
@@ -78,18 +96,41 @@ function search(opt_options) {
     // Next call
     var nextNode = getNextNode(options);
     if (!nextNode) {
+        EducationManager.onSearchFailed();
         return options.callback(new Error('Frontier list is empty'), options);
     }
 
     // Iteration check
     options.iteration++;
     if (options.iterationLimit && options.iteration > options.iterationLimit) {
+        EducationManager.onSearchFailed();
+        PerformanceManager.endMeasurement(false, 0);
         return options.callback(new Error('Iteration limit reached'), options);
+    }
+
+    // Time limit check
+    if (options.searchStartTime && options.timeLimit) {
+        var elapsed = performance.now() - options.searchStartTime;
+        if (elapsed > options.timeLimit) {
+            EducationManager.onSearchFailed();
+            PerformanceManager.endMeasurement(false, 0);
+            return options.callback(new Error('Time limit reached'), options);
+        }
     }
 
     if (window.searchStopped) {
         window.searchStopped = false;
+        EducationManager.updateCurrentStep('Search stopped by user');
+        PerformanceManager.endMeasurement(false, 0);
         return options.callback(new Error('Search stopped'), options);
+    }
+
+    // Update performance metrics
+    PerformanceManager.updateMetrics(options);
+    
+    // Update real-time graphs
+    if (typeof GraphManager !== 'undefined') {
+        GraphManager.updateChart(options);
     }
 
     if (options.stepCallback) {
@@ -135,7 +176,7 @@ function getNextNode(options) {
             return nextNode;
         case SearchType.GREEDY_BEST:
             var bestNode = _.minBy(options.frontierList, function(node) {
-                return node.game.getManhattanDistance();
+                return node.game.getHeuristicValue(options.heuristicType);
             });
 
             _.remove(options.frontierList, bestNode);
@@ -143,7 +184,7 @@ function getNextNode(options) {
             return bestNode;
         case SearchType.A_STAR:
             var bestNode = _.minBy(options.frontierList, function(node) {
-                return node.game.getManhattanDistance() + node.cost;
+                return node.game.getHeuristicValue(options.heuristicType) + node.cost;
             });
 
             _.remove(options.frontierList, bestNode);

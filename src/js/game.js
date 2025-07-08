@@ -129,6 +129,52 @@ Game.prototype.getManhattanDistance = function() {
 };
 
 
+Game.prototype.getEuclideanDistance = function() {
+    var distance = 0;
+
+    for (var i = 1; i <= 8; i++) {
+        var index = this.state.indexOf(i.toString());
+        var position = Game.indexToRowColumn(index);
+        
+        var goalRow = Math.floor((i - 1) / 3);
+        var goalColumn = (i - 1) % 3;
+        
+        var dx = position.row - goalRow;
+        var dy = position.column - goalColumn;
+        distance += Math.sqrt(dx * dx + dy * dy);
+    }
+
+    return distance;
+};
+
+Game.prototype.getMisplacedTiles = function() {
+    var misplacedCount = 0;
+
+    for (var i = 1; i <= 8; i++) {
+        var index = this.state.indexOf(i.toString());
+        var expectedIndex = i - 1;
+        
+        if (index !== expectedIndex) {
+            misplacedCount++;
+        }
+    }
+
+    return misplacedCount;
+};
+
+Game.prototype.getHeuristicValue = function(heuristicType) {
+    switch (heuristicType) {
+        case 'manhattan':
+            return this.getManhattanDistance();
+        case 'euclidean':
+            return this.getEuclideanDistance();
+        case 'misplaced':
+            return this.getMisplacedTiles();
+        default:
+            return this.getManhattanDistance();
+    }
+};
+
 Game.indexToRowColumn = function(index) {
     return {
         row: Math.floor(index / 3),
