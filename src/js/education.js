@@ -1,6 +1,10 @@
 var EducationManager = {
     enabled: false,
     currentAlgorithm: '',
+    tutorialMode: false,
+    currentTutorial: null,
+    currentTutorialStep: 0,
+    whyExplanationsEnabled: false,
     
     algorithmInfo: {
         breadthFirst: {
@@ -142,6 +146,90 @@ var EducationManager = {
         }
     },
     
+    tutorials: {
+        'beginner-bfs': {
+            name: 'Breadth-First Search Tutorial',
+            algorithm: 'breadthFirst',
+            heuristic: null,
+            description: 'Learn BFS step-by-step with a simple puzzle',
+            initialState: '281043765',
+            steps: [
+                {
+                    type: 'intro',
+                    title: 'Welcome to BFS Tutorial',
+                    description: 'We\'ll solve this puzzle using Breadth-First Search. BFS explores all nodes at the current depth before moving deeper.',
+                    highlight: null
+                },
+                {
+                    type: 'setup',
+                    title: 'Initial Setup',
+                    description: 'We start with this puzzle state. BFS adds the initial state to a queue (FIFO - First In, First Out).',
+                    highlight: 'frontier'
+                },
+                {
+                    type: 'step',
+                    title: 'First Expansion',
+                    description: 'Remove the first node from queue and expand it. Add all its children to the end of the queue.',
+                    highlight: 'expansion'
+                },
+                {
+                    type: 'step',
+                    title: 'Continue Search',
+                    description: 'Keep removing nodes from front of queue and expanding them. This ensures we explore all depth-1 nodes before depth-2.',
+                    highlight: 'frontier'
+                }
+            ]
+        },
+        'intermediate-astar': {
+            name: 'A* Search Tutorial',
+            algorithm: 'aStar',
+            heuristic: 'manhattan',
+            description: 'Master A* algorithm with Manhattan heuristic',
+            initialState: '281043765',
+            steps: [
+                {
+                    type: 'intro',
+                    title: 'Welcome to A* Tutorial',
+                    description: 'A* combines path cost g(n) and heuristic h(n) to find optimal solutions efficiently.',
+                    highlight: null
+                },
+                {
+                    type: 'setup',
+                    title: 'Understanding f(n) = g(n) + h(n)',
+                    description: 'A* uses f(n) = g(n) + h(n) where g(n) is cost from start and h(n) is estimated cost to goal.',
+                    highlight: 'heuristic'
+                },
+                {
+                    type: 'step',
+                    title: 'Node Selection',
+                    description: 'A* always selects the node with lowest f(n) value from the frontier.',
+                    highlight: 'selection'
+                }
+            ]
+        },
+        'advanced-heuristics': {
+            name: 'Heuristic Comparison Tutorial',
+            algorithm: 'aStar',
+            heuristic: 'linearConflict',
+            description: 'Compare different heuristics and their effects',
+            initialState: '123456078',
+            steps: [
+                {
+                    type: 'intro',
+                    title: 'Heuristic Comparison',
+                    description: 'Let\'s see how different heuristics affect A* performance on the same puzzle.',
+                    highlight: null
+                },
+                {
+                    type: 'comparison',
+                    title: 'Manhattan vs Linear Conflict',
+                    description: 'Linear Conflict adds penalties for tiles that are in correct row/column but wrong order.',
+                    highlight: 'heuristic'
+                }
+            ]
+        }
+    },
+    
     init: function() {
         this.createEducationPanel();
         this.bindEvents();
@@ -162,6 +250,8 @@ var EducationManager = {
                 <div class="guide-tabs">
                     <button class="guide-tab active" data-tab="algorithm">🔍 Algorithm</button>
                     <button class="guide-tab" data-tab="heuristic">🎯 Heuristic</button>
+                    <button class="guide-tab" data-tab="tutorial">📚 Tutorial</button>
+                    <button class="guide-tab" data-tab="why">🤔 Why?</button>
                     <button class="guide-tab" data-tab="comparison">📊 Comparison</button>
                 </div>
                 
@@ -211,6 +301,92 @@ var EducationManager = {
                             <div class="cons">
                                 <h5>❌ Cons:</h5>
                                 <ul id="heuristicCons"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="tutorialTab">
+                    <div class="tutorial-info">
+                        <h4>📚 Interactive Tutorials</h4>
+                        <div class="tutorial-selection">
+                            <h5>Choose a Tutorial:</h5>
+                            <div class="tutorial-buttons">
+                                <button class="tutorial-btn" data-tutorial="beginner-bfs">
+                                    🟢 Beginner: Breadth-First Search
+                                </button>
+                                <button class="tutorial-btn" data-tutorial="intermediate-astar">
+                                    🟡 Intermediate: A* Search
+                                </button>
+                                <button class="tutorial-btn" data-tutorial="advanced-heuristics">
+                                    🔴 Advanced: Heuristic Comparison
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-content" id="tutorialContent" style="display: none;">
+                            <div class="tutorial-header">
+                                <h5 id="tutorialTitle">Tutorial</h5>
+                                <div class="tutorial-progress">
+                                    <span id="tutorialProgressText">Step 1 of 4</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="tutorialProgressFill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tutorial-step">
+                                <h6 id="tutorialStepTitle">Step Title</h6>
+                                <p id="tutorialStepDescription">Step description goes here...</p>
+                            </div>
+                            
+                            <div class="tutorial-controls">
+                                <button id="tutorialPrev" disabled>← Previous</button>
+                                <button id="tutorialNext">Next →</button>
+                                <button id="tutorialExit">Exit Tutorial</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="whyTab">
+                    <div class="why-info">
+                        <h4>🤔 Why This Node?</h4>
+                        <div class="why-controls">
+                            <label>
+                                <input type="checkbox" id="whyExplanationsToggle"> Enable real-time explanations
+                            </label>
+                        </div>
+                        
+                        <div class="why-content" id="whyContent">
+                            <div class="current-selection" id="currentSelection">
+                                <h5>Current Node Selection:</h5>
+                                <p id="whyExplanation">Start a search to see explanations...</p>
+                            </div>
+                            
+                            <div class="frontier-analysis" id="frontierAnalysis" style="display: none;">
+                                <h5>Frontier Analysis:</h5>
+                                <div class="frontier-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Frontier Size:</span>
+                                        <span class="stat-value" id="frontierSizeWhy">0</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Selected Node f(n):</span>
+                                        <span class="stat-value" id="selectedNodeValue">-</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Selection Reason:</span>
+                                        <span class="stat-value" id="selectionReason">-</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="frontier-comparison" id="frontierComparison">
+                                    <h6>Alternative Nodes:</h6>
+                                    <div class="alternatives-list" id="alternativesList">
+                                        <!-- Populated dynamically -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -311,6 +487,10 @@ var EducationManager = {
             this.updateHeuristicInfo();
         } else if (tabName === 'algorithm') {
             this.updateAlgorithmInfo();
+        } else if (tabName === 'tutorial') {
+            this.updateTutorialTab();
+        } else if (tabName === 'why') {
+            this.updateWhyTab();
         } else if (tabName === 'comparison') {
             this.updateComparisonInfo();
         }
@@ -652,6 +832,281 @@ var EducationManager = {
         document.getElementById('recommendationText').textContent = text;
     },
     
+    // Tutorial Management Functions
+    updateTutorialTab: function() {
+        var tutorialButtons = document.querySelectorAll('.tutorial-btn');
+        tutorialButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                EducationManager.startTutorial(this.dataset.tutorial);
+            });
+        });
+    },
+    
+    startTutorial: function(tutorialId) {
+        var tutorial = this.tutorials[tutorialId];
+        if (!tutorial) return;
+        
+        this.tutorialMode = true;
+        this.currentTutorial = tutorial;
+        this.currentTutorialStep = 0;
+        
+        // Set algorithm and heuristic
+        document.getElementById('searchType').value = tutorial.algorithm;
+        if (tutorial.heuristic) {
+            document.getElementById('heuristicFunction').value = tutorial.heuristic;
+        }
+        
+        // Set initial state
+        if (tutorial.initialState) {
+            if (typeof game !== 'undefined') {
+                game = new Game(tutorial.initialState);
+                Board.draw(game.state);
+            }
+        }
+        
+        // Show tutorial content
+        document.getElementById('tutorialContent').style.display = 'block';
+        document.querySelector('.tutorial-selection').style.display = 'none';
+        
+        this.updateTutorialStep();
+        this.bindTutorialControls();
+    },
+    
+    updateTutorialStep: function() {
+        if (!this.currentTutorial) return;
+        
+        var step = this.currentTutorial.steps[this.currentTutorialStep];
+        var totalSteps = this.currentTutorial.steps.length;
+        
+        document.getElementById('tutorialTitle').textContent = this.currentTutorial.name;
+        document.getElementById('tutorialProgressText').textContent = `Step ${this.currentTutorialStep + 1} of ${totalSteps}`;
+        document.getElementById('tutorialProgressFill').style.width = `${((this.currentTutorialStep + 1) / totalSteps) * 100}%`;
+        
+        document.getElementById('tutorialStepTitle').textContent = step.title;
+        document.getElementById('tutorialStepDescription').textContent = step.description;
+        
+        // Update button states
+        document.getElementById('tutorialPrev').disabled = this.currentTutorialStep === 0;
+        document.getElementById('tutorialNext').disabled = this.currentTutorialStep === totalSteps - 1;
+        
+        // Handle step-specific actions
+        this.handleTutorialStepAction(step);
+    },
+    
+    handleTutorialStepAction: function(step) {
+        switch(step.type) {
+            case 'setup':
+                // Highlight initial setup
+                if (step.highlight === 'frontier') {
+                    this.highlightFrontier();
+                }
+                break;
+            case 'step':
+                // Perform guided search step
+                if (step.highlight === 'expansion') {
+                    this.highlightExpansion();
+                } else if (step.highlight === 'frontier') {
+                    this.highlightFrontier();
+                }
+                break;
+        }
+    },
+    
+    highlightFrontier: function() {
+        // Add visual highlighting to show frontier concept
+        var board = document.getElementById('board');
+        board.classList.add('tutorial-highlight-frontier');
+        setTimeout(() => board.classList.remove('tutorial-highlight-frontier'), 2000);
+    },
+    
+    highlightExpansion: function() {
+        // Add visual highlighting to show expansion concept
+        var board = document.getElementById('board');
+        board.classList.add('tutorial-highlight-expansion');
+        setTimeout(() => board.classList.remove('tutorial-highlight-expansion'), 2000);
+    },
+    
+    bindTutorialControls: function() {
+        var self = this;
+        
+        document.getElementById('tutorialNext').onclick = function() {
+            if (self.currentTutorialStep < self.currentTutorial.steps.length - 1) {
+                self.currentTutorialStep++;
+                self.updateTutorialStep();
+            }
+        };
+        
+        document.getElementById('tutorialPrev').onclick = function() {
+            if (self.currentTutorialStep > 0) {
+                self.currentTutorialStep--;
+                self.updateTutorialStep();
+            }
+        };
+        
+        document.getElementById('tutorialExit').onclick = function() {
+            self.exitTutorial();
+        };
+    },
+    
+    exitTutorial: function() {
+        this.tutorialMode = false;
+        this.currentTutorial = null;
+        this.currentTutorialStep = 0;
+        
+        document.getElementById('tutorialContent').style.display = 'none';
+        document.querySelector('.tutorial-selection').style.display = 'block';
+        
+        // Remove any tutorial highlights
+        var board = document.getElementById('board');
+        board.className = board.className.replace(/tutorial-highlight-\w+/g, '');
+    },
+    
+    // Why Explanations Functions
+    updateWhyTab: function() {
+        var toggle = document.getElementById('whyExplanationsToggle');
+        if (toggle) {
+            toggle.addEventListener('change', function() {
+                EducationManager.whyExplanationsEnabled = this.checked;
+                if (this.checked) {
+                    EducationManager.enableWhyExplanations();
+                } else {
+                    EducationManager.disableWhyExplanations();
+                }
+            });
+        }
+    },
+    
+    enableWhyExplanations: function() {
+        this.whyExplanationsEnabled = true;
+        document.getElementById('frontierAnalysis').style.display = 'block';
+        this.updateWhyExplanation('Real-time explanations enabled. Start a search to see why nodes are selected.');
+    },
+    
+    disableWhyExplanations: function() {
+        this.whyExplanationsEnabled = false;
+        document.getElementById('frontierAnalysis').style.display = 'none';
+        this.updateWhyExplanation('Enable real-time explanations to see why specific nodes are chosen.');
+    },
+    
+    updateWhyExplanation: function(explanation) {
+        document.getElementById('whyExplanation').textContent = explanation;
+    },
+    
+    explainNodeSelection: function(selectedNode, frontierList, algorithmType, heuristicType) {
+        if (!this.whyExplanationsEnabled) return;
+        
+        var explanation = this.generateNodeSelectionExplanation(selectedNode, frontierList, algorithmType, heuristicType);
+        this.updateWhyExplanation(explanation);
+        
+        // Update frontier analysis
+        this.updateFrontierAnalysis(selectedNode, frontierList, algorithmType, heuristicType);
+    },
+    
+    generateNodeSelectionExplanation: function(selectedNode, frontierList, algorithmType, heuristicType) {
+        if (!selectedNode) return 'No node selected';
+        
+        var heuristicValue = 'N/A';
+        var fValue = 'N/A';
+        
+        try {
+            if (selectedNode.game && typeof selectedNode.game.getHeuristicValue === 'function') {
+                heuristicValue = selectedNode.game.getHeuristicValue(heuristicType);
+                fValue = selectedNode.cost + heuristicValue;
+            }
+        } catch (e) {
+            console.warn('Error calculating heuristic:', e);
+        }
+        
+        var explanations = {
+            'breadthFirst': `Selected first node from queue (FIFO). BFS explores all nodes at current depth before going deeper.`,
+            'depthFirst': `Selected last node from stack (LIFO). DFS explores as far as possible along each branch before backtracking.`,
+            'uniformCost': `Selected node with lowest path cost g(n)=${selectedNode.cost || 0} from ${frontierList.length} candidates.`,
+            'greedyBest': `Selected node with best heuristic h(n)=${heuristicValue} using ${heuristicType} heuristic.`,
+            'aStar': `Selected node with lowest f(n)=${fValue} (g=${selectedNode.cost || 0} + h=${heuristicValue}) using ${heuristicType} heuristic.`,
+            'iterativeDeepening': `Selected node using depth-limited DFS. Current depth limit: ${selectedNode.depth || 'N/A'}.`
+        };
+        
+        return explanations[algorithmType] || 'Node selected using current algorithm strategy.';
+    },
+    
+    updateFrontierAnalysis: function(selectedNode, frontierList, algorithmType, heuristicType) {
+        document.getElementById('frontierSizeWhy').textContent = frontierList.length;
+        
+        var selectedValue = this.getNodeValue(selectedNode, algorithmType, heuristicType);
+        document.getElementById('selectedNodeValue').textContent = selectedValue;
+        
+        var reason = this.getSelectionReason(algorithmType);
+        document.getElementById('selectionReason').textContent = reason;
+        
+        // Show alternatives
+        this.updateAlternativeNodes(frontierList, algorithmType, heuristicType, selectedNode);
+    },
+    
+    getNodeValue: function(node, algorithmType, heuristicType) {
+        if (!node) return 'N/A';
+        
+        var cost = node.cost || 0;
+        var heuristicValue = 'N/A';
+        
+        try {
+            if (node.game && typeof node.game.getHeuristicValue === 'function') {
+                heuristicValue = node.game.getHeuristicValue(heuristicType);
+            }
+        } catch (e) {
+            console.warn('Error calculating heuristic for node value:', e);
+        }
+        
+        switch(algorithmType) {
+            case 'uniformCost':
+                return `g(n)=${cost}`;
+            case 'greedyBest':
+                return `h(n)=${heuristicValue}`;
+            case 'aStar':
+                var h = (heuristicValue !== 'N/A') ? heuristicValue : 0;
+                return `f(n)=${cost + h} (g=${cost}+h=${h})`;
+            default:
+                return 'N/A';
+        }
+    },
+    
+    getSelectionReason: function(algorithmType) {
+        var reasons = {
+            'breadthFirst': 'First in queue (FIFO)',
+            'depthFirst': 'Last in stack (LIFO)',
+            'uniformCost': 'Lowest path cost',
+            'greedyBest': 'Best heuristic value',
+            'aStar': 'Lowest f(n) = g(n) + h(n)',
+            'iterativeDeepening': 'Depth-limited DFS'
+        };
+        return reasons[algorithmType] || 'Algorithm-specific';
+    },
+    
+    updateAlternativeNodes: function(frontierList, algorithmType, heuristicType, selectedNode) {
+        var alternativesList = document.getElementById('alternativesList');
+        alternativesList.innerHTML = '';
+        
+        // Show top 3 alternatives
+        var alternatives = frontierList.filter(node => node !== selectedNode).slice(0, 3);
+        
+        alternatives.forEach(function(node, index) {
+            var div = document.createElement('div');
+            div.className = 'alternative-node';
+            
+            var value = EducationManager.getNodeValue(node, algorithmType, heuristicType);
+            div.innerHTML = `
+                <span class="alt-index">#${index + 2}</span>
+                <span class="alt-state">${node.state}</span>
+                <span class="alt-value">${value}</span>
+            `;
+            
+            alternativesList.appendChild(div);
+        });
+        
+        if (alternatives.length === 0) {
+            alternativesList.innerHTML = '<div class="no-alternatives">No alternatives in frontier</div>';
+        }
+    },
+    
     updateCurrentStep: function(message) {
         if (!this.enabled) return;
         
@@ -667,6 +1122,12 @@ var EducationManager = {
     
     onNodeExpanded: function(node, iteration) {
         this.updateCurrentStep(`Iteration ${iteration}: Exploring state ${node.state}`);
+    },
+    
+    onNodeSelected: function(selectedNode, frontierList, algorithmType, heuristicType) {
+        if (this.whyExplanationsEnabled) {
+            this.explainNodeSelection(selectedNode, frontierList, algorithmType, heuristicType);
+        }
     },
     
     onSolutionFound: function(node) {

@@ -114,6 +114,11 @@ function search(opt_options) {
         }
         return options.callback(new Error('Frontier list is empty'), options);
     }
+    
+    // Explain node selection for education mode (skip during comparison tests)
+    if (!options.isComparisonTest && typeof EducationManager !== 'undefined') {
+        EducationManager.onNodeSelected(nextNode, options.frontierList, options.type, options.heuristicType);
+    }
 
     // Iteration check
     options.iteration++;
@@ -178,19 +183,24 @@ function search(opt_options) {
 
 
 function getNextNode(options) {
+    // Store frontier snapshot for education explanations
+    var frontierSnapshot = options.frontierList.slice();
+    
+    var selectedNode;
+    
     switch (options.type) {
         case SearchType.BREADTH_FIRST:
-            return options.frontierList.shift();
+            selectedNode = options.frontierList.shift();
+            break;
         case SearchType.DEPTH_FIRST:
-            return options.frontierList.pop();
+            selectedNode = options.frontierList.pop();
+            break;
         case SearchType.UNIFORM_COST:
-            var bestNode = _.minBy(options.frontierList, function(node) {
+            selectedNode = _.minBy(options.frontierList, function(node) {
                 return node.cost;
             });
-
-            _.remove(options.frontierList, bestNode);
-
-            return bestNode;
+            _.remove(options.frontierList, selectedNode);
+            break;
         case SearchType.ITERATIVE_DEEPENING:
             var nextNode = options.frontierList.pop();
 
@@ -207,24 +217,30 @@ function getNextNode(options) {
                 return new Node({state: game.state});
             }
 
-            return nextNode;
+            selectedNode = nextNode;
+            break;
         case SearchType.GREEDY_BEST:
-            var bestNode = _.minBy(options.frontierList, function(node) {
+            selectedNode = _.minBy(options.frontierList, function(node) {
                 return node.game.getHeuristicValue(options.heuristicType);
             });
-
-            _.remove(options.frontierList, bestNode);
-
-            return bestNode;
+            _.remove(options.frontierList, selectedNode);
+            break;
         case SearchType.A_STAR:
-            var bestNode = _.minBy(options.frontierList, function(node) {
+            selectedNode = _.minBy(options.frontierList, function(node) {
                 return node.game.getHeuristicValue(options.heuristicType) + node.cost;
             });
-
-            _.remove(options.frontierList, bestNode);
-
-            return bestNode;
+            _.remove(options.frontierList, selectedNode);
+            break;
         default:
             throw new Error('Unsupported search type');
     }
+    
+    // Store frontier info for education explanations
+    if (selectedNode && typeof EducationManager !== 'undefined') {
+        selectedNode._frontierSnapshot = frontierSnapshot;
+        selectedNode._algorithmType = options.type;
+        selectedNode._heuristicType = options.heuristicType;
+    }
+    
+    return selectedNode;
 }
