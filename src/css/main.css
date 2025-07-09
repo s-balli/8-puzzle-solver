@@ -1969,3 +1969,224 @@ html, body {
     color: #dc3545;
 }
 
+/* Responsive Design - Tablet View (768px - 1024px) */
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    #controls {
+        width: 200px;
+    }
+    
+    #board {
+        left: 210px;
+        width: 120px;
+        height: 120px;
+        border: 8px solid var(--board-border);
+    }
+    
+    .board-item {
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+        line-height: 36px;
+    }
+    
+    #visualization {
+        left: 340px;
+        top: 140px;
+    }
+    
+    .keyboard-help {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+    
+    .keyboard-help h4 {
+        font-size: 10px;
+    }
+    
+    .keyboard-help .key {
+        font-size: 9px;
+        padding: 1px 3px;
+    }
+    
+    .education-panel {
+        width: 300px;
+        right: 320px;
+        max-height: 70vh;
+    }
+    
+    .performance-panel {
+        width: 320px;
+    }
+    
+    .graph-panel {
+        width: 300px;
+    }
+}
+
+/* Responsive Design - Mobile View (below 768px) */
+@media screen and (max-width: 767px) {
+    html, body {
+        font-size: 14px;
+    }
+    
+    #controls {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 10px;
+        box-sizing: border-box;
+        overflow-y: visible;
+        background-color: var(--result-bg);
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    #controls .content {
+        margin: 3px;
+    }
+    
+    #controls .heading {
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    #controls button, #controls select, #controls input {
+        height: 1.8em;
+        font-size: 14px;
+        margin: 2px 0;
+    }
+    
+    #board {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 20px auto;
+        width: 180px;
+        height: 180px;
+        border: 10px solid var(--board-border);
+    }
+    
+    .board-item {
+        width: 60px;
+        height: 60px;
+        font-size: 32px;
+        line-height: 56px;
+    }
+    
+    #visualization {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        height: 400px;
+        margin: 20px 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+    }
+    
+    .keyboard-help {
+        position: relative;
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 11px;
+        background-color: var(--result-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+    }
+    
+    .keyboard-help ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .keyboard-help li {
+        margin: 5px;
+    }
+    
+    .keyboard-help .key {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+    
+    .education-panel {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        width: auto;
+        max-height: 80vh;
+        z-index: 1000;
+    }
+    
+    .performance-panel {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        width: auto;
+        max-height: 50vh;
+    }
+    
+    .graph-panel {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        width: auto;
+        max-height: 60vh;
+    }
+    
+    .comparison-panel {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        width: auto;
+        transform: none;
+        max-height: 90vh;
+    }
+    
+    .custom-state-modal .modal-content {
+        margin: 10px;
+        width: auto;
+        max-width: none;
+    }
+    
+    .modal-body {
+        min-width: auto;
+        padding: 16px;
+    }
+    
+    .visual-board {
+        grid-template-columns: repeat(3, 50px);
+        grid-template-rows: repeat(3, 50px);
+        gap: 3px;
+    }
+    
+    .visual-tile {
+        font-size: 20px;
+    }
+    
+    .presets-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+    }
+    
+    .github-corner {
+        display: none;
+    }
+    
+    .search-progress {
+        font-size: 11px;
+        padding: 8px;
+    }
+    
+    .progress-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+}
+
