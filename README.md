@@ -47,6 +47,18 @@ Advanced 8-puzzle solver with enhanced heuristics, educational features, and per
 - **Sound Effects** - Audio feedback for interactions
 - **Keyboard Shortcuts** - Efficient navigation and control
 
+## 📋 Requirements
+
+### System Requirements
+- **Python 3.6+** - Required for development server
+- **Node.js 14+** - For package management
+- **Modern Browser** - Chrome, Firefox, Safari, Edge
+
+### Dependencies
+```bash
+npm install
+```
+
 ## 🚀 Quick Start
 
 ### Development Server
@@ -120,6 +132,32 @@ npm run preview
 - **Mobile Support** - Touch-friendly interface
 - **Progressive Enhancement** - Graceful degradation
 
+## 📁 Project Structure
+
+```
+8-puzzle-solver/
+├── src/
+│   ├── index.html          # Main HTML file
+│   ├── css/
+│   │   └── main.css        # Styling and themes
+│   └── js/
+│       ├── app.js          # Main application logic
+│       ├── game.js         # Game state management
+│       ├── search.js       # Search algorithms
+│       ├── puzzle.js       # Puzzle operations
+│       ├── board.js        # Board visualization
+│       ├── visualization.js # Tree visualization
+│       ├── education.js    # Educational features
+│       ├── performance.js  # Performance tracking
+│       ├── accessibility.js # Accessibility features
+│       ├── keyboard.js     # Keyboard shortcuts
+│       ├── sound.js        # Audio feedback
+│       └── utils.js        # Utility functions
+├── package.json
+├── gulpfile.js
+└── README.md
+```
+
 ## 📝 Algorithm Details
 
 ### Heuristic Functions
@@ -159,6 +197,73 @@ h(n) = Manhattan + 2 × (vertical_conflicts + horizontal_conflicts)
 - **Bold Typography** - Enhanced readability in high contrast mode
 - **Color-coded Status** - Green/yellow/red indicators for different states
 - **Keyboard Navigation** - Full accessibility support
+
+## ⚙️ Configuration
+
+### Available Settings
+- **Theme Selection** - Light, Dark, High Contrast modes
+- **Animation Speed** - Slow (1.5s), Normal (0.5s), Fast (0.15s)
+- **Text Size** - Small, Normal, Large, Extra Large
+- **Sound Effects** - Toggle audio feedback on/off
+- **Performance Tracking** - Enable/disable metrics collection
+
+### Keyboard Shortcuts
+- **Space** - Start/pause search
+- **Enter** - Execute search
+- **Escape** - Cancel operation
+- **Arrow Keys** - Navigate interface elements
+- **Tab** - Cycle through controls
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### Server Won't Start
+```bash
+# Check Python version
+python3 --version
+
+# Try alternative port
+python3 -m http.server 8080 --directory src
+```
+
+#### Performance Issues
+- Reduce animation speed to "Fast"
+- Disable real-time graphs for complex searches
+- Use simpler heuristics for large search spaces
+
+#### Browser Compatibility
+- Ensure JavaScript is enabled
+- Update to latest browser version
+- Clear browser cache and cookies
+
+### Error Messages
+- **"Unsolvable puzzle"** - Check if initial state is valid
+- **"Memory limit exceeded"** - Reduce search limits or use iterative algorithms
+- **"Timeout reached"** - Increase time limits or try faster algorithms
+
+## 🤝 Contributing
+
+### Development Setup
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/yourusername/8-puzzle-solver.git`
+3. Install dependencies: `npm install`
+4. Start development server: `npm run dev`
+5. Make your changes
+6. Test thoroughly
+7. Submit a pull request
+
+### Code Style
+- Use ES6+ features
+- Follow existing naming conventions
+- Add comments for complex algorithms
+- Maintain responsive design principles
+
+### Testing
+- Test on multiple browsers
+- Verify accessibility features
+- Check performance with various puzzle configurations
+- Validate educational content accuracy
 
 ## 📄 License
 
