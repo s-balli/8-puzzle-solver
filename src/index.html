@@ -31,7 +31,12 @@
     <div id="controls">
         <div class="heading">Settings</div>
         <div class="content">
-            <button id="themeToggle">🌙 Dark Mode</button>
+            <label>Theme</label>
+            <select id="themeSelector">
+                <option value="light">☀️ Light Mode</option>
+                <option value="dark">🌙 Dark Mode</option>
+                <option value="high-contrast">⚡ High Contrast</option>
+            </select>
             <label>Animation Speed</label>
             <select id="animationSpeed">
                 <option value="slow">Slow (1s)</option>
@@ -45,10 +50,10 @@
                 Education Mode <input type="checkbox" id="educationMode">
             </label>
             <label>
-                Performance Analysis <input type="checkbox" id="performanceMode">
+                Performance Analysis <input type="checkbox" id="performanceMode" checked>
             </label>
             <label>
-                Real-time Graphs <input type="checkbox" id="realTimeGraphs">
+                Real-time Graphs <input type="checkbox" id="realTimeGraphs" checked>
             </label>
         </div>
 
@@ -80,6 +85,10 @@
                 <option value="manhattan" selected>Manhattan Distance</option>
                 <option value="euclidean">Euclidean Distance</option>
                 <option value="misplaced">Misplaced Tiles</option>
+                <option value="linearConflict">Linear Conflict</option>
+                <option value="walkingDistance">Walking Distance</option>
+                <option value="cornerTiles">Corner Tiles</option>
+                <option value="maxHeuristic">Max Heuristic</option>
             </select>
             <label style="display: none;">
                 <input type="checkbox" id="visualizationCheck" checked>
@@ -247,6 +256,7 @@
     <script src="./js/board.js"></script>
     <script src="./js/visualization.js"></script>
     <script src="./js/search.js"></script>
+    <script src="./js/custom-state.js"></script>
     <script src="./js/app.js"></script>
     <!-- <script src="./js/olay.js"></script> -->
     <!-- endbuild -->

@@ -16,7 +16,7 @@ var searchStepButton = document.getElementById('searchStep');
 var expandedNodeCheckbox = document.getElementById('expandedNodeCheck');
 var searchResultDiv = document.getElementById('searchResult');
 var visualizationCheckbox = document.getElementById('visualizationCheck');
-var themeToggleButton = document.getElementById('themeToggle');
+var themeSelector = document.getElementById('themeSelector');
 var soundEnabledCheckbox = document.getElementById('soundEnabled');
 var prevStepButton = document.getElementById('prevStep');
 var nextStepButton = document.getElementById('nextStep');
@@ -49,11 +49,8 @@ if (randomizeButton) {
 if (customInputButton) {
     customInputButton.addEventListener('click', function() {
         Board.clearReplay();
-        game.state = prompt('Enter game state, from top-left to right-bottom, 10 characters, e.g. "012345678"');
-        Board.draw(game.state);
-        searchResultDiv.innerHTML = '';
-        if (typeof NavigationManager !== 'undefined') {
-            NavigationManager.init([]);
+        if (typeof CustomStateManager !== 'undefined') {
+            CustomStateManager.show();
         }
         if (typeof SoundManager !== 'undefined') {
             SoundManager.play('click');
@@ -262,20 +259,19 @@ function replayWinnerNode() {
     Board.replay(moves);
 }
 
-// Theme toggle functionality
-if (themeToggleButton) {
-    themeToggleButton.addEventListener('click', function() {
-    var currentTheme = document.documentElement.getAttribute('data-theme');
-    var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    document.documentElement.setAttribute('data-theme', newTheme);
-    themeToggleButton.textContent = newTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
-    
-    localStorage.setItem('theme', newTheme);
-    if (typeof SoundManager !== 'undefined') {
-        SoundManager.play('click');
-    }
-}, false);
+// Theme selector functionality
+var themeSelector = document.getElementById('themeSelector');
+if (themeSelector) {
+    themeSelector.addEventListener('change', function() {
+        var newTheme = this.value;
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        if (typeof SoundManager !== 'undefined') {
+            SoundManager.play('click');
+        }
+    }, false);
 }
 
 // Sound toggle functionality
@@ -338,6 +334,7 @@ if (performanceModeCheckbox) {
                 PerformanceManager.hide();
             }
         }
+        localStorage.setItem('performanceMode', this.checked);
     });
 }
 
@@ -350,6 +347,7 @@ if (realTimeGraphsCheckbox) {
                 GraphManager.hide();
             }
         }
+        localStorage.setItem('realTimeGraphs', this.checked);
     });
 }
 
@@ -357,10 +355,12 @@ if (realTimeGraphsCheckbox) {
 document.addEventListener('DOMContentLoaded', function() {
     var savedTheme = localStorage.getItem('theme') || 'light';
     var savedSoundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+    var savedPerformanceMode = localStorage.getItem('performanceMode') !== 'false';
+    var savedGraphsMode = localStorage.getItem('realTimeGraphs') !== 'false';
     
     document.documentElement.setAttribute('data-theme', savedTheme);
-    if (themeToggleButton) {
-        themeToggleButton.textContent = savedTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    if (themeSelector) {
+        themeSelector.value = savedTheme;
     }
     
     if (soundEnabledCheckbox) {
@@ -368,6 +368,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (typeof SoundManager !== 'undefined') {
         SoundManager.enabled = savedSoundEnabled;
+    }
+    
+    // Set default enabled states
+    if (performanceModeCheckbox) {
+        performanceModeCheckbox.checked = savedPerformanceMode;
+        if (savedPerformanceMode && typeof PerformanceManager !== 'undefined') {
+            PerformanceManager.show();
+        }
+    }
+    
+    if (realTimeGraphsCheckbox) {
+        realTimeGraphsCheckbox.checked = savedGraphsMode;
+        if (savedGraphsMode && typeof GraphManager !== 'undefined') {
+            GraphManager.show();
+        }
     }
     
     // Initialize managers
