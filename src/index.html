@@ -35,25 +35,40 @@
             <select id="themeSelector">
                 <option value="light">☀️ Light Mode</option>
                 <option value="dark">🌙 Dark Mode</option>
-                <option value="high-contrast">⚡ High Contrast</option>
             </select>
             <label>Animation Speed</label>
             <select id="animationSpeed">
-                <option value="slow">Slow (1s)</option>
+                <option value="slow">Slow (1.5s)</option>
                 <option value="normal" selected>Normal (0.5s)</option>
-                <option value="fast">Fast (0.2s)</option>
+                <option value="fast">Fast (0.15s)</option>
             </select>
-            <label>
-                Sound Effects <input type="checkbox" id="soundEnabled" checked>
+            <label class="toggle-label" for="soundEnabled">
+                <span>Sound Effects</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="soundEnabled" checked>
+                    <span class="toggle-slider"></span>
+                </div>
             </label>
-            <label>
-                Education Mode <input type="checkbox" id="educationMode">
+            <label class="toggle-label" for="educationMode">
+                <span>Education Mode</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="educationMode">
+                    <span class="toggle-slider"></span>
+                </div>
             </label>
-            <label>
-                Performance Analysis <input type="checkbox" id="performanceMode" checked>
+            <label class="toggle-label" for="performanceMode">
+                <span>Performance Analysis</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="performanceMode" checked>
+                    <span class="toggle-slider"></span>
+                </div>
             </label>
-            <label>
-                Real-time Graphs <input type="checkbox" id="realTimeGraphs" checked>
+            <label class="toggle-label" for="realTimeGraphs">
+                <span>Real-time Graphs</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="realTimeGraphs" checked>
+                    <span class="toggle-slider"></span>
+                </div>
             </label>
         </div>
 
@@ -67,12 +82,16 @@
         <div class="content">
             <label>Algorithm</label>
             <select id="searchType">
-                <option value="breadthFirst">Breadth-First</option>
-                <option value="uniformCost">Uniform-Cost</option>
-                <option value="depthFirst">Depth-First</option>
-                <option value="iterativeDeepening">Iterative-Deepening</option>
-                <option value="greedyBest" selected>Greedy-Best</option>
-                <option value="aStar">A*</option>
+                <optgroup label="Uninformed Search">
+                    <option value="breadthFirst">Breadth-First</option>
+                    <option value="uniformCost">Uniform-Cost</option>
+                    <option value="depthFirst">Depth-First</option>
+                    <option value="iterativeDeepening">Iterative-Deepening</option>
+                </optgroup>
+                <optgroup label="Informed Search">
+                    <option value="greedyBest" selected>Greedy-Best</option>
+                    <option value="aStar">A*</option>
+                </optgroup>
             </select>
             <label>Iteration Limit</label>
             <input type="number" id="iterationLimit" value="10000">
@@ -210,6 +229,16 @@
                     <div class="metric-box">
                         <span class="metric-title">Time</span>
                         <span class="metric-number" id="elapsedTime">0ms</span>
+                    </div>
+                </div>
+                <div class="metric-row" id="heuristicMetricRow" style="display: none;">
+                    <div class="metric-box">
+                        <span class="metric-title">H Value</span>
+                        <span class="metric-number" id="heuristicValue">0</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-title">F Value</span>
+                        <span class="metric-number" id="fValue">0</span>
                     </div>
                 </div>
             </div>

@@ -91,6 +91,9 @@ var GraphManager = {
         var expandedCount = document.getElementById('expandedCount');
         var iterationCount = document.getElementById('iterationCount');
         var elapsedTime = document.getElementById('elapsedTime');
+        var heuristicValue = document.getElementById('heuristicValue');
+        var fValue = document.getElementById('fValue');
+        var heuristicMetricRow = document.getElementById('heuristicMetricRow');
         
         if (frontierCount) {
             frontierCount.textContent = options.frontierList ? options.frontierList.length : 0;
@@ -104,6 +107,29 @@ var GraphManager = {
         if (elapsedTime && options.searchStartTime) {
             var elapsed = performance.now() - options.searchStartTime;
             elapsedTime.textContent = Math.round(elapsed) + 'ms';
+        }
+        
+        // Show/hide heuristic metrics based on search type
+        var searchType = document.getElementById('searchType').value;
+        var isInformed = searchType === 'greedyBest' || searchType === 'aStar';
+        
+        if (heuristicMetricRow) {
+            heuristicMetricRow.style.display = isInformed ? 'flex' : 'none';
+        }
+        
+        // Update heuristic values for informed search algorithms
+        if (isInformed && options.currentNode) {
+            var heuristicType = document.getElementById('heuristicFunction').value;
+            var hValue = options.currentNode.game.getHeuristicValue(heuristicType);
+            var gValue = options.currentNode.cost || 0;
+            var fVal = searchType === 'aStar' ? (gValue + hValue) : hValue;
+            
+            if (heuristicValue) {
+                heuristicValue.textContent = hValue.toFixed(2);
+            }
+            if (fValue) {
+                fValue.textContent = fVal.toFixed(2);
+            }
         }
     },
     

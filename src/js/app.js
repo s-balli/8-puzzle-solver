@@ -368,6 +368,11 @@ function replayWinnerNode() {
         return Board.clearReplay();
 
     Board.draw(game.state);
+    
+    // Set animation duration before adding animation class
+    var animationSpeed = Board.getAnimationSpeed();
+    Board.setAnimationDuration(animationSpeed);
+    
     setTimeout(function() {
         boardDiv.classList.add('animation');
     }, 5);

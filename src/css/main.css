@@ -16,6 +16,9 @@
     --input-bg: #ffffff;
     --input-border: #cccccc;
     --input-focus: #007bff;
+    --toggle-bg: #ccc;
+    --toggle-bg-active: #007bff;
+    --toggle-slider: #fff;
 }
 
 [data-theme="dark"] {
@@ -36,48 +39,11 @@
     --input-bg: #333333;
     --input-border: #555555;
     --input-focus: #4da6ff;
+    --toggle-bg: #555;
+    --toggle-bg-active: #4da6ff;
+    --toggle-slider: #fff;
 }
 
-[data-theme="high-contrast"] {
-    --bg-color: #000000;
-    --text-color: #ffffff;
-    --border-color: #ffffff;
-    --board-bg: #000000;
-    --board-border: #ffffff;
-    --button-bg: #ffffff;
-    --button-hover: #cccccc;
-    --result-bg: #000000;
-    --result-border: #ffffff;
-    --success-high: #00ff00;
-    --success-medium: #ffff00;
-    --success-low: #ff0000;
-    --modal-bg: rgba(0, 0, 0, 0.95);
-    --modal-content-bg: #000000;
-    --input-bg: #000000;
-    --input-border: #ffffff;
-    --input-focus: #00ffff;
-}
-
-[data-theme="high-contrast"] .board-item {
-    background: #ffffff;
-    color: #000000;
-    border: 3px solid #ffffff;
-    font-weight: bold;
-}
-
-[data-theme="high-contrast"] button {
-    background: var(--button-bg);
-    color: #000000;
-    border: 2px solid #ffffff;
-    font-weight: bold;
-}
-
-[data-theme="high-contrast"] select,
-[data-theme="high-contrast"] input {
-    background: var(--input-bg);
-    color: var(--text-color);
-    border: 2px solid var(--input-border);
-}
 
 html, body {
     margin: 0;
@@ -119,8 +85,8 @@ html, body {
 }
 
 #board.animation .board-item {
-    -webkit-transition: all 500ms;
-    transition: all 500ms;
+    -webkit-transition: all var(--animation-duration, 500ms);
+    transition: all var(--animation-duration, 500ms);
 }
 
 #board.search-animation .board-item {
@@ -1080,6 +1046,85 @@ html, body {
     border: 1px solid var(--input-border);
     border-radius: 6px;
     font-size: 12px;
+}
+
+/* Modern Toggle Switch Styles */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-left: 10px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--toggle-bg);
+    border-radius: 24px;
+    transition: 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 2px;
+    background-color: var(--toggle-slider);
+    border-radius: 50%;
+    transition: 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--toggle-bg-active);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+.toggle-slider:hover {
+    box-shadow: 0 0 0 8px rgba(0, 123, 255, 0.1);
+}
+
+.toggle-switch input:focus + .toggle-slider {
+    box-shadow: 0 0 0 2px var(--input-focus);
+}
+
+/* Modern label styling for toggles */
+.toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.toggle-label:hover {
+    color: var(--input-focus);
+}
+
+.toggle-label span {
+    flex-grow: 1;
 }
 
 .alt-index {

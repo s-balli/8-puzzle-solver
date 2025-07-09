@@ -41,6 +41,9 @@ Board.replay = function(moves) {
 
     var animationSpeed = Board.getAnimationSpeed();
     
+    // Set CSS animation duration
+    Board.setAnimationDuration(animationSpeed);
+    
     var animate = function(moves) {
         var move = moves.shift();
         if (!move) return Board.clearReplay();
@@ -67,12 +70,19 @@ Board.clearReplay = function() {
 
 Board.getAnimationSpeed = function() {
     var speedSelect = document.getElementById('animationSpeed');
-    if (!speedSelect) return 1000;
+    if (!speedSelect) return 800;
     
     switch (speedSelect.value) {
-        case 'slow': return 1000;
-        case 'fast': return 200;
+        case 'slow': return 1500;
+        case 'fast': return 150;
         case 'normal':
         default: return 500;
+    }
+};
+
+Board.setAnimationDuration = function(duration) {
+    var board = document.getElementById('board');
+    if (board) {
+        board.style.setProperty('--animation-duration', duration + 'ms');
     }
 };

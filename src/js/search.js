@@ -164,7 +164,8 @@ function search(opt_options) {
     
     // Update real-time graphs (skip during comparison tests)
     if (!options.isComparisonTest && typeof GraphManager !== 'undefined') {
-        GraphManager.updateChart(options);
+        var graphOptions = _.assign({}, options, {currentNode: nextNode});
+        GraphManager.updateChart(graphOptions);
     }
     
     // Update progress indicator (skip during comparison tests)
