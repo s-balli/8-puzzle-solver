@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/dgurkaynak/8-puzzle-solver#readme",
   "devDependencies": {
-    "vite": "^5.4.19"
+    "vite": "^2.9.18"
   },
   "dependencies": {
     "body-scroll-lock": "^2.6.4",
