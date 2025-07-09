@@ -5,9 +5,9 @@
   "main": "src/index.html",
   "type": "module",
   "scripts": {
-    "dev": "vite src --port 3000",
-    "build": "vite build --outDir dist --root src",
-    "preview": "vite preview --port 3000",
+    "dev": "python3 -m http.server 3000 --directory src",
+    "build": "cp -r src dist",
+    "preview": "python3 -m http.server 3000 --directory dist",
     "serve": "python3 -m http.server 3000 --directory src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,9 +29,6 @@
     "url": "https://github.com/dgurkaynak/8-puzzle-solver/issues"
   },
   "homepage": "https://github.com/dgurkaynak/8-puzzle-solver#readme",
-  "devDependencies": {
-    "vite": "^2.9.18"
-  },
   "dependencies": {
     "body-scroll-lock": "^2.6.4",
     "lodash": "^4.17.21",
