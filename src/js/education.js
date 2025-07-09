@@ -682,14 +682,13 @@ var EducationManager = {
 document.addEventListener('DOMContentLoaded', function() {
     EducationManager.init();
     
-    // Load saved education mode setting - default to false (closed)
-    var savedEducationMode = localStorage.getItem('educationMode') === 'true';
+    // Always default to unchecked on page refresh
     var checkbox = document.getElementById('educationMode');
     if (checkbox) {
-        // Always default to unchecked unless explicitly saved as true
-        checkbox.checked = savedEducationMode;
-        EducationManager.enabled = savedEducationMode;
-        // Don't auto-show the panel - let user explicitly open it
+        checkbox.checked = false;
+        EducationManager.enabled = false;
+        // Clear any saved state
+        localStorage.removeItem('educationMode');
     }
     
     // Update algorithm info when search type changes
