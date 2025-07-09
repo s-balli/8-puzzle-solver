@@ -49,10 +49,60 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-size: calc(16px * var(--text-size-multiplier));
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, font-size 0.3s ease;
+}
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Text size variations */
+[data-text-size="small"] {
+    --text-size-multiplier: 0.875;
+}
+
+[data-text-size="normal"] {
+    --text-size-multiplier: 1;
+}
+
+[data-text-size="large"] {
+    --text-size-multiplier: 1.25;
+}
+
+[data-text-size="x-large"] {
+    --text-size-multiplier: 1.5;
+}
+
+/* Focus indicators for better accessibility */
+button:focus,
+input:focus,
+select:focus,
+.board-item:focus {
+    outline: 2px solid var(--input-focus);
+    outline-offset: 2px;
+}
+
+/* High contrast focus for better visibility */
+@media (prefers-contrast: high) {
+    button:focus,
+    input:focus,
+    select:focus,
+    .board-item:focus {
+        outline: 3px solid #000;
+        outline-offset: 3px;
+    }
 }
 
 #board {
@@ -1126,6 +1176,7 @@ input:checked + .toggle-slider:before {
 .toggle-label span {
     flex-grow: 1;
 }
+
 
 .alt-index {
     font-weight: 600;

@@ -17,71 +17,85 @@
 </head>
 
 <body>
-    <div id="board">
-        <div id="board-item-1" class="board-item">1</div>
-        <div id="board-item-2" class="board-item">2</div>
-        <div id="board-item-3" class="board-item">3</div>
-        <div id="board-item-4" class="board-item">4</div>
-        <div id="board-item-5" class="board-item">5</div>
-        <div id="board-item-6" class="board-item">6</div>
-        <div id="board-item-7" class="board-item">7</div>
-        <div id="board-item-8" class="board-item">8</div>
+    <div id="board" role="main" aria-label="8-puzzle game board">
+        <div id="board-item-1" class="board-item" role="button" aria-label="Puzzle tile 1" tabindex="0">1</div>
+        <div id="board-item-2" class="board-item" role="button" aria-label="Puzzle tile 2" tabindex="0">2</div>
+        <div id="board-item-3" class="board-item" role="button" aria-label="Puzzle tile 3" tabindex="0">3</div>
+        <div id="board-item-4" class="board-item" role="button" aria-label="Puzzle tile 4" tabindex="0">4</div>
+        <div id="board-item-5" class="board-item" role="button" aria-label="Puzzle tile 5" tabindex="0">5</div>
+        <div id="board-item-6" class="board-item" role="button" aria-label="Puzzle tile 6" tabindex="0">6</div>
+        <div id="board-item-7" class="board-item" role="button" aria-label="Puzzle tile 7" tabindex="0">7</div>
+        <div id="board-item-8" class="board-item" role="button" aria-label="Puzzle tile 8" tabindex="0">8</div>
     </div>
     <div id="visualization"></div>
-    <div id="controls">
+    <div id="controls" role="complementary" aria-label="Control panel">
         <div class="heading">Settings</div>
         <div class="content">
-            <label>Theme</label>
-            <select id="themeSelector">
+            <label for="themeSelector">Theme</label>
+            <select id="themeSelector" aria-label="Select theme">
                 <option value="light">☀️ Light Mode</option>
                 <option value="dark">🌙 Dark Mode</option>
             </select>
-            <label>Animation Speed</label>
-            <select id="animationSpeed">
+            <label for="animationSpeed">Animation Speed</label>
+            <select id="animationSpeed" aria-label="Select animation speed">
                 <option value="slow">Slow (1.5s)</option>
                 <option value="normal" selected>Normal (0.5s)</option>
                 <option value="fast">Fast (0.15s)</option>
             </select>
+            <label for="textSize">Text Size</label>
+            <select id="textSize" aria-label="Select text size">
+                <option value="small">Small</option>
+                <option value="normal" selected>Normal</option>
+                <option value="large">Large</option>
+                <option value="x-large">Extra Large</option>
+            </select>
             <label class="toggle-label" for="soundEnabled">
                 <span>Sound Effects</span>
                 <div class="toggle-switch">
-                    <input type="checkbox" id="soundEnabled" checked>
-                    <span class="toggle-slider"></span>
+                    <input type="checkbox" id="soundEnabled" checked aria-describedby="sound-help">
+                    <span class="toggle-slider" role="switch" aria-checked="true"></span>
                 </div>
             </label>
+            <div id="sound-help" class="sr-only">Enable or disable sound effects for interactions</div>
+            
             <label class="toggle-label" for="educationMode">
                 <span>Education Mode</span>
                 <div class="toggle-switch">
-                    <input type="checkbox" id="educationMode">
-                    <span class="toggle-slider"></span>
+                    <input type="checkbox" id="educationMode" aria-describedby="education-help">
+                    <span class="toggle-slider" role="switch" aria-checked="false"></span>
                 </div>
             </label>
+            <div id="education-help" class="sr-only">Enable educational explanations and tutorials</div>
+            
             <label class="toggle-label" for="performanceMode">
                 <span>Performance Analysis</span>
                 <div class="toggle-switch">
-                    <input type="checkbox" id="performanceMode" checked>
-                    <span class="toggle-slider"></span>
+                    <input type="checkbox" id="performanceMode" checked aria-describedby="performance-help">
+                    <span class="toggle-slider" role="switch" aria-checked="true"></span>
                 </div>
             </label>
+            <div id="performance-help" class="sr-only">Show performance metrics and analysis</div>
+            
             <label class="toggle-label" for="realTimeGraphs">
                 <span>Real-time Graphs</span>
                 <div class="toggle-switch">
-                    <input type="checkbox" id="realTimeGraphs" checked>
-                    <span class="toggle-slider"></span>
+                    <input type="checkbox" id="realTimeGraphs" checked aria-describedby="graphs-help">
+                    <span class="toggle-slider" role="switch" aria-checked="true"></span>
                 </div>
             </label>
+            <div id="graphs-help" class="sr-only">Display real-time performance graphs during search</div>
         </div>
 
         <div class="heading">Board</div>
         <div class="content">
-            <button id="randomize">Randomize</button>
-            <button id="customInput">Enter Custom State</button>
+            <button id="randomize" aria-label="Generate random puzzle state">Randomize</button>
+            <button id="customInput" aria-label="Enter custom puzzle state">Enter Custom State</button>
         </div>
 
         <div class="heading">Search</div>
         <div class="content">
-            <label>Algorithm</label>
-            <select id="searchType">
+            <label for="searchType">Algorithm</label>
+            <select id="searchType" aria-label="Select search algorithm">
                 <optgroup label="Uninformed Search">
                     <option value="breadthFirst">Breadth-First</option>
                     <option value="uniformCost">Uniform-Cost</option>
@@ -93,14 +107,14 @@
                     <option value="aStar">A*</option>
                 </optgroup>
             </select>
-            <label>Iteration Limit</label>
-            <input type="number" id="iterationLimit" value="10000">
-            <label>Depth Limit</label>
-            <input type="number" id="depthLimit" value="0">
-            <label>Time Limit (seconds)</label>
-            <input type="number" id="timeLimit" value="30" min="1" max="300">
-            <label>Heuristic Function</label>
-            <select id="heuristicFunction">
+            <label for="iterationLimit">Iteration Limit</label>
+            <input type="number" id="iterationLimit" value="10000" aria-label="Maximum iterations for search">
+            <label for="depthLimit">Depth Limit</label>
+            <input type="number" id="depthLimit" value="0" aria-label="Maximum depth for search">
+            <label for="timeLimit">Time Limit (seconds)</label>
+            <input type="number" id="timeLimit" value="30" min="1" max="300" aria-label="Maximum time for search in seconds">
+            <label for="heuristicFunction">Heuristic Function</label>
+            <select id="heuristicFunction" aria-label="Select heuristic function">
                 <option value="manhattan" selected>Manhattan Distance</option>
                 <option value="euclidean">Euclidean Distance</option>
                 <option value="misplaced">Misplaced Tiles</option>
@@ -118,9 +132,9 @@
                 Early check optimization
             </label>
 
-            <button id="searchStep">Iterate one step</button>
-            <button id="search">Search</button>
-            <button id="searchStop" style="display: none;">Stop</button>
+            <button id="searchStep" aria-label="Execute one search iteration">Iterate one step</button>
+            <button id="search" aria-label="Start search algorithm">Search</button>
+            <button id="searchStop" style="display: none;" aria-label="Stop current search">Stop</button>
             
             <!-- Progress Indicator -->
             <div id="searchProgress" class="search-progress" style="display: none;">
@@ -139,14 +153,22 @@
 
         <div class="heading">Solution Navigation</div>
         <div class="content">
-            <button id="prevStep" disabled>← Previous</button>
-            <button id="nextStep" disabled>Next →</button>
-            <button id="resetSteps" disabled>Reset</button>
+            <button id="prevStep" disabled aria-label="Go to previous solution step">← Previous</button>
+            <button id="nextStep" disabled aria-label="Go to next solution step">Next →</button>
+            <button id="resetSteps" disabled aria-label="Reset to initial state">Reset</button>
         </div>
 
 
         <div class="heading">Search Result</div>
         <div id="searchResult" class="content"></div>
+        
+        <div class="heading">Performance Info</div>
+        <div class="content">
+            <div id="workerStatus" class="worker-status">
+                <span id="workerIndicator" class="worker-indicator"></span>
+                <span id="workerText">Checking Web Worker support...</span>
+            </div>
+        </div>
     </div>
 
     <div class="keyboard-help">
@@ -259,6 +281,8 @@
     <script src="./js/education.js"></script>
     <script src="./js/performance.js"></script>
     <script src="./js/graphs.js"></script>
+    <script src="./js/accessibility.js"></script>
+    <script src="./js/worker-manager.js"></script>
     <script src="./js/draggable.js"></script>
     <script src="./js/node.js"></script>
     <script src="./js/game.js"></script>

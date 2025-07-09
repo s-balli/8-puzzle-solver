@@ -2,6 +2,7 @@ var GraphManager = {
     enabled: false,
     chart: null,
     dataPoints: [],
+    animationId: null,
     
     show: function() {
         var panel = document.getElementById('graphPanel');
@@ -136,6 +137,17 @@ var GraphManager = {
     drawChart: function() {
         if (!this.ctx || !this.canvas || this.dataPoints.length === 0) return;
         
+        // Use requestAnimationFrame for smooth animation
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+        }
+        
+        this.animationId = requestAnimationFrame(function() {
+            this.performDraw();
+        }.bind(this));
+    },
+    
+    performDraw: function() {
         this.clearChart();
         
         var frontierValues = this.dataPoints.map(function(p) { return p.frontier; });
@@ -148,13 +160,19 @@ var GraphManager = {
         var height = this.canvas.height;
         var padding = 20;
         
-        // Draw frontier line (blue)
+        // Enable anti-aliasing for smoother lines
+        this.ctx.imageSmoothingEnabled = true;
+        this.ctx.imageSmoothingQuality = 'high';
+        
+        // Draw frontier line (blue) with smooth curves
         this.ctx.strokeStyle = '#2196F3';
         this.ctx.lineWidth = 2;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
         this.ctx.beginPath();
         
         this.dataPoints.forEach(function(point, index) {
-            var x = padding + (index / (this.dataPoints.length - 1)) * (width - 2 * padding);
+            var x = padding + (index / Math.max(1, this.dataPoints.length - 1)) * (width - 2 * padding);
             var y = height - padding - (point.frontier / maxValue) * (height - 2 * padding);
             
             if (index === 0) {
@@ -165,13 +183,15 @@ var GraphManager = {
         }.bind(this));
         this.ctx.stroke();
         
-        // Draw expanded line (green)
+        // Draw expanded line (green) with smooth curves
         this.ctx.strokeStyle = '#4CAF50';
         this.ctx.lineWidth = 2;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
         this.ctx.beginPath();
         
         this.dataPoints.forEach(function(point, index) {
-            var x = padding + (index / (this.dataPoints.length - 1)) * (width - 2 * padding);
+            var x = padding + (index / Math.max(1, this.dataPoints.length - 1)) * (width - 2 * padding);
             var y = height - padding - (point.expanded / maxValue) * (height - 2 * padding);
             
             if (index === 0) {
@@ -182,12 +202,41 @@ var GraphManager = {
         }.bind(this));
         this.ctx.stroke();
         
-        // Draw legend
-        this.ctx.font = '12px Arial';
+        // Draw legend with better typography
+        this.ctx.font = '600 12px Arial';
+        this.ctx.textAlign = 'start';
         this.ctx.fillStyle = '#2196F3';
         this.ctx.fillText('Frontier', 10, 15);
         this.ctx.fillStyle = '#4CAF50';
         this.ctx.fillText('Expanded', 70, 15);
+        
+        // Add smooth point indicators
+        this.drawPointIndicators(maxValue, width, height, padding);
+    },
+    
+    drawPointIndicators: function(maxValue, width, height, padding) {
+        // Draw point indicators for the last few data points
+        var indicatorCount = Math.min(5, this.dataPoints.length);
+        var startIndex = Math.max(0, this.dataPoints.length - indicatorCount);
+        
+        for (var i = startIndex; i < this.dataPoints.length; i++) {
+            var point = this.dataPoints[i];
+            var x = padding + (i / Math.max(1, this.dataPoints.length - 1)) * (width - 2 * padding);
+            
+            // Frontier point
+            var frontierY = height - padding - (point.frontier / maxValue) * (height - 2 * padding);
+            this.ctx.fillStyle = '#2196F3';
+            this.ctx.beginPath();
+            this.ctx.arc(x, frontierY, 3, 0, 2 * Math.PI);
+            this.ctx.fill();
+            
+            // Expanded point
+            var expandedY = height - padding - (point.expanded / maxValue) * (height - 2 * padding);
+            this.ctx.fillStyle = '#4CAF50';
+            this.ctx.beginPath();
+            this.ctx.arc(x, expandedY, 3, 0, 2 * Math.PI);
+            this.ctx.fill();
+        }
     },
     
     init: function() {

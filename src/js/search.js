@@ -8,6 +8,103 @@ var SearchType = {
 };
 
 function search(opt_options) {
+    // Check if we should use Web Worker
+    if (WorkerManager && WorkerManager.isUsingWorker() && !opt_options.isComparisonTest && !opt_options.stepCallback) {
+        return searchWithWorker(opt_options);
+    }
+    
+    // Original search function for fallback and step-by-step mode
+    return searchMainThread(opt_options);
+}
+
+function searchWithWorker(opt_options) {
+    var options = _.assign({
+        node: null,
+        iterationLimit: 1000,
+        depthLimit: 0,
+        timeLimit: 30000,
+        callback: function() {},
+        type: SearchType.BREADTH_FIRST,
+        heuristicType: 'manhattan'
+    }, opt_options || {});
+
+    // Sanity check
+    if (!options || !options.node) {
+        console.error('Invalid search options');
+        return;
+    }
+
+    // Check if game is already solved
+    if (options.node.game.isGoalState()) {
+        console.log('Puzzle already solved');
+        if (options.callback) {
+            options.callback(null, {
+                success: true,
+                node: options.node,
+                expandedNodes: 0,
+                maxFrontier: 0
+            });
+        }
+        return;
+    }
+
+    // Set up progress callback for worker
+    var progressCallback = function(progress) {
+        // Update performance metrics
+        if (typeof PerformanceManager !== 'undefined') {
+            PerformanceManager.updateMetrics({
+                expandedNodes: {'dummy': progress.expandedNodes},
+                frontierList: new Array(progress.frontierSize),
+                iteration: progress.expandedNodes,
+                searchStartTime: options.searchStartTime
+            });
+        }
+        
+        // Update graphs
+        if (typeof GraphManager !== 'undefined') {
+            var currentNode = {
+                game: {
+                    getHeuristicValue: function() { 
+                        return progress.currentHeuristic || 0; 
+                    }
+                },
+                cost: progress.currentCost || 0
+            };
+            
+            GraphManager.updateChart({
+                expandedNodes: {'dummy': progress.expandedNodes},
+                frontierList: new Array(progress.frontierSize),
+                iteration: progress.expandedNodes,
+                searchStartTime: options.searchStartTime,
+                currentNode: currentNode
+            });
+        }
+        
+        // Update progress indicator
+        if (typeof ProgressIndicator !== 'undefined') {
+            ProgressIndicator.update(progress.expandedNodes, options.iterationLimit);
+        }
+    };
+
+    // Start worker search
+    WorkerManager.startSearch({
+        type: options.type,
+        heuristicType: options.heuristicType,
+        node: options.node,
+        iterationLimit: options.iterationLimit,
+        depthLimit: options.depthLimit,
+        callback: function(result) {
+            if (result.success) {
+                options.callback(null, result);
+            } else {
+                options.callback(new Error(result.error || 'Search failed'), result);
+            }
+        },
+        progressCallback: progressCallback
+    });
+}
+
+function searchMainThread(opt_options) {
     var options = _.assign({
         node: null,
         frontierList: [],
@@ -177,7 +274,7 @@ function search(opt_options) {
         options.stepCallback(_.assign(options, {node: nextNode}));
     } else {
         setTimeout(function() {
-            search(_.assign(options, {node: nextNode}));
+            searchMainThread(_.assign(options, {node: nextNode}));
         }, 0);
     }
 }
