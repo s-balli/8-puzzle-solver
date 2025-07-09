@@ -409,8 +409,18 @@ var CustomStateManager = {
         var isValid = this.currentState && /^[0-8]{9}$/.test(this.currentState) && this.hasAllDigits(this.currentState);
         
         if (isValid) {
-            statusElement.innerHTML = '<span class="status-icon success">✓</span><span class="status-text">Valid puzzle state</span>';
-            statusElement.className = 'validation-status valid';
+            // Check if the state is solvable
+            var testGame = new Game();
+            var isSolvable = testGame.isValidState(this.currentState) && testGame.isSolvable(this.currentState);
+            
+            if (isSolvable) {
+                statusElement.innerHTML = '<span class="status-icon success">✓</span><span class="status-text">Valid and solvable puzzle state</span>';
+                statusElement.className = 'validation-status valid';
+            } else {
+                statusElement.innerHTML = '<span class="status-icon warning">⚠️</span><span class="status-text">Valid but unsolvable puzzle state</span>';
+                statusElement.className = 'validation-status warning';
+                isValid = false; // Treat unsolvable as invalid
+            }
         } else {
             statusElement.innerHTML = '<span class="status-icon error">⚠️</span><span class="status-text">Invalid puzzle state</span>';
             statusElement.className = 'validation-status invalid';
@@ -480,26 +490,37 @@ var CustomStateManager = {
     
     applyState: function() {
         if (this.validateCurrentState()) {
-            game.state = this.currentState;
-            Board.draw(game.state);
-            
-            // Clear search results
-            var searchResultDiv = document.getElementById('searchResult');
-            if (searchResultDiv) {
-                searchResultDiv.innerHTML = '';
+            try {
+                // Use the new validation method from Game class
+                var testGame = new Game();
+                if (testGame.isValidState(this.currentState) && testGame.isSolvable(this.currentState)) {
+                    game.state = this.currentState;
+                    Board.draw(game.state);
+                    
+                    // Clear search results
+                    var searchResultDiv = document.getElementById('searchResult');
+                    if (searchResultDiv) {
+                        searchResultDiv.innerHTML = '';
+                    }
+                    
+                    // Reset navigation
+                    if (typeof NavigationManager !== 'undefined') {
+                        NavigationManager.init([]);
+                    }
+                    
+                    // Play sound
+                    if (typeof SoundManager !== 'undefined') {
+                        SoundManager.play('click');
+                    }
+                    
+                    this.hide();
+                } else {
+                    alert('This puzzle state is not solvable. Please choose a different configuration.');
+                }
+            } catch (error) {
+                console.error('Error validating state:', error.message);
+                alert('Error validating puzzle state: ' + error.message);
             }
-            
-            // Reset navigation
-            if (typeof NavigationManager !== 'undefined') {
-                NavigationManager.init([]);
-            }
-            
-            // Play sound
-            if (typeof SoundManager !== 'undefined') {
-                SoundManager.play('click');
-            }
-            
-            this.hide();
         }
     }
 };

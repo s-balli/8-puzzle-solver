@@ -1,5 +1,11 @@
 var Game = function(opt_state) {
     this.state = opt_state || '012345678';
+    
+    // Validate initial state
+    if (!this.isValidState(this.state)) {
+        console.warn('Invalid initial state provided:', this.state);
+        this.state = '012345678'; // Reset to default
+    }
 };
 
 
@@ -14,7 +20,7 @@ Game.Actions = {
 Game.DesiredState = '123456780';
 
 
-Game.prototype.getAvaliableActionsAndStates = function() {
+Game.prototype.getAvailableActionsAndStates = function() {
     var result = {};
 
     var zeroIndex = this.state.indexOf('0');
@@ -36,10 +42,10 @@ Game.prototype.getNextState = function(action) {
 
     switch (action) {
         case Game.Actions.LEFT:
-            newIndex = zeroIndex - 1
+            newIndex = zeroIndex - 1;
             break;
         case Game.Actions.RIGHT:
-            newIndex = zeroIndex + 1
+            newIndex = zeroIndex + 1;
             break;
         case Game.Actions.UP:
             newIndex = zeroIndex - 3
@@ -63,67 +69,152 @@ Game.prototype.isFinished = function() {
 };
 
 
-Game.prototype.randomize = function() {
+Game.prototype.getActionCost = function(action) {
+    // For now, all actions have uniform cost of 1
+    // This can be extended to support different costs per action
+    return 1;
+};
+
+
+Game.prototype.isValidState = function(state) {
+    if (!state || typeof state !== 'string') {
+        return false;
+    }
+    
+    // Check length
+    if (state.length !== 9) {
+        return false;
+    }
+    
+    // Check if all characters are digits 0-8
+    if (!/^[0-8]{9}$/.test(state)) {
+        return false;
+    }
+    
+    // Check if each digit 0-8 appears exactly once
+    var digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
+    return digits.every(function(digit) {
+        return state.includes(digit) && state.indexOf(digit) === state.lastIndexOf(digit);
+    });
+};
+
+
+Game.prototype.isSolvable = function(state) {
+    state = state || this.state;
+    
+    if (!this.isValidState(state)) {
+        return false;
+    }
+    
+    // Calculate inversion count
+    var inversionCount = 0;
+    var stateArray = state.split('').filter(function(tile) {
+        return tile !== '0'; // Remove empty space
+    });
+    
+    for (var i = 0; i < stateArray.length - 1; i++) {
+        for (var j = i + 1; j < stateArray.length; j++) {
+            if (parseInt(stateArray[i]) > parseInt(stateArray[j])) {
+                inversionCount++;
+            }
+        }
+    }
+    
+    // For 8-puzzle, solvable if inversion count is even
+    return inversionCount % 2 === 0;
+};
+
+
+Game.prototype.validateAndSetState = function(newState) {
+    if (!this.isValidState(newState)) {
+        throw new Error('Invalid state format: ' + newState);
+    }
+    
+    if (!this.isSolvable(newState)) {
+        throw new Error('Unsolvable puzzle state: ' + newState);
+    }
+    
+    this.state = newState;
+    return true;
+};
+
+
+Game.prototype.randomize = function(iterations) {
     var that = this;
     var states = {};
-    // var iteration = parseInt(prompt('How many random moves from desired state?'));
-    var iteration = 100;
+    iterations = iterations || 100;
 
-    if (!iteration || isNaN(iteration))
-        return alert('Invalid iteration count, please enter a number');
-
-    this.state = Game.DesiredState;
-    states[this.state] = true;
-
-    var randomNextState = function() {
-        var state = _.sample(that.getAvaliableActionsAndStates());
-
-        if (states[state])
-            return randomNextState();
-
-        return state;
+    if (!iterations || isNaN(iterations) || iterations <= 0) {
+        console.error('Invalid iteration count:', iterations);
+        return false;
     }
 
-    _.times(iteration, function() {
-        that.state = randomNextState();
-    });
+    try {
+        this.state = Game.DesiredState;
+        states[this.state] = true;
+
+        var randomNextState = function() {
+            var actions = that.getAvailableActionsAndStates();
+            if (Object.keys(actions).length === 0) {
+                throw new Error('No available actions');
+            }
+            
+            var state = _.sample(actions);
+
+            if (states[state])
+                return randomNextState();
+
+            return state;
+        };
+
+        _.times(iterations, function() {
+            try {
+                var newState = randomNextState();
+                states[newState] = true;
+                that.state = newState;
+            } catch (error) {
+                console.warn('Error during randomization:', error.message);
+            }
+        });
+        
+        return true;
+    } catch (error) {
+        console.error('Randomization failed:', error.message);
+        this.state = Game.DesiredState; // Reset to safe state
+        return false;
+    }
 };
 
 
 Game.prototype.getManhattanDistance = function() {
     var distance = 0;
+    
+    // Target positions for each tile (row, column)
+    var targetPositions = [
+        null,        // 0 (empty space, no target)
+        [0, 0],      // 1 -> (0,0)
+        [0, 1],      // 2 -> (0,1)
+        [0, 2],      // 3 -> (0,2)
+        [1, 0],      // 4 -> (1,0)
+        [1, 1],      // 5 -> (1,1)
+        [1, 2],      // 6 -> (1,2)
+        [2, 0],      // 7 -> (2,0)
+        [2, 1]       // 8 -> (2,1)
+    ];
 
-    var oneIndex = this.state.indexOf('1');
-    var onePosition = Game.indexToRowColumn(oneIndex);
-    distance += Math.abs(0 - onePosition.row) + Math.abs(0 - onePosition.column);
-
-    var twoIndex = this.state.indexOf('2');
-    var twoPosition = Game.indexToRowColumn(twoIndex);
-    distance += Math.abs(0 - twoPosition.row) + Math.abs(1 - twoPosition.column);
-
-    var threeIndex = this.state.indexOf('3');
-    var threePosition = Game.indexToRowColumn(threeIndex);
-    distance += Math.abs(0 - threePosition.row) + Math.abs(2 - threePosition.column);
-
-    var fourIndex = this.state.indexOf('4');
-    var fourPosition = Game.indexToRowColumn(fourIndex);
-    distance += Math.abs(1 - fourPosition.row) + Math.abs(0 - fourPosition.column);
-
-    var fiveIndex = this.state.indexOf('5');
-    var fivePosition = Game.indexToRowColumn(fiveIndex);
-    distance += Math.abs(1 - fivePosition.row) + Math.abs(1 - fivePosition.column);
-
-    var sixIndex = this.state.indexOf('6');
-    var sixPosition = Game.indexToRowColumn(sixIndex);
-    distance += Math.abs(1 - sixPosition.row) + Math.abs(2 - sixPosition.column);
-
-    var sevenIndex = this.state.indexOf('7');
-    var sevenPosition = Game.indexToRowColumn(sevenIndex);
-    distance += Math.abs(2 - sevenPosition.row) + Math.abs(0 - sevenPosition.column);
-
-    var eightIndex = this.state.indexOf('8');
-    var eightPosition = Game.indexToRowColumn(eightIndex);
-    distance += Math.abs(2 - eightPosition.row) + Math.abs(1 - eightPosition.column);
+    // Calculate Manhattan distance for each tile
+    for (var i = 0; i < 9; i++) {
+        var tile = this.state[i];
+        if (tile !== '0') {
+            var tileNum = parseInt(tile);
+            var currentRow = Math.floor(i / 3);
+            var currentCol = i % 3;
+            var targetRow = targetPositions[tileNum][0];
+            var targetCol = targetPositions[tileNum][1];
+            
+            distance += Math.abs(currentRow - targetRow) + Math.abs(currentCol - targetCol);
+        }
+    }
 
     return distance;
 };
@@ -131,17 +222,34 @@ Game.prototype.getManhattanDistance = function() {
 
 Game.prototype.getEuclideanDistance = function() {
     var distance = 0;
+    
+    // Target positions for each tile (row, column)
+    var targetPositions = [
+        null,        // 0 (empty space, no target)
+        [0, 0],      // 1 -> (0,0)
+        [0, 1],      // 2 -> (0,1)
+        [0, 2],      // 3 -> (0,2)
+        [1, 0],      // 4 -> (1,0)
+        [1, 1],      // 5 -> (1,1)
+        [1, 2],      // 6 -> (1,2)
+        [2, 0],      // 7 -> (2,0)
+        [2, 1]       // 8 -> (2,1)
+    ];
 
-    for (var i = 1; i <= 8; i++) {
-        var index = this.state.indexOf(i.toString());
-        var position = Game.indexToRowColumn(index);
-        
-        var goalRow = Math.floor((i - 1) / 3);
-        var goalColumn = (i - 1) % 3;
-        
-        var dx = position.row - goalRow;
-        var dy = position.column - goalColumn;
-        distance += Math.sqrt(dx * dx + dy * dy);
+    // Calculate Euclidean distance for each tile
+    for (var i = 0; i < 9; i++) {
+        var tile = this.state[i];
+        if (tile !== '0') {
+            var tileNum = parseInt(tile);
+            var currentRow = Math.floor(i / 3);
+            var currentCol = i % 3;
+            var targetRow = targetPositions[tileNum][0];
+            var targetCol = targetPositions[tileNum][1];
+            
+            var dx = currentRow - targetRow;
+            var dy = currentCol - targetCol;
+            distance += Math.sqrt(dx * dx + dy * dy);
+        }
     }
 
     return distance;
@@ -149,12 +257,13 @@ Game.prototype.getEuclideanDistance = function() {
 
 Game.prototype.getMisplacedTiles = function() {
     var misplacedCount = 0;
-
-    for (var i = 1; i <= 8; i++) {
-        var index = this.state.indexOf(i.toString());
-        var expectedIndex = i - 1;
+    
+    // Compare each position with expected tile
+    for (var i = 0; i < 8; i++) { // Only check positions 0-7, skip empty space
+        var currentTile = this.state[i];
+        var expectedTile = (i + 1).toString();
         
-        if (index !== expectedIndex) {
+        if (currentTile !== expectedTile && currentTile !== '0') {
             misplacedCount++;
         }
     }

@@ -2,29 +2,127 @@
 var game = new Game();
 Board.draw(game.state);
 
-var boardDiv = document.getElementById('board');
-var controlsDiv = document.getElementById('controls');
-var randomizeButton = document.getElementById('randomize');
-var customInputButton = document.getElementById('customInput');
-var searchTypeSelectbox = document.getElementById('searchType');
-var iterationLimitInput = document.getElementById('iterationLimit');
-var depthLimitInput = document.getElementById('depthLimit');
-var searchButton = document.getElementById('search');
-var searchStopButton = document.getElementById('searchStop');
-var searchStepButton = document.getElementById('searchStep');
+// DOM Cache for performance optimization
+var DOMCache = {
+    // Core elements
+    board: document.getElementById('board'),
+    controls: document.getElementById('controls'),
+    searchResult: document.getElementById('searchResult'),
+    
+    // Input elements
+    searchType: document.getElementById('searchType'),
+    iterationLimit: document.getElementById('iterationLimit'),
+    depthLimit: document.getElementById('depthLimit'),
+    timeLimit: document.getElementById('timeLimit'),
+    heuristicFunction: document.getElementById('heuristicFunction'),
+    
+    // Button elements
+    randomize: document.getElementById('randomize'),
+    customInput: document.getElementById('customInput'),
+    search: document.getElementById('search'),
+    searchStop: document.getElementById('searchStop'),
+    searchStep: document.getElementById('searchStep'),
+    prevStep: document.getElementById('prevStep'),
+    nextStep: document.getElementById('nextStep'),
+    resetSteps: document.getElementById('resetSteps'),
+    
+    // Checkbox elements
+    expandedNodeCheck: document.getElementById('expandedNodeCheck'),
+    visualizationCheck: document.getElementById('visualizationCheck'),
+    soundEnabled: document.getElementById('soundEnabled'),
+    educationMode: document.getElementById('educationMode'),
+    performanceMode: document.getElementById('performanceMode'),
+    realTimeGraphs: document.getElementById('realTimeGraphs'),
+    
+    // Theme selector
+    themeSelector: document.getElementById('themeSelector'),
+    
+    // Performance panel elements
+    performancePanel: document.getElementById('performancePanel'),
+    currentMetrics: document.getElementById('currentMetrics'),
+    timeElapsed: document.getElementById('timeElapsed'),
+    nodesExpanded: document.getElementById('nodesExpanded'),
+    frontierSize: document.getElementById('frontierSize'),
+    
+    // Graph panel elements
+    graphPanel: document.getElementById('graphPanel'),
+    realTimeChart: document.getElementById('realTimeChart'),
+    frontierCount: document.getElementById('frontierCount'),
+    expandedCount: document.getElementById('expandedCount'),
+    iterationCount: document.getElementById('iterationCount'),
+    elapsedTime: document.getElementById('elapsedTime'),
+    
+    // Progress indicator elements
+    searchProgress: document.getElementById('searchProgress'),
+    progressPercentage: document.getElementById('progressPercentage'),
+    progressFill: document.getElementById('progressFill'),
+    progressStats: document.getElementById('progressStats')
+};
 
-var expandedNodeCheckbox = document.getElementById('expandedNodeCheck');
-var searchResultDiv = document.getElementById('searchResult');
-var visualizationCheckbox = document.getElementById('visualizationCheck');
-var themeSelector = document.getElementById('themeSelector');
-var soundEnabledCheckbox = document.getElementById('soundEnabled');
-var prevStepButton = document.getElementById('prevStep');
-var nextStepButton = document.getElementById('nextStep');
-var resetStepsButton = document.getElementById('resetSteps');
+// Legacy variables for backward compatibility
+var boardDiv = DOMCache.board;
+var controlsDiv = DOMCache.controls;
+var randomizeButton = DOMCache.randomize;
+var customInputButton = DOMCache.customInput;
+var searchTypeSelectbox = DOMCache.searchType;
+var iterationLimitInput = DOMCache.iterationLimit;
+var depthLimitInput = DOMCache.depthLimit;
+var searchButton = DOMCache.search;
+var searchStopButton = DOMCache.searchStop;
+var searchStepButton = DOMCache.searchStep;
+var expandedNodeCheckbox = DOMCache.expandedNodeCheck;
+var searchResultDiv = DOMCache.searchResult;
+var visualizationCheckbox = DOMCache.visualizationCheck;
+var themeSelector = DOMCache.themeSelector;
+var soundEnabledCheckbox = DOMCache.soundEnabled;
+var prevStepButton = DOMCache.prevStep;
+var nextStepButton = DOMCache.nextStep;
+var resetStepsButton = DOMCache.resetSteps;
+var timeLimitInput = DOMCache.timeLimit;
+var heuristicFunctionSelect = DOMCache.heuristicFunction;
 
 var searchStepOptions = null;
-var timeLimitInput = document.getElementById('timeLimit');
-var heuristicFunctionSelect = document.getElementById('heuristicFunction');
+
+// Progress Indicator Manager
+var ProgressIndicator = {
+    show: function(maxIterations) {
+        if (DOMCache.searchProgress) {
+            DOMCache.searchProgress.style.display = 'block';
+            this.update(0, maxIterations);
+        }
+    },
+    
+    hide: function() {
+        if (DOMCache.searchProgress) {
+            DOMCache.searchProgress.style.display = 'none';
+        }
+    },
+    
+    update: function(currentIteration, maxIterations) {
+        if (!DOMCache.searchProgress) return;
+        
+        var percentage = maxIterations > 0 ? Math.round((currentIteration / maxIterations) * 100) : 0;
+        percentage = Math.min(percentage, 100);
+        
+        if (DOMCache.progressPercentage) {
+            DOMCache.progressPercentage.textContent = percentage + '%';
+        }
+        
+        if (DOMCache.progressFill) {
+            DOMCache.progressFill.style.width = percentage + '%';
+        }
+        
+        if (DOMCache.progressStats) {
+            DOMCache.progressStats.textContent = 'Iteration ' + currentIteration + ' / ' + maxIterations;
+        }
+    },
+    
+    setTimeLimit: function(timeLimit) {
+        if (DOMCache.progressStats) {
+            DOMCache.progressStats.textContent = 'Time limit: ' + timeLimit + ' seconds';
+        }
+    }
+};
 
 // Disable body scroll for mobile
 if (typeof bodyScrollLock !== 'undefined') {
@@ -34,14 +132,23 @@ if (typeof bodyScrollLock !== 'undefined') {
 if (randomizeButton) {
     randomizeButton.addEventListener('click', function() {
         Board.clearReplay();
-        game.randomize();
-        Board.draw(game.state);
-        searchResultDiv.innerHTML = '';
-        if (typeof NavigationManager !== 'undefined') {
-            NavigationManager.init([]);
-        }
-        if (typeof SoundManager !== 'undefined') {
-            SoundManager.play('click');
+        try {
+            var success = game.randomize();
+            if (success) {
+                Board.draw(game.state);
+                searchResultDiv.innerHTML = '';
+                if (typeof NavigationManager !== 'undefined') {
+                    NavigationManager.init([]);
+                }
+                if (typeof SoundManager !== 'undefined') {
+                    SoundManager.play('click');
+                }
+            } else {
+                alert('Failed to randomize puzzle. Please try again.');
+            }
+        } catch (error) {
+            console.error('Randomization error:', error.message);
+            alert('Error during randomization: ' + error.message);
         }
     }, false);
 }
@@ -78,9 +185,20 @@ if (searchButton) {
     if (isNaN(timeLimit) || timeLimit <= 0)
         timeLimit = 30000;
 
+    // Check if puzzle is solvable before starting search
+    if (!game.isSolvable()) {
+        alert('This puzzle configuration is not solvable. Please randomize or enter a different state.');
+        return;
+    }
+
     searchResultDiv.innerHTML = '';
     searchButton.style.display = 'none';
     searchStopButton.style.display = 'block';
+
+    // Show progress indicator for searches with high iteration limits
+    if (iterationLimit > 100) {
+        ProgressIndicator.show(iterationLimit);
+    }
 
     if (typeof SoundManager !== 'undefined') {
         SoundManager.play('click');
@@ -141,6 +259,9 @@ if (searchStopButton) {
     searchButton.style.display = 'block';
     searchStopButton.style.display = 'none';
 
+    // Hide progress indicator
+    ProgressIndicator.hide();
+
     window.searchStopped = true;
     setTimeout(function() {
         window.searchStopped = false;
@@ -153,6 +274,9 @@ if (searchStopButton) {
 
 function searchCallback(err, options) {
     document.getElementById('board').classList.remove('search-animation');
+    
+    // Hide progress indicator
+    ProgressIndicator.hide();
     
     var expandedNodesLength = _.size(options.expandedNodes);
     var solutionCost = err ? 0 : options.node.cost;

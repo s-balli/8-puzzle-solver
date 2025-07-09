@@ -102,6 +102,20 @@
             <button id="searchStep">Iterate one step</button>
             <button id="search">Search</button>
             <button id="searchStop" style="display: none;">Stop</button>
+            
+            <!-- Progress Indicator -->
+            <div id="searchProgress" class="search-progress" style="display: none;">
+                <div class="progress-header">
+                    <span class="progress-label">Search Progress</span>
+                    <span class="progress-percentage" id="progressPercentage">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-stats">
+                    <span id="progressStats">Iteration 0 / 0</span>
+                </div>
+            </div>
         </div>
 
         <div class="heading">Solution Navigation</div>

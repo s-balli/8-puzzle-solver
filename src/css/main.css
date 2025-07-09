@@ -1603,3 +1603,109 @@ html, body {
     border-top-right-radius: 6px;
 }
 
+/* Progress Indicator Styles */
+.search-progress {
+    margin-top: 15px;
+    padding: 12px;
+    background: var(--result-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.progress-label {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.progress-percentage {
+    font-weight: 600;
+    color: var(--input-focus);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--input-focus);
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.progress-stats {
+    text-align: center;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* High contrast progress indicator */
+[data-theme="high-contrast"] .search-progress {
+    background: var(--bg-color);
+    border: 2px solid var(--border-color);
+}
+
+[data-theme="high-contrast"] .progress-bar {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="high-contrast"] .progress-fill {
+    background: var(--input-focus);
+}
+
+/* Validation status styles */
+.validation-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.validation-status.valid {
+    background: var(--success-high);
+    color: #155724;
+}
+
+.validation-status.warning {
+    background: var(--success-medium);
+    color: #856404;
+}
+
+.validation-status.invalid {
+    background: var(--success-low);
+    color: #721c24;
+}
+
+.status-icon {
+    font-size: 16px;
+}
+
+.status-icon.success {
+    color: #28a745;
+}
+
+.status-icon.warning {
+    color: #ffc107;
+}
+
+.status-icon.error {
+    color: #dc3545;
+}
+

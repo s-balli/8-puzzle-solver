@@ -161,6 +161,11 @@ function search(opt_options) {
     if (!options.isComparisonTest && typeof GraphManager !== 'undefined') {
         GraphManager.updateChart(options);
     }
+    
+    // Update progress indicator (skip during comparison tests)
+    if (!options.isComparisonTest && typeof ProgressIndicator !== 'undefined') {
+        ProgressIndicator.update(options.iteration, options.iterationLimit);
+    }
 
     if (options.stepCallback) {
         options.stepCallback(_.assign(options, {node: nextNode}));
