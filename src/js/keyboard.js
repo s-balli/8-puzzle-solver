@@ -18,8 +18,6 @@ var KeyboardManager = {
             case 'R':
             case 's':
             case 'S':
-            case 't':
-            case 'T':
                 event.preventDefault();
                 break;
         }
@@ -56,10 +54,6 @@ var KeyboardManager = {
             case 's':
             case 'S':
                 this.stepSearch();
-                break;
-            case 't':
-            case 'T':
-                this.toggleTheme();
                 break;
         }
     },
@@ -104,13 +98,6 @@ var KeyboardManager = {
         var stepBtn = document.getElementById('searchStep');
         if (stepBtn) {
             stepBtn.click();
-        }
-    },
-    
-    toggleTheme: function() {
-        var themeBtn = document.getElementById('themeToggle');
-        if (themeBtn) {
-            themeBtn.click();
         }
     }
 };
