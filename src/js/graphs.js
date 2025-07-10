@@ -95,6 +95,12 @@ var GraphManager = {
         var heuristicValue = document.getElementById('heuristicValue');
         var fValue = document.getElementById('fValue');
         var heuristicMetricRow = document.getElementById('heuristicMetricRow');
+        var currentDepth = document.getElementById('currentDepth');
+        var currentCost = document.getElementById('currentCost');
+        var currentPathLength = document.getElementById('currentPathLength');
+        var searchStatus = document.getElementById('searchStatus');
+        var solutionMetricRow = document.getElementById('solutionMetricRow');
+        var pathMetricRow = document.getElementById('pathMetricRow');
         
         if (frontierCount) {
             frontierCount.textContent = options.frontierList ? options.frontierList.length : 0;
@@ -131,6 +137,42 @@ var GraphManager = {
             if (fValue) {
                 fValue.textContent = fVal.toFixed(2);
             }
+        }
+        
+        // Always show solution metrics row during search
+        if (solutionMetricRow) {
+            solutionMetricRow.style.display = 'flex';
+        }
+        if (pathMetricRow) {
+            pathMetricRow.style.display = 'flex';
+        }
+        
+        // Update current node metrics
+        if (options.node) {
+            if (currentDepth) {
+                currentDepth.textContent = options.node.depth || 0;
+            }
+            if (currentCost) {
+                currentCost.textContent = options.node.cost || 0;
+            }
+        }
+        
+        // Update search status
+        if (searchStatus) {
+            if (options.isSearchComplete) {
+                searchStatus.textContent = options.isError ? 'Failed' : 'Solved!';
+                searchStatus.style.color = options.isError ? '#f44336' : '#4CAF50';
+            } else {
+                searchStatus.textContent = 'Searching...';
+                searchStatus.style.color = '#ff9800';
+            }
+        }
+        
+        // Update path length (only meaningful when solution is found)
+        if (currentPathLength && options.solutionPath) {
+            currentPathLength.textContent = options.solutionPath.length;
+        } else if (currentPathLength) {
+            currentPathLength.textContent = '0';
         }
     },
     
@@ -207,14 +249,14 @@ var GraphManager = {
         
         // Draw legend with better typography
         this.ctx.font = '600 12px Arial';
-        this.ctx.textAlign = 'start';
+        this.ctx.textAlign = 'center';
         var frontierText = window.t ? t('graphs.frontier') : 'Frontier';
         var expandedText = window.t ? t('graphs.expanded') : 'Expanded';
         
         this.ctx.fillStyle = '#2196F3';
-        this.ctx.fillText(frontierText, 10, 15);
+        this.ctx.fillText(frontierText, width / 2, 15);
         this.ctx.fillStyle = '#4CAF50';
-        this.ctx.fillText(expandedText, 70, 15);
+        this.ctx.fillText(expandedText, width / 2, 30);
         
         // Point indicators removed for cleaner graph appearance
         // this.drawPointIndicators(maxValue, width, height, padding);

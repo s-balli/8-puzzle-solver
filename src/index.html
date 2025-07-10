@@ -127,6 +127,8 @@
             <button id="searchStep" aria-label="Execute one search iteration" data-i18n="search.iterateStep" data-i18n-aria="search.iterateStep">Iterate one step</button>
             <button id="search" aria-label="Start search algorithm" data-i18n="search.search" data-i18n-aria="search.search">Search</button>
             <button id="searchStop" style="display: none;" aria-label="Stop current search" data-i18n="search.stop" data-i18n-aria="search.stop">Stop</button>
+            <button id="replayButton" style="display: none;" aria-label="Replay solution animation" data-i18n="solution.replay" data-i18n-aria="solution.replay">Replay solution</button>
+            <button id="pauseReplayButton" style="display: none;" aria-label="Pause/Resume replay" data-i18n="solution.pause" data-i18n-aria="solution.pause">Pause</button>
             
             <!-- Progress Indicator -->
             <div id="searchProgress" class="search-progress" style="display: none;">
@@ -143,16 +145,8 @@
             </div>
         </div>
 
-        <div class="heading" data-i18n="solution.heading">Solution Navigation</div>
-        <div class="content">
-            <button id="prevStep" disabled aria-label="Go to previous solution step" data-i18n="solution.previous" data-i18n-aria="solution.previous">← Previous</button>
-            <button id="nextStep" disabled aria-label="Go to next solution step" data-i18n="solution.next" data-i18n-aria="solution.next">Next →</button>
-            <button id="resetSteps" disabled aria-label="Reset to initial state" data-i18n="solution.reset" data-i18n-aria="solution.reset">Reset</button>
-        </div>
 
 
-        <div class="heading" data-i18n="results.heading">Search Result</div>
-        <div id="searchResult" class="content"></div>
     </div>
 
     <div class="keyboard-help">
@@ -245,6 +239,26 @@
                     <div class="metric-box">
                         <span class="metric-title" data-i18n="graphs.fValue">F Value</span>
                         <span class="metric-number" id="fValue">0</span>
+                    </div>
+                </div>
+                <div class="metric-row" id="solutionMetricRow" style="display: none;">
+                    <div class="metric-box">
+                        <span class="metric-title" data-i18n="graphs.depth">Depth</span>
+                        <span class="metric-number" id="currentDepth">0</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-title" data-i18n="graphs.solutionCost">Cost</span>
+                        <span class="metric-number" id="currentCost">0</span>
+                    </div>
+                </div>
+                <div class="metric-row" id="pathMetricRow" style="display: none;">
+                    <div class="metric-box">
+                        <span class="metric-title" data-i18n="graphs.pathLength">Path Length</span>
+                        <span class="metric-number" id="currentPathLength">0</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-title" data-i18n="graphs.status">Status</span>
+                        <span class="metric-number" id="searchStatus">Searching...</span>
                     </div>
                 </div>
             </div>

@@ -136,13 +136,17 @@ window.Translations = {
         // Real-time graphs
         graphs: {
             title: "📈 Gerçek Zamanlı İstatistikler",
-            frontier: "Sınır",
-            expanded: "Genişletilen",
+            frontier: "Frontier nodes",
+            expanded: "Expanded nodes",
             iteration: "İterasyon", 
             time: "Süre",
             hValue: "H Değeri",
             fValue: "F Değeri",
-            nodeCount: "Düğüm Sayısı"
+            nodeCount: "Düğüm Sayısı",
+            depth: "Derinlik",
+            solutionCost: "Çözüm Maliyeti",
+            pathLength: "Yol Uzunluğu",
+            status: "Durum"
         },
         
         // Custom state modal
@@ -452,7 +456,39 @@ window.Translations = {
             // Tutorial content would go here - abbreviated for space
             tutorials: {
                 // ... tutorial content
-            }
+            },
+            
+            // Tutorial tab
+            tutorialTitle: 'Etkileşimli Öğreticiler',
+            chooseTutorial: 'Bir Öğretici Seçin:',
+            beginnerBFS: '🟢 Başlangıç: Genişlik-İlk Arama',
+            intermediateAStar: '🟡 Orta: A* Arama',
+            advancedHeuristics: '🔴 İleri: Sezgisel Karşılaştırma',
+            tutorialLabel: 'Öğretici',
+            previousStep: '← Önceki',
+            nextStep: 'Sonraki →',
+            exitTutorial: 'Öğreticiden Çık',
+            
+            // Why tab
+            whyTabTitle: '🤔 Bu Düğüm Neden?',
+            currentSelection: 'Mevcut Düğüm Seçimi:',
+            startSearchForExplanations: 'Açıklamaları görmek için bir arama başlatın...',
+            frontierAnalysis: 'Sınır Analizi:',
+            frontierSize: 'Sınır Boyutu:',
+            selectedNodeFValue: 'Seçilen Düğüm f(n):',
+            selectionReason: 'Seçim Nedeni:',
+            alternativeNodes: 'Alternatif Düğümler:',
+            
+            // Comparison tab
+            comparisonTitle: '📊 Algoritma vs Sezgisel Karşılaştırma',
+            aspect: 'Yön',
+            currentAlgorithm: 'Mevcut Algoritma',
+            currentHeuristic: 'Mevcut Sezgisel',
+            optimality: 'Optimallik',
+            complexity: 'Karmaşıklık',
+            memoryUsage: 'Bellek Kullanımı',
+            bestUseCase: 'En İyi Kullanım Durumu',
+            selectAlgorithmForRecommendation: 'Öneriler görmek için bir algoritma ve sezgisel seçin.'
         },
         
         // Error messages
@@ -614,13 +650,17 @@ window.Translations = {
         // Real-time graphs
         graphs: {
             title: "📈 Real-time Statistics",
-            frontier: "Frontier",
-            expanded: "Expanded",
+            frontier: "Frontier nodes",
+            expanded: "Expanded nodes",
             iteration: "Iteration",
             time: "Time",
             hValue: "H Value",
             fValue: "F Value",
-            nodeCount: "Node Count"
+            nodeCount: "Node Count",
+            depth: "Depth",
+            solutionCost: "Solution Cost",
+            pathLength: "Path Length",
+            status: "Status"
         },
         
         // Custom state modal
@@ -930,7 +970,39 @@ window.Translations = {
             // Tutorial content would go here - abbreviated for space
             tutorials: {
                 // ... tutorial content
-            }
+            },
+            
+            // Tutorial tab
+            tutorialTitle: 'Interactive Tutorials',
+            chooseTutorial: 'Choose a Tutorial:',
+            beginnerBFS: '🟢 Beginner: Breadth-First Search',
+            intermediateAStar: '🟡 Intermediate: A* Search',
+            advancedHeuristics: '🔴 Advanced: Heuristic Comparison',
+            tutorialLabel: 'Tutorial',
+            previousStep: '← Previous',
+            nextStep: 'Next →',
+            exitTutorial: 'Exit Tutorial',
+            
+            // Why tab
+            whyTabTitle: '🤔 Why This Node?',
+            currentSelection: 'Current Node Selection:',
+            startSearchForExplanations: 'Start a search to see explanations...',
+            frontierAnalysis: 'Frontier Analysis:',
+            frontierSize: 'Frontier Size:',
+            selectedNodeFValue: 'Selected Node f(n):',
+            selectionReason: 'Selection Reason:',
+            alternativeNodes: 'Alternative Nodes:',
+            
+            // Comparison tab
+            comparisonTitle: '📊 Algorithm vs Heuristic Comparison',
+            aspect: 'Aspect',
+            currentAlgorithm: 'Current Algorithm',
+            currentHeuristic: 'Current Heuristic',
+            optimality: 'Optimality',
+            complexity: 'Complexity',
+            memoryUsage: 'Memory Usage',
+            bestUseCase: 'Best Use Case',
+            selectAlgorithmForRecommendation: 'Select an algorithm and heuristic to see recommendations.'
         },
         
         // Error messages

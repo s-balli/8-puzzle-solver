@@ -7,7 +7,6 @@ var DOMCache = {
     // Core elements
     board: document.getElementById('board'),
     controls: document.getElementById('controls'),
-    searchResult: document.getElementById('searchResult'),
     
     // Input elements
     searchType: document.getElementById('searchType'),
@@ -22,9 +21,8 @@ var DOMCache = {
     search: document.getElementById('search'),
     searchStop: document.getElementById('searchStop'),
     searchStep: document.getElementById('searchStep'),
-    prevStep: document.getElementById('prevStep'),
-    nextStep: document.getElementById('nextStep'),
-    resetSteps: document.getElementById('resetSteps'),
+    replayButton: document.getElementById('replayButton'),
+    pauseReplayButton: document.getElementById('pauseReplayButton'),
     
     // Checkbox elements
     expandedNodeCheck: document.getElementById('expandedNodeCheck'),
@@ -51,6 +49,10 @@ var DOMCache = {
     expandedCount: document.getElementById('expandedCount'),
     iterationCount: document.getElementById('iterationCount'),
     elapsedTime: document.getElementById('elapsedTime'),
+    currentDepth: document.getElementById('currentDepth'),
+    currentCost: document.getElementById('currentCost'),
+    currentPathLength: document.getElementById('currentPathLength'),
+    searchStatus: document.getElementById('searchStatus'),
     
     // Progress indicator elements
     searchProgress: document.getElementById('searchProgress'),
@@ -71,13 +73,9 @@ var searchButton = DOMCache.search;
 var searchStopButton = DOMCache.searchStop;
 var searchStepButton = DOMCache.searchStep;
 var expandedNodeCheckbox = DOMCache.expandedNodeCheck;
-var searchResultDiv = DOMCache.searchResult;
 var visualizationCheckbox = DOMCache.visualizationCheck;
 var themeSelector = DOMCache.themeSelector;
 var soundEnabledCheckbox = DOMCache.soundEnabled;
-var prevStepButton = DOMCache.prevStep;
-var nextStepButton = DOMCache.nextStep;
-var resetStepsButton = DOMCache.resetSteps;
 var timeLimitInput = DOMCache.timeLimit;
 var heuristicFunctionSelect = DOMCache.heuristicFunction;
 
@@ -136,7 +134,6 @@ if (randomizeButton) {
             var success = game.randomize();
             if (success) {
                 Board.draw(game.state);
-                searchResultDiv.innerHTML = '';
                 if (typeof NavigationManager !== 'undefined') {
                     NavigationManager.init([]);
                 }
@@ -191,9 +188,13 @@ if (searchButton) {
         return;
     }
 
-    searchResultDiv.innerHTML = '';
     searchButton.style.display = 'none';
     searchStopButton.style.display = 'block';
+    
+    // Hide replay button during search
+    if (DOMCache.replayButton) {
+        DOMCache.replayButton.style.display = 'none';
+    }
 
     // Show progress indicator for searches with high iteration limits
     if (iterationLimit > 100) {
@@ -226,7 +227,6 @@ if (searchStepButton) {
     var initialNode = new Node({state: game.state});
     var iterationLimit = parseInt(iterationLimitInput.value, 10);
     var depthLimit = parseInt(depthLimitInput.value, 10);
-    var timeLimit = timeLimitInput ? parseInt(timeLimitInput.value, 10) * 1000 : 30000;
     var heuristicType = heuristicFunctionSelect ? heuristicFunctionSelect.value : 'manhattan';
 
     if (isNaN(iterationLimit))
@@ -235,14 +235,12 @@ if (searchStepButton) {
     if (isNaN(depthLimit))
         return alert('Invalid depth limit');
 
-    if (isNaN(timeLimit) || timeLimit <= 0)
-        timeLimit = 30000;
-
+    // No time limit for step search - set to a very high value
     search({
         node: initialNode,
         iterationLimit: iterationLimit,
         depthLimit: depthLimit,
-        timeLimit: timeLimit,
+        timeLimit: Number.MAX_SAFE_INTEGER,
         heuristicType: heuristicType,
         expandCheckOptimization: expandedNodeCheckbox.checked,
         type: searchTypeSelectbox.value,
@@ -255,7 +253,6 @@ if (searchStepButton) {
 if (searchStopButton) {
     searchStopButton.addEventListener('click', function() {
     Board.clearReplay();
-    searchResultDiv.innerHTML = '';
     searchButton.style.display = 'block';
     searchStopButton.style.display = 'none';
 
@@ -272,6 +269,30 @@ if (searchStopButton) {
 }, false);
 }
 
+// Replay button event listener
+if (DOMCache.replayButton) {
+    DOMCache.replayButton.addEventListener('click', function() {
+        if (typeof replayWinnerNode === 'function') {
+            replayWinnerNode();
+        }
+        if (typeof SoundManager !== 'undefined') {
+            SoundManager.play('click');
+        }
+    }, false);
+}
+
+// Pause replay button event listener
+if (DOMCache.pauseReplayButton) {
+    DOMCache.pauseReplayButton.addEventListener('click', function() {
+        if (typeof Board !== 'undefined' && typeof Board.pauseReplay === 'function') {
+            Board.pauseReplay();
+        }
+        if (typeof SoundManager !== 'undefined') {
+            SoundManager.play('click');
+        }
+    }, false);
+}
+
 function searchCallback(err, options) {
     document.getElementById('board').classList.remove('search-animation');
     
@@ -282,27 +303,28 @@ function searchCallback(err, options) {
     var solutionCost = err ? 0 : options.node.cost;
     var solutionPath = err ? [] : getSolutionPath(options.node);
     
-    var solvedText = window.t ? t('results.solved', {depth: options.node.depth}) : 'Solved! Depth: ' + options.node.depth;
-    var iterationText = window.t ? t('results.iteration', {iteration: options.iteration}) : 'Iteration: ' + options.iteration;
-    var costText = window.t ? t('results.solutionCost', {cost: solutionCost}) : 'Solution Cost: ' + solutionCost;
-    var pathText = window.t ? t('results.pathLength', {length: solutionPath.length}) : 'Solution Path Length: ' + solutionPath.length;
-    var expandedText = window.t ? t('results.expandedNodes', {expanded: expandedNodesLength, max: options.maxExpandedNodesLength}) : 'Expanded nodes: ' + expandedNodesLength + ' / ' + options.maxExpandedNodesLength;
-    var frontierText = window.t ? t('results.frontierNodes', {frontier: options.frontierList.length, max: options.maxFrontierListLength}) : 'Frontier nodes: ' + options.frontierList.length + ' / ' + options.maxFrontierListLength;
-    var replayText = window.t ? t('solution.replay') : 'Replay solution';
-
-    searchResultDiv.innerHTML = (err ? err : '<span class="solution-info">' + solvedText + '</span>') + ' <br/>' +
-        iterationText + '<br/>' +
-        (!err ? '<span class="cost-info">' + costText + '</span><br/>' : '') +
-        (!err ? '<span class="cost-info">' + pathText + '</span><br/>' : '') +
-        '<br/>' +
-        expandedText + '<br/>' +
-        frontierText +
-        (err ? '' : '<br/><br/><button id="replayButton" onclick="replayWinnerNode()">' + replayText + '</button>');
+    // Update final graph metrics
+    if (typeof GraphManager !== 'undefined') {
+        var finalGraphOptions = _.assign({}, options, {
+            isSearchComplete: true,
+            isError: !!err,
+            solutionPath: solutionPath
+        });
+        GraphManager.updateChart(finalGraphOptions);
+    }
+    
 
     window.winnerNode = err ? null : options.node
 
     searchButton.style.display = 'block';
     searchStopButton.style.display = 'none';
+    
+    // Show/hide replay button based on search result
+    if (!err && DOMCache.replayButton) {
+        DOMCache.replayButton.style.display = 'block';
+    } else if (DOMCache.replayButton) {
+        DOMCache.replayButton.style.display = 'none';
+    }
 
     //game.state = options.node.state;
     Board.draw(options.node.state);
@@ -340,16 +362,6 @@ function stepCallback(options) {
 
     Board.draw(options.node.state);
 
-    var expandedNodesLength = _.size(options.expandedNodes);
-    var steppedText = window.t ? t('results.stepped') : 'Stepped';
-    var iterationText = window.t ? t('results.iteration', {iteration: options.iteration}) : 'Iteration: ' + options.iteration;
-    var expandedText = window.t ? t('results.expandedNodes', {expanded: expandedNodesLength, max: options.maxExpandedNodesLength}) : 'Expanded nodes: ' + expandedNodesLength + ' / ' + options.maxExpandedNodesLength;
-    var frontierText = window.t ? t('results.frontierNodes', {frontier: options.frontierList.length, max: options.maxFrontierListLength}) : 'Frontier nodes: ' + options.frontierList.length + ' / ' + options.maxFrontierListLength;
-    
-    searchResultDiv.innerHTML = steppedText + ' <br/>' +
-        iterationText + '<br/><br/>' +
-        expandedText + '<br/>' +
-        frontierText;
 
     // Draw
     if (visualizationCheckbox.checked) {
@@ -424,30 +436,6 @@ if (soundEnabledCheckbox) {
     }, false);
 }
 
-// Navigation button functionality
-if (prevStepButton) {
-    prevStepButton.addEventListener('click', function() {
-        if (typeof NavigationManager !== 'undefined') {
-            NavigationManager.prevStep();
-        }
-    }, false);
-}
-
-if (nextStepButton) {
-    nextStepButton.addEventListener('click', function() {
-        if (typeof NavigationManager !== 'undefined') {
-            NavigationManager.nextStep();
-        }
-    }, false);
-}
-
-if (resetStepsButton) {
-    resetStepsButton.addEventListener('click', function() {
-        if (typeof NavigationManager !== 'undefined') {
-            NavigationManager.reset();
-        }
-    }, false);
-}
 
 // Panel toggle functionality
 var educationModeCheckbox = document.getElementById('educationMode');

@@ -189,17 +189,17 @@ var EducationManager = {
                 
                 <div class="tab-content" id="tutorialTab">
                     <div class="tutorial-info">
-                        <h4>📚 Interactive Tutorials</h4>
+                        <h4 data-i18n="education.tutorialTitle">📚 Interactive Tutorials</h4>
                         <div class="tutorial-selection">
-                            <h5>Choose a Tutorial:</h5>
+                            <h5 data-i18n="education.chooseTutorial">Choose a Tutorial:</h5>
                             <div class="tutorial-buttons">
-                                <button class="tutorial-btn" data-tutorial="beginner-bfs">
+                                <button class="tutorial-btn" data-tutorial="beginner-bfs" data-i18n="education.beginnerBFS">
                                     🟢 Beginner: Breadth-First Search
                                 </button>
-                                <button class="tutorial-btn" data-tutorial="intermediate-astar">
+                                <button class="tutorial-btn" data-tutorial="intermediate-astar" data-i18n="education.intermediateAStar">
                                     🟡 Intermediate: A* Search
                                 </button>
-                                <button class="tutorial-btn" data-tutorial="advanced-heuristics">
+                                <button class="tutorial-btn" data-tutorial="advanced-heuristics" data-i18n="education.advancedHeuristics">
                                     🔴 Advanced: Heuristic Comparison
                                 </button>
                             </div>
@@ -207,7 +207,7 @@ var EducationManager = {
                         
                         <div class="tutorial-content" id="tutorialContent" style="display: none;">
                             <div class="tutorial-header">
-                                <h5 id="tutorialTitle">Tutorial</h5>
+                                <h5 id="tutorialTitle" data-i18n="education.tutorialLabel">Tutorial</h5>
                                 <div class="tutorial-progress">
                                     <span id="tutorialProgressText">Step 1 of 4</span>
                                     <div class="progress-bar">
@@ -222,9 +222,9 @@ var EducationManager = {
                             </div>
                             
                             <div class="tutorial-controls">
-                                <button id="tutorialPrev" disabled>← Previous</button>
-                                <button id="tutorialNext">Next →</button>
-                                <button id="tutorialExit">Exit Tutorial</button>
+                                <button id="tutorialPrev" disabled data-i18n="education.previousStep">← Previous</button>
+                                <button id="tutorialNext" data-i18n="education.nextStep">Next →</button>
+                                <button id="tutorialExit" data-i18n="education.exitTutorial">Exit Tutorial</button>
                             </div>
                         </div>
                     </div>
@@ -232,38 +232,39 @@ var EducationManager = {
                 
                 <div class="tab-content" id="whyTab">
                     <div class="why-info">
-                        <h4>🤔 Why This Node?</h4>
+                        <h4 data-i18n="education.whyTabTitle">🤔 Why This Node?</h4>
                         <div class="why-controls">
                             <label>
-                                <input type="checkbox" id="whyExplanationsToggle"> Enable real-time explanations
+                                <input type="checkbox" id="whyExplanationsToggle"> <span id="enableRealTimeText" data-i18n="education.enableRealTimeExplanations">Enable real-time explanations</span>
                             </label>
+                            <p id="whyDescription" data-i18n="education.realTimeDesc">Enable real-time explanations to see why specific nodes are chosen.</p>
                         </div>
                         
                         <div class="why-content" id="whyContent">
                             <div class="current-selection" id="currentSelection">
-                                <h5>Current Node Selection:</h5>
-                                <p id="whyExplanation">Start a search to see explanations...</p>
+                                <h5 data-i18n="education.currentSelection">Current Node Selection:</h5>
+                                <p id="whyExplanation" data-i18n="education.startSearchForExplanations">Start a search to see explanations...</p>
                             </div>
                             
                             <div class="frontier-analysis" id="frontierAnalysis" style="display: none;">
-                                <h5>Frontier Analysis:</h5>
+                                <h5 data-i18n="education.frontierAnalysis">Frontier Analysis:</h5>
                                 <div class="frontier-stats">
                                     <div class="stat-item">
-                                        <span class="stat-label">Frontier Size:</span>
+                                        <span class="stat-label" data-i18n="education.frontierSize">Frontier Size:</span>
                                         <span class="stat-value" id="frontierSizeWhy">0</span>
                                     </div>
                                     <div class="stat-item">
-                                        <span class="stat-label">Selected Node f(n):</span>
+                                        <span class="stat-label" data-i18n="education.selectedNodeFValue">Selected Node f(n):</span>
                                         <span class="stat-value" id="selectedNodeValue">-</span>
                                     </div>
                                     <div class="stat-item">
-                                        <span class="stat-label">Selection Reason:</span>
+                                        <span class="stat-label" data-i18n="education.selectionReason">Selection Reason:</span>
                                         <span class="stat-value" id="selectionReason">-</span>
                                     </div>
                                 </div>
                                 
                                 <div class="frontier-comparison" id="frontierComparison">
-                                    <h6>Alternative Nodes:</h6>
+                                    <h6 data-i18n="education.alternativeNodes">Alternative Nodes:</h6>
                                     <div class="alternatives-list" id="alternativesList">
                                         <!-- Populated dynamically -->
                                     </div>
@@ -275,34 +276,34 @@ var EducationManager = {
                 
                 <div class="tab-content" id="comparisonTab">
                     <div class="comparison-info">
-                        <h4>📊 Algorithm vs Heuristic Comparison</h4>
+                        <h4 data-i18n="education.comparisonTitle">📊 Algorithm vs Heuristic Comparison</h4>
                         <div class="comparison-table">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Aspect</th>
-                                        <th>Current Algorithm</th>
-                                        <th>Current Heuristic</th>
+                                        <th data-i18n="education.aspect">Aspect</th>
+                                        <th data-i18n="education.currentAlgorithm">Current Algorithm</th>
+                                        <th data-i18n="education.currentHeuristic">Current Heuristic</th>
                                     </tr>
                                 </thead>
                                 <tbody id="comparisonTableBody">
                                     <tr>
-                                        <td>Optimality</td>
+                                        <td data-i18n="education.optimality">Optimality</td>
                                         <td id="algorithmOptimality">-</td>
                                         <td id="heuristicOptimality">-</td>
                                     </tr>
                                     <tr>
-                                        <td>Complexity</td>
+                                        <td data-i18n="education.complexity">Complexity</td>
                                         <td id="algorithmComplexity">-</td>
                                         <td id="heuristicComplexity">-</td>
                                     </tr>
                                     <tr>
-                                        <td>Memory Usage</td>
+                                        <td data-i18n="education.memoryUsage">Memory Usage</td>
                                         <td id="algorithmMemory">-</td>
                                         <td id="heuristicMemory">-</td>
                                     </tr>
                                     <tr>
-                                        <td>Best Use Case</td>
+                                        <td data-i18n="education.bestUseCase">Best Use Case</td>
                                         <td id="algorithmUseCase">-</td>
                                         <td id="heuristicUseCase">-</td>
                                     </tr>
@@ -311,8 +312,8 @@ var EducationManager = {
                         </div>
                         
                         <div class="recommendation" id="recommendation">
-                            <h5>💡 Recommendation:</h5>
-                            <p id="recommendationText">Select an algorithm and heuristic to see recommendations.</p>
+                            <h5 data-i18n="education.recommendation">💡 Recommendation:</h5>
+                            <p id="recommendationText" data-i18n="education.selectAlgorithmForRecommendation">Select an algorithm and heuristic to see recommendations.</p>
                         </div>
                     </div>
                 </div>
@@ -399,6 +400,9 @@ var EducationManager = {
             if (window.I18n && I18n.updatePageContent) {
                 I18n.updatePageContent();
             }
+            
+            // Manual translation updates for specific elements
+            this.updateManualTranslations();
             
             this.updateAlgorithmInfo();
             this.updateHeuristicInfo();
@@ -1090,6 +1094,32 @@ var EducationManager = {
     onSearchFailed: function() {
         var message = window.t ? t('education.searchFailed') : 'Search failed - no solution found within limits.';
         this.updateCurrentStep(message);
+    },
+    
+    updateManualTranslations: function() {
+        if (!window.t) return;
+        
+        // Update checkbox label text that might not be auto-translated
+        var enableRealTimeText = document.getElementById('enableRealTimeText');
+        if (enableRealTimeText) {
+            enableRealTimeText.textContent = t('education.enableRealTimeExplanations');
+        }
+        
+        var whyDescription = document.getElementById('whyDescription');
+        if (whyDescription) {
+            whyDescription.textContent = t('education.realTimeDesc');
+        }
+        
+        // Update explanation text based on checkbox state
+        var whyExplanationsToggle = document.getElementById('whyExplanationsToggle');
+        var whyExplanation = document.getElementById('whyExplanation');
+        if (whyExplanation && whyExplanationsToggle) {
+            if (whyExplanationsToggle.checked) {
+                whyExplanation.textContent = t('education.realTimeEnabled');
+            } else {
+                whyExplanation.textContent = t('education.startSearchForExplanations');
+            }
+        }
     }
 };
 
