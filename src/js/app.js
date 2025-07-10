@@ -282,14 +282,22 @@ function searchCallback(err, options) {
     var solutionCost = err ? 0 : options.node.cost;
     var solutionPath = err ? [] : getSolutionPath(options.node);
     
-    searchResultDiv.innerHTML = (err ? err : '<span class="solution-info">Solved! Depth: ' + options.node.depth + '</span>') + ' <br/>' +
-        ('Iteration: ' + options.iteration) + '<br/>' +
-        (!err ? '<span class="cost-info">Solution Cost: ' + solutionCost + '</span><br/>' : '') +
-        (!err ? '<span class="cost-info">Solution Path Length: ' + solutionPath.length + '</span><br/>' : '') +
+    var solvedText = window.t ? t('results.solved', {depth: options.node.depth}) : 'Solved! Depth: ' + options.node.depth;
+    var iterationText = window.t ? t('results.iteration', {iteration: options.iteration}) : 'Iteration: ' + options.iteration;
+    var costText = window.t ? t('results.solutionCost', {cost: solutionCost}) : 'Solution Cost: ' + solutionCost;
+    var pathText = window.t ? t('results.pathLength', {length: solutionPath.length}) : 'Solution Path Length: ' + solutionPath.length;
+    var expandedText = window.t ? t('results.expandedNodes', {expanded: expandedNodesLength, max: options.maxExpandedNodesLength}) : 'Expanded nodes: ' + expandedNodesLength + ' / ' + options.maxExpandedNodesLength;
+    var frontierText = window.t ? t('results.frontierNodes', {frontier: options.frontierList.length, max: options.maxFrontierListLength}) : 'Frontier nodes: ' + options.frontierList.length + ' / ' + options.maxFrontierListLength;
+    var replayText = window.t ? t('solution.replay') : 'Replay solution';
+
+    searchResultDiv.innerHTML = (err ? err : '<span class="solution-info">' + solvedText + '</span>') + ' <br/>' +
+        iterationText + '<br/>' +
+        (!err ? '<span class="cost-info">' + costText + '</span><br/>' : '') +
+        (!err ? '<span class="cost-info">' + pathText + '</span><br/>' : '') +
         '<br/>' +
-        ('Expanded nodes: ' + expandedNodesLength + ' / ' + options.maxExpandedNodesLength) + '<br/>' +
-        ('Frontier nodes: ' + options.frontierList.length + ' / ' + options.maxFrontierListLength) +
-        (err ? '' : '<br/><br/><button id="replayButton" onclick="replayWinnerNode()">Replay solution</button>');
+        expandedText + '<br/>' +
+        frontierText +
+        (err ? '' : '<br/><br/><button id="replayButton" onclick="replayWinnerNode()">' + replayText + '</button>');
 
     window.winnerNode = err ? null : options.node
 
@@ -333,10 +341,15 @@ function stepCallback(options) {
     Board.draw(options.node.state);
 
     var expandedNodesLength = _.size(options.expandedNodes);
-    searchResultDiv.innerHTML = 'Stepped <br/>' +
-        ('Iteration: ' + options.iteration) + '<br/><br/>' +
-        ('Expanded nodes: ' + expandedNodesLength + ' / ' + options.maxExpandedNodesLength) + '<br/>' +
-        ('Frontier nodes: ' + options.frontierList.length + ' / ' + options.maxFrontierListLength);
+    var steppedText = window.t ? t('results.stepped') : 'Stepped';
+    var iterationText = window.t ? t('results.iteration', {iteration: options.iteration}) : 'Iteration: ' + options.iteration;
+    var expandedText = window.t ? t('results.expandedNodes', {expanded: expandedNodesLength, max: options.maxExpandedNodesLength}) : 'Expanded nodes: ' + expandedNodesLength + ' / ' + options.maxExpandedNodesLength;
+    var frontierText = window.t ? t('results.frontierNodes', {frontier: options.frontierList.length, max: options.maxFrontierListLength}) : 'Frontier nodes: ' + options.frontierList.length + ' / ' + options.maxFrontierListLength;
+    
+    searchResultDiv.innerHTML = steppedText + ' <br/>' +
+        iterationText + '<br/><br/>' +
+        expandedText + '<br/>' +
+        frontierText;
 
     // Draw
     if (visualizationCheckbox.checked) {
@@ -370,7 +383,7 @@ function replayWinnerNode() {
     Board.draw(game.state);
     
     // Set animation duration before adding animation class
-    var animationSpeed = Board.getAnimationSpeed();
+    var animationSpeed = 500; // Fixed animation speed
     Board.setAnimationDuration(animationSpeed);
     
     setTimeout(function() {

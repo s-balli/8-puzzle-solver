@@ -29,99 +29,91 @@
     </div>
     <div id="visualization"></div>
     <div id="controls" role="complementary" aria-label="Control panel">
-        <div class="heading">Settings</div>
+        <div class="heading" data-i18n="ui.settings">Settings</div>
         <div class="content">
-            <label for="themeSelector">Theme</label>
+            <label for="languageSelector" data-i18n="ui.language">Language</label>
+            <select id="languageSelector" aria-label="Select language">
+                <option value="tr" data-i18n="ui.turkish">🇹🇷 Türkçe</option>
+                <option value="en" data-i18n="ui.english">🇺🇸 English</option>
+            </select>
+            <label for="themeSelector" data-i18n="ui.theme">Theme</label>
             <select id="themeSelector" aria-label="Select theme">
-                <option value="light">☀️ Light Mode</option>
-                <option value="dark">🌙 Dark Mode</option>
-            </select>
-            <label for="animationSpeed">Animation Speed</label>
-            <select id="animationSpeed" aria-label="Select animation speed">
-                <option value="slow">Slow (1.5s)</option>
-                <option value="normal" selected>Normal (0.5s)</option>
-                <option value="fast">Fast (0.15s)</option>
-            </select>
-            <label for="textSize">Text Size</label>
-            <select id="textSize" aria-label="Select text size">
-                <option value="small">Small</option>
-                <option value="normal" selected>Normal</option>
-                <option value="large">Large</option>
-                <option value="x-large">Extra Large</option>
+                <option value="light" data-i18n="ui.lightMode">☀️ Light Mode</option>
+                <option value="dark" data-i18n="ui.darkMode">🌙 Dark Mode</option>
             </select>
             <label class="toggle-label" for="soundEnabled">
-                <span>Sound Effects</span>
+                <span data-i18n="ui.soundEffects">Sound Effects</span>
                 <div class="toggle-switch">
                     <input type="checkbox" id="soundEnabled" checked aria-describedby="sound-help">
                     <span class="toggle-slider" role="switch" aria-checked="true"></span>
                 </div>
             </label>
-            <div id="sound-help" class="sr-only">Enable or disable sound effects for interactions</div>
+            <div id="sound-help" class="sr-only" data-i18n="accessibility.soundHelp">Enable or disable sound effects for interactions</div>
             
             <label class="toggle-label" for="educationMode">
-                <span>Education Mode</span>
+                <span data-i18n="ui.educationMode">Education Mode</span>
                 <div class="toggle-switch">
                     <input type="checkbox" id="educationMode" aria-describedby="education-help">
                     <span class="toggle-slider" role="switch" aria-checked="false"></span>
                 </div>
             </label>
-            <div id="education-help" class="sr-only">Enable educational explanations and tutorials</div>
+            <div id="education-help" class="sr-only" data-i18n="accessibility.educationHelp">Enable educational explanations and tutorials</div>
             
             <label class="toggle-label" for="performanceMode">
-                <span>Performance Analysis</span>
+                <span data-i18n="ui.performanceAnalysis">Performance Analysis</span>
                 <div class="toggle-switch">
                     <input type="checkbox" id="performanceMode" checked aria-describedby="performance-help">
                     <span class="toggle-slider" role="switch" aria-checked="true"></span>
                 </div>
             </label>
-            <div id="performance-help" class="sr-only">Show performance metrics and analysis</div>
+            <div id="performance-help" class="sr-only" data-i18n="accessibility.performanceHelp">Show performance metrics and analysis</div>
             
             <label class="toggle-label" for="realTimeGraphs">
-                <span>Real-time Graphs</span>
+                <span data-i18n="ui.realTimeGraphs">Real-time Graphs</span>
                 <div class="toggle-switch">
                     <input type="checkbox" id="realTimeGraphs" checked aria-describedby="graphs-help">
                     <span class="toggle-slider" role="switch" aria-checked="true"></span>
                 </div>
             </label>
-            <div id="graphs-help" class="sr-only">Display real-time performance graphs during search</div>
+            <div id="graphs-help" class="sr-only" data-i18n="accessibility.graphsHelp">Display real-time performance graphs during search</div>
         </div>
 
-        <div class="heading">Board</div>
+        <div class="heading" data-i18n="board.heading">Board</div>
         <div class="content">
-            <button id="randomize" aria-label="Generate random puzzle state">Randomize</button>
-            <button id="customInput" aria-label="Enter custom puzzle state">Enter Custom State</button>
+            <button id="randomize" aria-label="Generate random puzzle state" data-i18n="board.randomize" data-i18n-aria="board.randomize">Randomize</button>
+            <button id="customInput" aria-label="Enter custom puzzle state" data-i18n="board.customState" data-i18n-aria="board.customState">Enter Custom State</button>
         </div>
 
-        <div class="heading">Search</div>
+        <div class="heading" data-i18n="search.heading">Search</div>
         <div class="content">
-            <label for="searchType">Algorithm</label>
+            <label for="searchType" data-i18n="search.algorithm">Algorithm</label>
             <select id="searchType" aria-label="Select search algorithm">
-                <optgroup label="Uninformed Search">
-                    <option value="breadthFirst">Breadth-First</option>
-                    <option value="uniformCost">Uniform-Cost</option>
-                    <option value="depthFirst">Depth-First</option>
-                    <option value="iterativeDeepening">Iterative-Deepening</option>
+                <optgroup label="Uninformed Search" data-i18n-optgroup="search.algorithmGroups.uninformed">
+                    <option value="breadthFirst" data-i18n="search.algorithms.breadthFirst">Breadth-First</option>
+                    <option value="uniformCost" data-i18n="search.algorithms.uniformCost">Uniform-Cost</option>
+                    <option value="depthFirst" data-i18n="search.algorithms.depthFirst">Depth-First</option>
+                    <option value="iterativeDeepening" data-i18n="search.algorithms.iterativeDeepening">Iterative-Deepening</option>
                 </optgroup>
-                <optgroup label="Informed Search">
-                    <option value="greedyBest" selected>Greedy-Best</option>
-                    <option value="aStar">A*</option>
+                <optgroup label="Informed Search" data-i18n-optgroup="search.algorithmGroups.informed">
+                    <option value="greedyBest" selected data-i18n="search.algorithms.greedyBest">Greedy-Best</option>
+                    <option value="aStar" data-i18n="search.algorithms.aStar">A*</option>
                 </optgroup>
             </select>
-            <label for="iterationLimit">Iteration Limit</label>
+            <label for="iterationLimit" data-i18n="search.iterationLimit">Iteration Limit</label>
             <input type="number" id="iterationLimit" value="10000" aria-label="Maximum iterations for search">
-            <label for="depthLimit">Depth Limit</label>
+            <label for="depthLimit" data-i18n="search.depthLimit">Depth Limit</label>
             <input type="number" id="depthLimit" value="0" aria-label="Maximum depth for search">
-            <label for="timeLimit">Time Limit (seconds)</label>
+            <label for="timeLimit" data-i18n="search.timeLimit">Time Limit (seconds)</label>
             <input type="number" id="timeLimit" value="30" min="1" max="300" aria-label="Maximum time for search in seconds">
-            <label for="heuristicFunction">Heuristic Function</label>
+            <label for="heuristicFunction" data-i18n="search.heuristicFunction">Heuristic Function</label>
             <select id="heuristicFunction" aria-label="Select heuristic function">
-                <option value="manhattan" selected>Manhattan Distance</option>
-                <option value="euclidean">Euclidean Distance</option>
-                <option value="misplaced">Misplaced Tiles</option>
-                <option value="linearConflict">Linear Conflict</option>
-                <option value="walkingDistance">Walking Distance</option>
-                <option value="cornerTiles">Corner Tiles</option>
-                <option value="maxHeuristic">Max Heuristic</option>
+                <option value="manhattan" selected data-i18n="search.heuristics.manhattan">Manhattan Distance</option>
+                <option value="euclidean" data-i18n="search.heuristics.euclidean">Euclidean Distance</option>
+                <option value="misplaced" data-i18n="search.heuristics.misplaced">Misplaced Tiles</option>
+                <option value="linearConflict" data-i18n="search.heuristics.linearConflict">Linear Conflict</option>
+                <option value="walkingDistance" data-i18n="search.heuristics.walkingDistance">Walking Distance</option>
+                <option value="cornerTiles" data-i18n="search.heuristics.cornerTiles">Corner Tiles</option>
+                <option value="maxHeuristic" data-i18n="search.heuristics.maxHeuristic">Max Heuristic</option>
             </select>
             <label style="display: none;">
                 <input type="checkbox" id="visualizationCheck" checked>
@@ -132,14 +124,14 @@
                 Early check optimization
             </label>
 
-            <button id="searchStep" aria-label="Execute one search iteration">Iterate one step</button>
-            <button id="search" aria-label="Start search algorithm">Search</button>
-            <button id="searchStop" style="display: none;" aria-label="Stop current search">Stop</button>
+            <button id="searchStep" aria-label="Execute one search iteration" data-i18n="search.iterateStep" data-i18n-aria="search.iterateStep">Iterate one step</button>
+            <button id="search" aria-label="Start search algorithm" data-i18n="search.search" data-i18n-aria="search.search">Search</button>
+            <button id="searchStop" style="display: none;" aria-label="Stop current search" data-i18n="search.stop" data-i18n-aria="search.stop">Stop</button>
             
             <!-- Progress Indicator -->
             <div id="searchProgress" class="search-progress" style="display: none;">
                 <div class="progress-header">
-                    <span class="progress-label">Search Progress</span>
+                    <span class="progress-label" data-i18n="progress.label">Search Progress</span>
                     <span class="progress-percentage" id="progressPercentage">0%</span>
                 </div>
                 <div class="progress-bar">
@@ -151,29 +143,29 @@
             </div>
         </div>
 
-        <div class="heading">Solution Navigation</div>
+        <div class="heading" data-i18n="solution.heading">Solution Navigation</div>
         <div class="content">
-            <button id="prevStep" disabled aria-label="Go to previous solution step">← Previous</button>
-            <button id="nextStep" disabled aria-label="Go to next solution step">Next →</button>
-            <button id="resetSteps" disabled aria-label="Reset to initial state">Reset</button>
+            <button id="prevStep" disabled aria-label="Go to previous solution step" data-i18n="solution.previous" data-i18n-aria="solution.previous">← Previous</button>
+            <button id="nextStep" disabled aria-label="Go to next solution step" data-i18n="solution.next" data-i18n-aria="solution.next">Next →</button>
+            <button id="resetSteps" disabled aria-label="Reset to initial state" data-i18n="solution.reset" data-i18n-aria="solution.reset">Reset</button>
         </div>
 
 
-        <div class="heading">Search Result</div>
+        <div class="heading" data-i18n="results.heading">Search Result</div>
         <div id="searchResult" class="content"></div>
     </div>
 
     <div class="keyboard-help">
-        <h4>Keyboard Shortcuts</h4>
+        <h4 data-i18n="keyboard.title">Keyboard Shortcuts</h4>
         <ul>
-            <li><span class="key">←</span><span class="key">→</span> Navigate steps</li>
-            <li><span class="key">↑</span> Reset to start</li>
-            <li><span class="key">↓</span> Go to end</li>
-            <li><span class="key">Space</span> Toggle search</li>
-            <li><span class="key">Enter</span> Start search</li>
-            <li><span class="key">Esc</span> Stop search</li>
-            <li><span class="key">R</span> Randomize</li>
-            <li><span class="key">S</span> Step search</li>
+            <li><span class="key">←</span><span class="key">→</span> <span data-i18n="keyboard.navigate">Navigate steps</span></li>
+            <li><span class="key">↑</span> <span data-i18n="keyboard.reset">Reset to start</span></li>
+            <li><span class="key">↓</span> <span data-i18n="keyboard.end">Go to end</span></li>
+            <li><span class="key">Space</span> <span data-i18n="keyboard.toggleSearch">Toggle search</span></li>
+            <li><span class="key">Enter</span> <span data-i18n="keyboard.startSearch">Start search</span></li>
+            <li><span class="key">Esc</span> <span data-i18n="keyboard.stopSearch">Stop search</span></li>
+            <li><span class="key">R</span> <span data-i18n="keyboard.randomize">Randomize</span></li>
+            <li><span class="key">S</span> <span data-i18n="keyboard.stepSearch">Step search</span></li>
         </ul>
     </div>
 
@@ -182,23 +174,23 @@
     <!-- Performance Analysis Panel -->
     <div id="performancePanel" class="performance-panel" style="display: none;">
         <div class="performance-header">
-            <h3>📊 Performance Analysis</h3>
+            <h3 data-i18n="performance.title">📊 Performance Analysis</h3>
             <button onclick="PerformanceManager.hide()">×</button>
         </div>
         <div class="performance-content">
             <div class="performance-section">
-                <h4>Current Algorithm Metrics</h4>
+                <h4 data-i18n="performance.currentMetrics">Current Algorithm Metrics</h4>
                 <div class="performance-metrics" id="currentMetrics">
                     <div class="metric-item">
-                        <span class="metric-label">Time Elapsed:</span>
+                        <span class="metric-label" data-i18n="performance.timeElapsed">Time Elapsed:</span>
                         <span class="metric-value" id="timeElapsed">0ms</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">Nodes Expanded:</span>
+                        <span class="metric-label" data-i18n="performance.nodesExpanded">Nodes Expanded:</span>
                         <span class="metric-value" id="nodesExpanded">0</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">Frontier Size:</span>
+                        <span class="metric-label" data-i18n="performance.frontierSize">Frontier Size:</span>
                         <span class="metric-value" id="frontierSize">0</span>
                     </div>
                 </div>
@@ -206,7 +198,7 @@
             
             <div class="performance-section">
                 <div id="comparisonResults" style="display: none;">
-                    <div class="comparison-progress">Running comparison...</div>
+                    <div class="comparison-progress" data-i18n="performance.runningComparison">Running comparison...</div>
                     <div class="comparison-table"></div>
                 </div>
             </div>
@@ -216,7 +208,7 @@
     <!-- Real-time Graphs Panel -->
     <div id="graphPanel" class="graph-panel" style="display: none;">
         <div class="graph-header">
-            <h3>📈 Real-time Statistics</h3>
+            <h3 data-i18n="graphs.title">📈 Real-time Statistics</h3>
             <button onclick="GraphManager.hide()">×</button>
         </div>
         <div class="graph-content">
@@ -227,31 +219,31 @@
             <div class="graph-metrics">
                 <div class="metric-row">
                     <div class="metric-box">
-                        <span class="metric-title">Frontier</span>
+                        <span class="metric-title" data-i18n="graphs.frontier">Frontier</span>
                         <span class="metric-number" id="frontierCount">0</span>
                     </div>
                     <div class="metric-box">
-                        <span class="metric-title">Expanded</span>
+                        <span class="metric-title" data-i18n="graphs.expanded">Expanded</span>
                         <span class="metric-number" id="expandedCount">0</span>
                     </div>
                 </div>
                 <div class="metric-row">
                     <div class="metric-box">
-                        <span class="metric-title">Iteration</span>
+                        <span class="metric-title" data-i18n="graphs.iteration">Iteration</span>
                         <span class="metric-number" id="iterationCount">0</span>
                     </div>
                     <div class="metric-box">
-                        <span class="metric-title">Time</span>
+                        <span class="metric-title" data-i18n="graphs.time">Time</span>
                         <span class="metric-number" id="elapsedTime">0ms</span>
                     </div>
                 </div>
                 <div class="metric-row" id="heuristicMetricRow" style="display: none;">
                     <div class="metric-box">
-                        <span class="metric-title">H Value</span>
+                        <span class="metric-title" data-i18n="graphs.hValue">H Value</span>
                         <span class="metric-number" id="heuristicValue">0</span>
                     </div>
                     <div class="metric-box">
-                        <span class="metric-title">F Value</span>
+                        <span class="metric-title" data-i18n="graphs.fValue">F Value</span>
                         <span class="metric-number" id="fValue">0</span>
                     </div>
                 </div>
@@ -266,6 +258,8 @@
     <script src="https://unpkg.com/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://unpkg.com/vis@4.21.0/dist/vis.min.js"></script>
     <script src="https://unpkg.com/body-scroll-lock@2.6.4/lib/bodyScrollLock.min.js"></script>
+    <script src="./js/translations.js"></script>
+    <script src="./js/i18n.js"></script>
     <script src="./js/utils.js"></script>
     <script src="./js/sound.js"></script>
     <script src="./js/navigation.js"></script>

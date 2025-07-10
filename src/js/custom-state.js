@@ -16,21 +16,21 @@ var CustomStateManager = {
             <div class="modal-overlay" id="modalOverlay"></div>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>🎯 Custom Puzzle State</h3>
+                    <h3 data-i18n="customState.title">🎯 Custom Puzzle State</h3>
                     <button class="close-btn" id="closeCustomState">×</button>
                 </div>
                 
                 <div class="modal-body">
                     <div class="input-methods">
                         <div class="method-tabs">
-                            <button class="tab-btn active" data-method="visual">Visual Editor</button>
-                            <button class="tab-btn" data-method="text">Text Input</button>
-                            <button class="tab-btn" data-method="presets">Presets</button>
+                            <button class="tab-btn active" data-method="visual" data-i18n="customState.tabs.visual">Visual Editor</button>
+                            <button class="tab-btn" data-method="text" data-i18n="customState.tabs.text">Text Input</button>
+                            <button class="tab-btn" data-method="presets" data-i18n="customState.tabs.presets">Presets</button>
                         </div>
                         
                         <!-- Visual Editor -->
                         <div class="input-method active" id="visualMethod">
-                            <p class="method-description">Click tiles to edit values or drag to rearrange</p>
+                            <p class="method-description" data-i18n="customState.visual.description">Click tiles to edit values or drag to rearrange</p>
                             <div class="visual-editor">
                                 <div class="visual-board" id="visualBoard">
                                     <div class="visual-tile" data-index="0">0</div>
@@ -44,35 +44,35 @@ var CustomStateManager = {
                                     <div class="visual-tile" data-index="8">8</div>
                                 </div>
                                 <div class="editor-controls">
-                                    <button id="shuffleBoard">🔀 Shuffle</button>
-                                    <button id="resetBoard">🔄 Reset</button>
-                                    <button id="clearBoard">🗑️ Clear</button>
+                                    <button id="shuffleBoard" data-i18n="customState.visual.shuffle">🔀 Shuffle</button>
+                                    <button id="resetBoard" data-i18n="customState.visual.reset">🔄 Reset</button>
+                                    <button id="clearBoard" data-i18n="customState.visual.clear">🗑️ Clear</button>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Text Input -->
                         <div class="input-method" id="textMethod">
-                            <p class="method-description">Enter 9 digits (0-8), where 0 represents the empty space</p>
+                            <p class="method-description" data-i18n="customState.text.description">Enter 9 digits (0-8), where 0 represents the empty space</p>
                             <div class="text-input-container">
                                 <input type="text" id="textInput" placeholder="012345678" maxlength="9" 
                                        pattern="[0-8]{9}" class="text-input">
                                 <div class="input-validation" id="textValidation"></div>
                             </div>
                             <div class="format-examples">
-                                <h4>Examples:</h4>
+                                <h4 data-i18n="customState.text.examples">Examples:</h4>
                                 <div class="example-items">
-                                    <button class="example-btn" data-state="012345678">Initial State</button>
-                                    <button class="example-btn" data-state="123456780">Goal State</button>
-                                    <button class="example-btn" data-state="102345678">Easy</button>
-                                    <button class="example-btn" data-state="120345678">Medium</button>
+                                    <button class="example-btn" data-state="012345678" data-i18n="customState.text.initial">Initial State</button>
+                                    <button class="example-btn" data-state="123456780" data-i18n="customState.text.goal">Goal State</button>
+                                    <button class="example-btn" data-state="102345678" data-i18n="customState.text.easy">Easy</button>
+                                    <button class="example-btn" data-state="120345678" data-i18n="customState.text.medium">Medium</button>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Presets -->
                         <div class="input-method" id="presetsMethod">
-                            <p class="method-description">Choose from predefined puzzle configurations</p>
+                            <p class="method-description" data-i18n="customState.presets.description">Choose from predefined puzzle configurations</p>
                             <div class="presets-grid">
                                 <div class="preset-item" data-state="102345678" data-difficulty="easy">
                                     <div class="preset-board">
@@ -81,8 +81,8 @@ var CustomStateManager = {
                                         <span>6</span><span>7</span><span>8</span>
                                     </div>
                                     <div class="preset-info">
-                                        <strong>Easy</strong>
-                                        <small>2 moves to solve</small>
+                                        <strong data-i18n="customState.presets.difficulties.easy">Easy</strong>
+                                        <small data-i18n="customState.presets.moves.two">2 moves to solve</small>
                                     </div>
                                 </div>
                                 
@@ -93,8 +93,8 @@ var CustomStateManager = {
                                         <span>6</span><span>7</span><span>8</span>
                                     </div>
                                     <div class="preset-info">
-                                        <strong>Medium</strong>
-                                        <small>4 moves to solve</small>
+                                        <strong data-i18n="customState.presets.difficulties.medium">Medium</strong>
+                                        <small data-i18n="customState.presets.moves.four">4 moves to solve</small>
                                     </div>
                                 </div>
                                 
@@ -105,8 +105,8 @@ var CustomStateManager = {
                                         <span>6</span><span>7</span><span>8</span>
                                     </div>
                                     <div class="preset-info">
-                                        <strong>Medium</strong>
-                                        <small>6 moves to solve</small>
+                                        <strong data-i18n="customState.presets.difficulties.medium">Medium</strong>
+                                        <small data-i18n="customState.presets.moves.six">6 moves to solve</small>
                                     </div>
                                 </div>
                                 
@@ -117,8 +117,8 @@ var CustomStateManager = {
                                         <span>6</span><span>7</span><span>8</span>
                                     </div>
                                     <div class="preset-info">
-                                        <strong>Hard</strong>
-                                        <small>8 moves to solve</small>
+                                        <strong data-i18n="customState.presets.difficulties.hard">Hard</strong>
+                                        <small data-i18n="customState.presets.moves.eight">8 moves to solve</small>
                                     </div>
                                 </div>
                                 
@@ -129,8 +129,8 @@ var CustomStateManager = {
                                         <span class="empty"></span><span>7</span><span>8</span>
                                     </div>
                                     <div class="preset-info">
-                                        <strong>Hard</strong>
-                                        <small>12 moves to solve</small>
+                                        <strong data-i18n="customState.presets.difficulties.hard">Hard</strong>
+                                        <small data-i18n="customState.presets.moves.twelve">12 moves to solve</small>
                                     </div>
                                 </div>
                                 
@@ -141,8 +141,8 @@ var CustomStateManager = {
                                         <span>7</span><span>6</span><span>5</span>
                                     </div>
                                     <div class="preset-info">
-                                        <strong>Expert</strong>
-                                        <small>20+ moves to solve</small>
+                                        <strong data-i18n="customState.presets.difficulties.expert">Expert</strong>
+                                        <small data-i18n="customState.presets.moves.twenty">20+ moves to solve</small>
                                     </div>
                                 </div>
                             </div>
@@ -152,17 +152,17 @@ var CustomStateManager = {
                     <div class="state-validation">
                         <div class="validation-status" id="validationStatus">
                             <span class="status-icon">✓</span>
-                            <span class="status-text">Valid puzzle state</span>
+                            <span class="status-text" data-i18n="customState.validation.valid">Valid puzzle state</span>
                         </div>
                         <div class="state-info" id="stateInfo">
-                            <span>Current: <code id="currentStateDisplay">012345678</code></span>
+                            <span><span data-i18n="customState.validation.current">Current:</span> <code id="currentStateDisplay">012345678</code></span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <button class="btn-secondary" id="cancelCustomState">Cancel</button>
-                    <button class="btn-primary" id="applyCustomState">Apply State</button>
+                    <button class="btn-secondary" id="cancelCustomState" data-i18n="customState.buttons.cancel">Cancel</button>
+                    <button class="btn-primary" id="applyCustomState" data-i18n="customState.buttons.apply">Apply State</button>
                 </div>
             </div>
         `;
@@ -384,13 +384,16 @@ var CustomStateManager = {
         var hasAllDigits = isValid && this.hasAllDigits(value);
         
         if (!isValid) {
-            validation.innerHTML = '<span class="error">⚠️ Must be exactly 9 digits (0-8)</span>';
+            validation.innerHTML = '<span class="error" data-i18n="customState.validation.exactlyNine">⚠️ Must be exactly 9 digits (0-8)</span>';
+            if (window.I18n && I18n.updatePageContent) I18n.updatePageContent();
             textInput.classList.add('invalid');
         } else if (!hasAllDigits) {
-            validation.innerHTML = '<span class="error">⚠️ Must contain each digit 0-8 exactly once</span>';
+            validation.innerHTML = '<span class="error" data-i18n="customState.validation.eachDigit">⚠️ Must contain each digit 0-8 exactly once</span>';
+            if (window.I18n && I18n.updatePageContent) I18n.updatePageContent();
             textInput.classList.add('invalid');
         } else {
-            validation.innerHTML = '<span class="success">✓ Valid puzzle state</span>';
+            validation.innerHTML = '<span class="success" data-i18n="customState.validation.valid">✓ Valid puzzle state</span>';
+            if (window.I18n && I18n.updatePageContent) I18n.updatePageContent();
             textInput.classList.remove('invalid');
             this.currentState = value;
         }
@@ -414,15 +417,18 @@ var CustomStateManager = {
             var isSolvable = testGame.isValidState(this.currentState) && testGame.isSolvable(this.currentState);
             
             if (isSolvable) {
-                statusElement.innerHTML = '<span class="status-icon success">✓</span><span class="status-text">Valid and solvable puzzle state</span>';
+                statusElement.innerHTML = '<span class="status-icon success">✓</span><span class="status-text" data-i18n="customState.validation.validSolvable">Valid and solvable puzzle state</span>';
+                if (window.I18n && I18n.updatePageContent) I18n.updatePageContent();
                 statusElement.className = 'validation-status valid';
             } else {
-                statusElement.innerHTML = '<span class="status-icon warning">⚠️</span><span class="status-text">Valid but unsolvable puzzle state</span>';
+                statusElement.innerHTML = '<span class="status-icon warning">⚠️</span><span class="status-text" data-i18n="customState.validation.validUnsolvable">Valid but unsolvable puzzle state</span>';
+                if (window.I18n && I18n.updatePageContent) I18n.updatePageContent();
                 statusElement.className = 'validation-status warning';
                 isValid = false; // Treat unsolvable as invalid
             }
         } else {
-            statusElement.innerHTML = '<span class="status-icon error">⚠️</span><span class="status-text">Invalid puzzle state</span>';
+            statusElement.innerHTML = '<span class="status-icon error">⚠️</span><span class="status-text" data-i18n="customState.validation.invalid">Invalid puzzle state</span>';
+            if (window.I18n && I18n.updatePageContent) I18n.updatePageContent();
             statusElement.className = 'validation-status invalid';
         }
         
@@ -476,6 +482,11 @@ var CustomStateManager = {
         this.modalElement.style.display = 'flex';
         this.setCurrentState(this.currentState);
         
+        // Update translations for dynamic modal content
+        if (window.I18n && I18n.updatePageContent) {
+            I18n.updatePageContent();
+        }
+        
         // Focus on appropriate input based on active method
         var activeMethod = this.modalElement.querySelector('.input-method.active');
         if (activeMethod.id === 'textMethod') {
@@ -515,11 +526,11 @@ var CustomStateManager = {
                     
                     this.hide();
                 } else {
-                    alert('This puzzle state is not solvable. Please choose a different configuration.');
+                    alert(window.t ? t('customState.validation.unsolvableError') : 'This puzzle state is not solvable. Please choose a different configuration.');
                 }
             } catch (error) {
                 console.error('Error validating state:', error.message);
-                alert('Error validating puzzle state: ' + error.message);
+                alert(window.t ? t('errors.validationError', {error: error.message}) : 'Error validating puzzle state: ' + error.message);
             }
         }
     }

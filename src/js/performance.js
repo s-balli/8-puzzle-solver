@@ -105,30 +105,39 @@ var PerformanceManager = {
         var duration = Math.round(this.currentMetrics.duration * 100) / 100;
         var iterationsPerSecond = Math.round((this.currentMetrics.iterations / (this.currentMetrics.duration / 1000)) * 100) / 100;
         
+        var durationLabel = window.t ? t('performance.duration') : 'Duration:';
+        var iterationsLabel = window.t ? t('performance.iterations') : 'Iterations:';
+        var speedLabel = window.t ? t('performance.speed') : 'Speed:';
+        var expandedLabel = window.t ? t('performance.expandedNodes') : 'Expanded Nodes:';
+        var frontierLabel = window.t ? t('performance.maxFrontier') : 'Max Frontier:';
+        var memoryLabel = window.t ? t('performance.memoryUsed') : 'Memory Used:';
+        var iterPerSecSuffix = window.t ? t('performance.iterPerSec') : ' iter/s';
+        var mbSuffix = window.t ? t('performance.megabytes') : ' MB';
+        
         metricsDiv.innerHTML = 
             '<div class="metric-item">' +
-                '<span class="metric-label">Duration:</span>' +
+                '<span class="metric-label">' + durationLabel + '</span>' +
                 '<span class="metric-value">' + duration + 'ms</span>' +
             '</div>' +
             '<div class="metric-item">' +
-                '<span class="metric-label">Iterations:</span>' +
+                '<span class="metric-label">' + iterationsLabel + '</span>' +
                 '<span class="metric-value">' + this.currentMetrics.iterations + '</span>' +
             '</div>' +
             '<div class="metric-item">' +
-                '<span class="metric-label">Speed:</span>' +
-                '<span class="metric-value">' + iterationsPerSecond + ' iter/s</span>' +
+                '<span class="metric-label">' + speedLabel + '</span>' +
+                '<span class="metric-value">' + iterationsPerSecond + iterPerSecSuffix + '</span>' +
             '</div>' +
             '<div class="metric-item">' +
-                '<span class="metric-label">Expanded Nodes:</span>' +
+                '<span class="metric-label">' + expandedLabel + '</span>' +
                 '<span class="metric-value">' + this.currentMetrics.expandedNodes + '</span>' +
             '</div>' +
             '<div class="metric-item">' +
-                '<span class="metric-label">Max Frontier:</span>' +
+                '<span class="metric-label">' + frontierLabel + '</span>' +
                 '<span class="metric-value">' + this.currentMetrics.maxFrontierSize + '</span>' +
             '</div>' +
             '<div class="metric-item">' +
-                '<span class="metric-label">Memory Used:</span>' +
-                '<span class="metric-value">' + this.currentMetrics.memoryUsageEnd.used + ' MB</span>' +
+                '<span class="metric-label">' + memoryLabel + '</span>' +
+                '<span class="metric-value">' + this.currentMetrics.memoryUsageEnd.used + mbSuffix + '</span>' +
             '</div>';
         
         // Auto-show performance panel when search completes

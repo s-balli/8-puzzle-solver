@@ -158,11 +158,14 @@ var GraphManager = {
         
         var width = this.canvas.width;
         var height = this.canvas.height;
-        var padding = 20;
+        var padding = 25; // Padding for Y-axis only
         
         // Enable anti-aliasing for smoother lines
         this.ctx.imageSmoothingEnabled = true;
         this.ctx.imageSmoothingQuality = 'high';
+        
+        // Draw axes
+        this.drawAxes(width, height, padding, maxValue);
         
         // Draw frontier line (blue) with smooth curves
         this.ctx.strokeStyle = '#2196F3';
@@ -205,38 +208,99 @@ var GraphManager = {
         // Draw legend with better typography
         this.ctx.font = '600 12px Arial';
         this.ctx.textAlign = 'start';
-        this.ctx.fillStyle = '#2196F3';
-        this.ctx.fillText('Frontier', 10, 15);
-        this.ctx.fillStyle = '#4CAF50';
-        this.ctx.fillText('Expanded', 70, 15);
+        var frontierText = window.t ? t('graphs.frontier') : 'Frontier';
+        var expandedText = window.t ? t('graphs.expanded') : 'Expanded';
         
-        // Add smooth point indicators
-        this.drawPointIndicators(maxValue, width, height, padding);
+        this.ctx.fillStyle = '#2196F3';
+        this.ctx.fillText(frontierText, 10, 15);
+        this.ctx.fillStyle = '#4CAF50';
+        this.ctx.fillText(expandedText, 70, 15);
+        
+        // Point indicators removed for cleaner graph appearance
+        // this.drawPointIndicators(maxValue, width, height, padding);
     },
     
-    drawPointIndicators: function(maxValue, width, height, padding) {
-        // Draw point indicators for the last few data points
-        var indicatorCount = Math.min(5, this.dataPoints.length);
-        var startIndex = Math.max(0, this.dataPoints.length - indicatorCount);
+    drawAxes: function(width, height, padding, maxValue) {
+        // Set text properties
+        this.ctx.font = '10px Arial';
+        this.ctx.fillStyle = '#666';
+        this.ctx.textAlign = 'center';
+        this.ctx.strokeStyle = '#ddd';
+        this.ctx.lineWidth = 1;
         
-        for (var i = startIndex; i < this.dataPoints.length; i++) {
-            var point = this.dataPoints[i];
-            var x = padding + (i / Math.max(1, this.dataPoints.length - 1)) * (width - 2 * padding);
+        // Draw Y-axis (vertical)
+        this.ctx.beginPath();
+        this.ctx.moveTo(padding, padding);
+        this.ctx.lineTo(padding, height - padding);
+        this.ctx.stroke();
+        
+        // X-axis removed for cleaner appearance
+        // this.ctx.beginPath();
+        // this.ctx.moveTo(padding, height - padding);
+        // this.ctx.lineTo(width - padding, height - padding);
+        // this.ctx.stroke();
+        
+        // Y-axis labels and grid lines
+        var numYTicks = 5;
+        for (var i = 0; i <= numYTicks; i++) {
+            var value = Math.round((maxValue / numYTicks) * i);
+            var y = height - padding - (i / numYTicks) * (height - 2 * padding);
             
-            // Frontier point
-            var frontierY = height - padding - (point.frontier / maxValue) * (height - 2 * padding);
-            this.ctx.fillStyle = '#2196F3';
-            this.ctx.beginPath();
-            this.ctx.arc(x, frontierY, 3, 0, 2 * Math.PI);
-            this.ctx.fill();
+            // Grid line
+            if (i > 0) {
+                this.ctx.beginPath();
+                this.ctx.strokeStyle = '#f0f0f0';
+                this.ctx.moveTo(padding, y);
+                this.ctx.lineTo(width - padding, y);
+                this.ctx.stroke();
+                this.ctx.strokeStyle = '#ddd';
+            }
             
-            // Expanded point
-            var expandedY = height - padding - (point.expanded / maxValue) * (height - 2 * padding);
-            this.ctx.fillStyle = '#4CAF50';
-            this.ctx.beginPath();
-            this.ctx.arc(x, expandedY, 3, 0, 2 * Math.PI);
-            this.ctx.fill();
+            // Y-axis label
+            this.ctx.textAlign = 'right';
+            this.ctx.fillText(value.toString(), padding - 5, y + 3);
         }
+        
+        // X-axis labels and grid lines removed
+        // var numXTicks = Math.min(5, this.dataPoints.length);
+        // if (numXTicks > 1) {
+        //     for (var i = 0; i < numXTicks; i++) {
+        //         var dataIndex = Math.round((this.dataPoints.length - 1) * (i / (numXTicks - 1)));
+        //         var x = padding + (dataIndex / Math.max(1, this.dataPoints.length - 1)) * (width - 2 * padding);
+        //         var iteration = dataIndex + 1; // Iterations start from 1
+        //         
+        //         // Grid line
+        //         if (i > 0) {
+        //             this.ctx.beginPath();
+        //             this.ctx.strokeStyle = '#f0f0f0';
+        //             this.ctx.moveTo(x, padding);
+        //             this.ctx.lineTo(x, height - padding);
+        //             this.ctx.stroke();
+        //             this.ctx.strokeStyle = '#ddd';
+        //         }
+        //         
+        //         // X-axis label
+        //         this.ctx.textAlign = 'center';
+        //         this.ctx.fillText(iteration.toString(), x, height - padding + 12);
+        //     }
+        // }
+        
+        // Y-axis title only
+        this.ctx.font = '11px Arial';
+        this.ctx.fillStyle = '#333';
+        this.ctx.textAlign = 'center';
+        
+        // Y-axis title (rotated)
+        this.ctx.save();
+        this.ctx.translate(8, height / 2);
+        this.ctx.rotate(-Math.PI / 2);
+        var countText = window.t ? t('graphs.nodeCount') : 'Node Count';
+        this.ctx.fillText(countText, 0, 0);
+        this.ctx.restore();
+        
+        // X-axis title removed
+        // var iterationText = window.t ? t('graphs.iteration') : 'Iteration';
+        // this.ctx.fillText(iterationText, width / 2, height - 2);
     },
     
     init: function() {

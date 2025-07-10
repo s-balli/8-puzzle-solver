@@ -37,9 +37,9 @@ Board.replay = function(moves) {
     window.network.selectNodes([initialState]);
     window.network.focus(initialState, { scale: 0.75 });
     window.isReplaying = true;
-    var btn = document.getElementById('replayButton'); btn && (btn.textContent = 'Stop replaying');
+    var btn = document.getElementById('replayButton'); btn && (btn.textContent = window.t ? t('solution.stopReplay') : 'Stop replaying');
 
-    var animationSpeed = Board.getAnimationSpeed();
+    var animationSpeed = 500; // Fixed animation speed
     
     // Set CSS animation duration
     Board.setAnimationDuration(animationSpeed);
@@ -65,20 +65,9 @@ Board.clearReplay = function() {
     clearTimeout(Board.replayAnimationTimeout);
     boardDiv.classList.remove('animation');
     window.isReplaying = false;
-    var btn = document.getElementById('replayButton'); btn && (btn.textContent = 'Replay solution');
+    var btn = document.getElementById('replayButton'); btn && (btn.textContent = window.t ? t('solution.replay') : 'Replay solution');
 };
 
-Board.getAnimationSpeed = function() {
-    var speedSelect = document.getElementById('animationSpeed');
-    if (!speedSelect) return 800;
-    
-    switch (speedSelect.value) {
-        case 'slow': return 1500;
-        case 'fast': return 150;
-        case 'normal':
-        default: return 500;
-    }
-};
 
 Board.setAnimationDuration = function(duration) {
     var board = document.getElementById('board');

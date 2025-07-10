@@ -49,10 +49,10 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: calc(16px * var(--text-size-multiplier));
+    font-size: 16px;
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease, font-size 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Screen reader only content */
@@ -68,22 +68,6 @@ html, body {
     border: 0;
 }
 
-/* Text size variations */
-[data-text-size="small"] {
-    --text-size-multiplier: 0.875;
-}
-
-[data-text-size="normal"] {
-    --text-size-multiplier: 1;
-}
-
-[data-text-size="large"] {
-    --text-size-multiplier: 1.25;
-}
-
-[data-text-size="x-large"] {
-    --text-size-multiplier: 1.5;
-}
 
 /* Focus indicators for better accessibility */
 button:focus,

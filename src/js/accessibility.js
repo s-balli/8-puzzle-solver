@@ -1,33 +1,11 @@
 var AccessibilityManager = {
     
     init: function() {
-        this.setupTextSizeControl();
         this.setupKeyboardNavigation();
         this.setupScreenReaderSupport();
         this.setupFocusManagement();
     },
     
-    setupTextSizeControl: function() {
-        var textSizeSelect = document.getElementById('textSize');
-        if (textSizeSelect) {
-            textSizeSelect.addEventListener('change', function() {
-                document.documentElement.setAttribute('data-text-size', textSizeSelect.value);
-                
-                // Store preference
-                localStorage.setItem('8puzzle-text-size', textSizeSelect.value);
-                
-                // Announce change to screen readers
-                this.announceToScreenReader('Text size changed to ' + textSizeSelect.value);
-            }.bind(this));
-            
-            // Load saved preference
-            var savedSize = localStorage.getItem('8puzzle-text-size');
-            if (savedSize) {
-                textSizeSelect.value = savedSize;
-                document.documentElement.setAttribute('data-text-size', savedSize);
-            }
-        }
-    },
     
     setupKeyboardNavigation: function() {
         document.addEventListener('keydown', function(event) {
