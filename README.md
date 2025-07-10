@@ -1,4 +1,4 @@
-# 8-Puzzle Solver Enhanced 🧩
+# 8-Puzzle Solver 🧩
 
 Advanced 8-puzzle solver with comprehensive search algorithms, educational features, and performance analysis tools.
 

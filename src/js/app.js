@@ -458,7 +458,8 @@ if (educationModeCheckbox) {
 if (performanceModeCheckbox) {
     performanceModeCheckbox.addEventListener('change', function() {
         if (typeof PerformanceManager !== 'undefined') {
-            if (this.checked) {
+            // Don't show performance panels on mobile/tablet
+            if (this.checked && !isMobileOrTablet()) {
                 PerformanceManager.show();
             } else {
                 PerformanceManager.hide();
@@ -471,7 +472,8 @@ if (performanceModeCheckbox) {
 if (realTimeGraphsCheckbox) {
     realTimeGraphsCheckbox.addEventListener('change', function() {
         if (typeof GraphManager !== 'undefined') {
-            if (this.checked) {
+            // Don't show graph panels on mobile/tablet
+            if (this.checked && !isMobileOrTablet()) {
                 GraphManager.show();
             } else {
                 GraphManager.hide();
@@ -481,12 +483,32 @@ if (realTimeGraphsCheckbox) {
     });
 }
 
+// Mobile/Tablet Detection
+function isMobile() {
+    return window.innerWidth <= 767;
+}
+
+function isTablet() {
+    return window.innerWidth >= 768 && window.innerWidth <= 1024;
+}
+
+function isMobileOrTablet() {
+    return isMobile() || isTablet();
+}
+
 // Load saved settings
 document.addEventListener('DOMContentLoaded', function() {
     var savedTheme = localStorage.getItem('theme') || 'light';
     var savedSoundEnabled = localStorage.getItem('soundEnabled') !== 'false';
-    var savedPerformanceMode = localStorage.getItem('performanceMode') !== 'false';
-    var savedGraphsMode = localStorage.getItem('realTimeGraphs') !== 'false';
+    
+    // Default performance mode and graphs to false on mobile/tablet
+    var defaultPerformanceMode = !isMobileOrTablet();
+    var defaultGraphsMode = !isMobileOrTablet();
+    
+    var savedPerformanceMode = localStorage.getItem('performanceMode') !== null ? 
+        localStorage.getItem('performanceMode') !== 'false' : defaultPerformanceMode;
+    var savedGraphsMode = localStorage.getItem('realTimeGraphs') !== null ? 
+        localStorage.getItem('realTimeGraphs') !== 'false' : defaultGraphsMode;
     
     document.documentElement.setAttribute('data-theme', savedTheme);
     if (themeSelector) {
@@ -503,14 +525,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set default enabled states
     if (performanceModeCheckbox) {
         performanceModeCheckbox.checked = savedPerformanceMode;
-        if (savedPerformanceMode && typeof PerformanceManager !== 'undefined') {
+        if (savedPerformanceMode && !isMobileOrTablet() && typeof PerformanceManager !== 'undefined') {
             PerformanceManager.show();
         }
     }
     
     if (realTimeGraphsCheckbox) {
         realTimeGraphsCheckbox.checked = savedGraphsMode;
-        if (savedGraphsMode && typeof GraphManager !== 'undefined') {
+        if (savedGraphsMode && !isMobileOrTablet() && typeof GraphManager !== 'undefined') {
             GraphManager.show();
         }
     }
@@ -533,4 +555,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof DraggableManager !== 'undefined') {
         DraggableManager.init();
     }
+    
+    // Handle responsive behavior on window resize
+    window.addEventListener('resize', function() {
+        // Update mobile/tablet specific settings on resize
+        var performanceCheckbox = document.getElementById('performanceMode');
+        var graphsCheckbox = document.getElementById('realTimeGraphs');
+        
+        if (isMobileOrTablet()) {
+            // Hide performance panels on mobile/tablet
+            if (performanceCheckbox && performanceCheckbox.checked) {
+                if (typeof PerformanceManager !== 'undefined') {
+                    PerformanceManager.hide();
+                }
+            }
+            if (graphsCheckbox && graphsCheckbox.checked) {
+                if (typeof GraphManager !== 'undefined') {
+                    GraphManager.hide();
+                }
+            }
+        }
+    });
 });

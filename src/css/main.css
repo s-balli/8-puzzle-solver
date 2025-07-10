@@ -2245,35 +2245,105 @@ input:checked + .toggle-slider:before {
 }
 
 /* Responsive Design - Mobile View (below 768px) */
+/* Tablet Responsive Design */
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    #controls {
+        width: 200px;
+    }
+    
+    #board {
+        left: 220px;
+        width: 160px;
+        height: 160px;
+    }
+    
+    .board-item {
+        width: 53px;
+        height: 53px;
+        font-size: 30px;
+        line-height: 49px;
+    }
+    
+    /* Hide performance panels on tablet by default */
+    body:not(.desktop-mode) #performancePanel,
+    body:not(.desktop-mode) #graphPanel {
+        display: none !important;
+    }
+}
+
+/* Mobile Responsive Design */
 @media screen and (max-width: 767px) {
     html, body {
         font-size: 14px;
+        padding: 0;
+        margin: 0;
+    }
+    
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
     }
     
     #controls {
         position: relative;
         width: 100%;
         height: auto;
-        padding: 10px;
+        padding: 15px;
         box-sizing: border-box;
         overflow-y: visible;
         background-color: var(--result-bg);
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 2px solid var(--border-color);
+        order: 1;
     }
     
     #controls .content {
-        margin: 2px;
+        margin: 4px 0;
     }
     
     #controls .heading {
-        font-size: 13px;
-        padding: 6px;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 8px 4px;
+        margin: 8px 0 4px 0;
+        background-color: var(--button-bg);
+        border-radius: 4px;
+        text-align: center;
     }
     
     #controls button, #controls select, #controls input {
-        height: 1.6em;
-        font-size: 13px;
-        margin: 1px 0;
+        height: 2.2em;
+        font-size: 14px;
+        margin: 4px 0;
+        padding: 4px 8px;
+        touch-action: manipulation;
+    }
+    
+    #controls button {
+        min-height: 44px; /* iOS touch target minimum */
+    }
+    
+    /* Settings section improvements for mobile */
+    .settings-section {
+        background-color: var(--result-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 12px;
+        margin: 8px 0;
+    }
+    
+    .toggle-label {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        min-height: 44px;
+        font-size: 14px;
+    }
+    
+    .toggle-switch {
+        flex-shrink: 0;
+        margin-left: 12px;
     }
     
     #board {
@@ -2281,133 +2351,142 @@ input:checked + .toggle-slider:before {
         top: auto;
         left: auto;
         margin: 20px auto;
-        width: 180px;
-        height: 180px;
-        border: 10px solid var(--board-border);
+        width: 200px;
+        height: 200px;
+        border: 8px solid var(--board-border);
+        order: 2;
+        flex-shrink: 0;
     }
     
     .board-item {
-        width: 60px;
-        height: 60px;
-        font-size: 32px;
-        line-height: 56px;
+        width: 66px;
+        height: 66px;
+        font-size: 36px;
+        line-height: 62px;
+        border: 2px solid var(--text-color);
     }
     
+    /* Hide performance panels on mobile */
+    #performancePanel,
+    #graphPanel,
     #visualization {
-        position: relative;
-        top: auto;
-        left: auto;
-        right: auto;
-        bottom: auto;
-        height: 400px;
-        margin: 20px 10px;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
+        display: none !important;
     }
     
+    /* Mobile navigation */
     .keyboard-help {
-        position: relative;
+        order: 4;
         margin-top: 20px;
-        padding: 10px;
-        font-size: 11px;
+        padding: 15px;
         background-color: var(--result-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .keyboard-help h4 {
+        margin-top: 0;
+        text-align: center;
     }
     
     .keyboard-help ul {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 0;
+        list-style: none;
     }
     
     .keyboard-help li {
-        margin: 5px;
+        font-size: 12px;
+        padding: 4px;
     }
     
-    .keyboard-help .key {
+    .key {
+        background-color: var(--button-bg);
+        padding: 2px 6px;
+        border-radius: 3px;
         font-size: 10px;
-        padding: 2px 4px;
+        margin-right: 4px;
     }
     
+    /* Education panel mobile adjustments */
     .education-panel {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        width: auto;
-        max-height: 80vh;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         z-index: 1000;
+        background-color: var(--bg-color);
+        overflow-y: auto;
     }
     
-    .performance-panel {
-        position: fixed;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        width: auto;
-        max-height: 50vh;
+    .education-content {
+        padding: 10px;
     }
     
-    .graph-panel {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        width: auto;
-        max-height: 60vh;
+    .guide-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-bottom: 15px;
     }
     
-    .comparison-panel {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        width: auto;
-        transform: none;
-        max-height: 90vh;
+    .guide-tab {
+        flex: 1;
+        min-width: 80px;
+        font-size: 12px;
+        padding: 8px 4px;
+        text-align: center;
     }
     
+    /* Custom state input mobile */
     .custom-state-modal .modal-content {
-        margin: 10px;
-        width: auto;
-        max-width: none;
+        width: 95%;
+        margin: 20px auto;
+        max-height: 80vh;
+        overflow-y: auto;
     }
     
-    .modal-body {
-        min-width: auto;
-        padding: 16px;
+    /* Search results mobile */
+    #result {
+        order: 3;
+        margin: 15px;
+        padding: 15px;
+        background-color: var(--result-bg);
+        border: 1px solid var(--result-border);
+        border-radius: 6px;
     }
     
-    .visual-board {
-        grid-template-columns: repeat(3, 50px);
-        grid-template-rows: repeat(3, 50px);
-        gap: 3px;
-    }
-    
-    .visual-tile {
-        font-size: 20px;
-    }
-    
-    .presets-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-    }
-    
-    .github-corner {
-        display: none;
-    }
-    
+    /* Progress indicator mobile */
     .search-progress {
-        font-size: 11px;
-        padding: 8px;
+        margin: 10px 15px;
+        padding: 10px;
+        background-color: var(--result-bg);
+        border-radius: 6px;
     }
     
-    .progress-header {
+    /* Help dialog mobile adjustments */
+    .help-content {
+        width: 95%;
+        max-width: none;
+        margin: 20px auto;
+        max-height: 85vh;
+    }
+    
+    .shortcut-section {
+        margin-bottom: 20px;
+    }
+    
+    .shortcut-item {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
+        margin-bottom: 8px;
+    }
+    
+    .shortcut-item kbd {
+        margin-right: 0;
+        margin-bottom: 4px;
+        min-width: auto;
     }
 }
 
