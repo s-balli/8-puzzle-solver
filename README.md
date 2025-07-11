@@ -1,49 +1,36 @@
 # 8-Puzzle Solver Enhanced 🧩
 
-Bu proje, [https://deniz.co/8-puzzle-solver](https://deniz.co/8-puzzle-solver) uygulamasının geliştirilmiş versiyonudur.
+This project is an enhanced version of [https://deniz.co/8-puzzle-solver](https://deniz.co/8-puzzle-solver).
 
 Advanced 8-puzzle solver with comprehensive search algorithms, educational features, and performance analysis tools.
 
-### 🆕 Geliştirilmiş Özellikler
+### 🆕 Enhanced Features
 
-#### 🚀 Performans İyileştirmeleri
-- **Heuristic Cache**: Manhattan distance lookup table ile %60 hızlanma
+#### 🚀 Performance Improvements
+- **Heuristic Cache**: Manhattan distance lookup table with 60% speed improvement
 - **Optimized Algorithms**: LRU cache, object pooling, efficient data structures
-- **Audio Throttling**: 50ms minimum delay ile ses performansı
+- **Audio Throttling**: 50ms minimum delay for audio performance
 
-#### 🔒 Güvenlik Geliştirmeleri
-- **Local Dependencies**: CDN bağımlılıkları yerel dosyalara taşındı
-- **CSP Security**: Content Security Policy ile güvenlik artışı
-- **Error Handling**: Graceful error handling ve fallback mechanisms
+#### 🔒 Security Enhancements
+- **Local Dependencies**: CDN dependencies moved to local files
+- **CSP Security**: Content Security Policy for enhanced security
+- **Error Handling**: Graceful error handling and fallback mechanisms
 
-#### 🌐 Kullanıcı Deneyimi
-- **Çok Dilli Destek**: Türkçe ve İngilizce tam destek
-- **Detaylı Hata Mesajları**: Spesifik limit hata mesajları
-- **Offline Çalışma**: İnternet bağlantısı olmadan tam fonksiyonellik
+#### 🌐 User Experience
+- **Multi-language Support**: Full Turkish and English support
+- **Detailed Error Messages**: Specific limit error messages
+- **Offline Operation**: Full functionality without internet connection
 
-#### 🧹 Kod Kalitesi
-- **Temiz Kod**: 25KB kullanılmayan kod kaldırıldı
-- **Better Structure**: Modular architecture ve improved maintainability
-- **Documentation**: Comprehensive docs ve deployment guides
+#### 🧹 Code Quality
+- **Clean Code**: 25KB of unused code removed
+- **Better Structure**: Modular architecture and improved maintainability
+- **Documentation**: Comprehensive docs and deployment guides
 
 ## 🎮 Demo
 
 ![8-Puzzle Solver Demo](demo.gif)
 
-*Uygulamanın temel özelliklerini gösteren interaktif demo*
-
-## 📊 Orijinal vs Enhanced Karşılaştırma
-
-| Özellik | Orijinal | Enhanced | İyileştirme |
-|---------|----------|----------|-------------|
-| **Dependencies** | CDN | Local | ✅ Offline support |
-| **Performance** | Basic | Optimized | ✅ %60 faster heuristics |
-| **Security** | Basic | Enhanced | ✅ CSP + Local files |
-| **Languages** | EN only | EN + TR | ✅ Multi-language |
-| **Error Messages** | Generic | Specific | ✅ Detailed feedback |
-| **Audio System** | Basic | Throttled | ✅ No audio context errors |
-| **Code Quality** | Mixed | Clean | ✅ 25KB removed |
-| **Documentation** | Basic | Comprehensive | ✅ Full deployment guide |
+*Interactive demo showing the main features of the application*
 
 ## ✨ Features
 
@@ -53,7 +40,7 @@ Advanced 8-puzzle solver with comprehensive search algorithms, educational featu
 - **Uniform Cost Search** - Cost-based optimal pathfinding
 - **Iterative Deepening** - Combines benefits of BFS and DFS
 - **Greedy Best-First** - Heuristic-guided fast solutions
-- **A* Search** - Optimal solutions with admissible heuristics
+- **A* Search** - **Optimal solutions with admissible heuristics**
 
 ### 🎯 Heuristic Functions
 - **Manhattan Distance** - Sum of horizontal and vertical distances
@@ -122,10 +109,6 @@ python3 -m http.server 3000 --directory src
 # Or using npm scripts
 npm run serve
 ```
-
-#### Option 3: Production Server
-- **Nginx**: Use `nginx-csp.conf` for security headers
-- **Apache**: Use `.htaccess` for security configuration
 
 ### Browser Requirements
 - Modern browser (Chrome, Firefox, Safari, Edge)
@@ -230,15 +213,8 @@ ISC License - Open source and free to use.
 
 ## 🙏 Credits
 
-- **Orijinal Proje**: [Deniz Gürkaynak](https://deniz.co/8-puzzle-solver) - Temel 8-puzzle solver implementasyonu
-- **Enhanced Version**: Performance optimizations, security improvements, Turkish language support, ve comprehensive documentation
-
-## 🔗 Links
-
-- **Orijinal Proje**: https://deniz.co/8-puzzle-solver
-- **Enhanced Version**: Bu repository
-- **Demo**: [Interactive Demo](src/index.html)
-- **Documentation**: [Deployment Guide](DEPLOYMENT.md)
+- **Original Project**: [Deniz Gürkaynak](https://deniz.co/8-puzzle-solver) - Base 8-puzzle solver implementation
+- **Enhanced Version**: Performance optimizations, security improvements, Turkish language support, and comprehensive documentation
 
 ---
 
