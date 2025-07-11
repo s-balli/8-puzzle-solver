@@ -18,7 +18,7 @@ Advanced 8-puzzle solver with comprehensive search algorithms, educational featu
 - **Uniform Cost Search** - Cost-based optimal pathfinding
 - **Iterative Deepening** - Combines benefits of BFS and DFS
 - **Greedy Best-First** - Heuristic-guided fast solutions
-- **A* Search** - **Optimal solutions with admissible heuristics**
+- **A* Search** - Optimal solutions with admissible heuristics
 
 ### 🎯 Heuristic Functions
 - **Manhattan Distance** - Sum of horizontal and vertical distances
