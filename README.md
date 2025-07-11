@@ -4,28 +4,6 @@ This project is an enhanced version of [https://deniz.co/8-puzzle-solver](https:
 
 Advanced 8-puzzle solver with comprehensive search algorithms, educational features, and performance analysis tools.
 
-### 🆕 Enhanced Features
-
-#### 🚀 Performance Improvements
-- **Heuristic Cache**: Manhattan distance lookup table with 60% speed improvement
-- **Optimized Algorithms**: LRU cache, object pooling, efficient data structures
-- **Audio Throttling**: 50ms minimum delay for audio performance
-
-#### 🔒 Security Enhancements
-- **Local Dependencies**: CDN dependencies moved to local files
-- **CSP Security**: Content Security Policy for enhanced security
-- **Error Handling**: Graceful error handling and fallback mechanisms
-
-#### 🌐 User Experience
-- **Multi-language Support**: Full Turkish and English support
-- **Detailed Error Messages**: Specific limit error messages
-- **Offline Operation**: Full functionality without internet connection
-
-#### 🧹 Code Quality
-- **Clean Code**: 25KB of unused code removed
-- **Better Structure**: Modular architecture and improved maintainability
-- **Documentation**: Comprehensive docs and deployment guides
-
 ## 🎮 Demo
 
 ![8-Puzzle Solver Demo](demo.gif)
