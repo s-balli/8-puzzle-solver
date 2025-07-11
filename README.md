@@ -191,7 +191,7 @@ ISC License - Open source and free to use.
 
 ## 🙏 Credits
 
-- **Original Project**: [Deniz Gürkaynak]([https://deniz.co/8-puzzle-solver](https://github.com/dgurkaynak/8-puzzle-solver)) - Base 8-puzzle solver implementation
+- **Original Project**: [Deniz Gürkaynak](https://github.com/dgurkaynak/8-puzzle-solver) - Base 8-puzzle solver implementation
 - **Enhanced Version**: Performance optimizations, security improvements, Turkish language support, and comprehensive documentation
 
 ---
