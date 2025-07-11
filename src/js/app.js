@@ -122,7 +122,7 @@ var ProgressIndicator = {
     }
 };
 
-// Disable body scroll for mobile
+// Desktop layout for all devices
 if (typeof bodyScrollLock !== 'undefined') {
     bodyScrollLock.disableBodyScroll(controlsDiv);
 }
@@ -458,8 +458,8 @@ if (educationModeCheckbox) {
 if (performanceModeCheckbox) {
     performanceModeCheckbox.addEventListener('change', function() {
         if (typeof PerformanceManager !== 'undefined') {
-            // Don't show performance panels on mobile/tablet
-            if (this.checked && !isMobileOrTablet()) {
+            // Show performance panels on all devices now
+            if (this.checked) {
                 PerformanceManager.show();
             } else {
                 PerformanceManager.hide();
@@ -472,8 +472,8 @@ if (performanceModeCheckbox) {
 if (realTimeGraphsCheckbox) {
     realTimeGraphsCheckbox.addEventListener('change', function() {
         if (typeof GraphManager !== 'undefined') {
-            // Don't show graph panels on mobile/tablet
-            if (this.checked && !isMobileOrTablet()) {
+            // Show graph panels on all devices now
+            if (this.checked) {
                 GraphManager.show();
             } else {
                 GraphManager.hide();
@@ -483,17 +483,17 @@ if (realTimeGraphsCheckbox) {
     });
 }
 
-// Mobile/Tablet Detection
+// Desktop layout for all devices - remove mobile/tablet detection
 function isMobile() {
-    return window.innerWidth <= 767;
+    return false; // Always return false to maintain desktop layout
 }
 
 function isTablet() {
-    return window.innerWidth >= 768 && window.innerWidth <= 1024;
+    return false; // Always return false to maintain desktop layout
 }
 
 function isMobileOrTablet() {
-    return isMobile() || isTablet();
+    return false; // Always return false to maintain desktop layout
 }
 
 // Load saved settings
@@ -501,9 +501,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var savedTheme = localStorage.getItem('theme') || 'light';
     var savedSoundEnabled = localStorage.getItem('soundEnabled') !== 'false';
     
-    // Default performance mode and graphs to false on mobile/tablet
-    var defaultPerformanceMode = !isMobileOrTablet();
-    var defaultGraphsMode = !isMobileOrTablet();
+    // Default performance mode and graphs to true on all devices
+    var defaultPerformanceMode = true;
+    var defaultGraphsMode = true;
     
     var savedPerformanceMode = localStorage.getItem('performanceMode') !== null ? 
         localStorage.getItem('performanceMode') !== 'false' : defaultPerformanceMode;
@@ -556,23 +556,22 @@ document.addEventListener('DOMContentLoaded', function() {
         DraggableManager.init();
     }
     
-    // Handle responsive behavior on window resize
+    // Handle window resize - maintain desktop layout on all devices
     window.addEventListener('resize', function() {
-        // Update mobile/tablet specific settings on resize
+        // Desktop layout maintained on all screen sizes
+        // Users can zoom in/out as needed
         var performanceCheckbox = document.getElementById('performanceMode');
         var graphsCheckbox = document.getElementById('realTimeGraphs');
         
-        if (isMobileOrTablet()) {
-            // Hide performance panels on mobile/tablet
-            if (performanceCheckbox && performanceCheckbox.checked) {
-                if (typeof PerformanceManager !== 'undefined') {
-                    PerformanceManager.hide();
-                }
+        // Always show panels if enabled, regardless of screen size
+        if (performanceCheckbox && performanceCheckbox.checked) {
+            if (typeof PerformanceManager !== 'undefined') {
+                PerformanceManager.show();
             }
-            if (graphsCheckbox && graphsCheckbox.checked) {
-                if (typeof GraphManager !== 'undefined') {
-                    GraphManager.hide();
-                }
+        }
+        if (graphsCheckbox && graphsCheckbox.checked) {
+            if (typeof GraphManager !== 'undefined') {
+                GraphManager.show();
             }
         }
     });
