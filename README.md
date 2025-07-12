@@ -1,14 +1,18 @@
 # 8-Puzzle Solver Enhanced 🧩
 
-This project is an enhanced version of [https://deniz.co/8-puzzle-solver](https://deniz.co/8-puzzle-solver).
+Advanced 8-puzzle solver with comprehensive search algorithms, heuristic functions, educational features, and performance analysis tools.
 
-Advanced 8-puzzle solver with comprehensive search algorithms, educational features, and performance analysis tools.
+https://8-puzzle.yapay.us/
 
 ## 🎮 Demo
 
 ![8-Puzzle Solver Demo](demo.gif)
 
 *Interactive demo showing the main features of the application*
+
+
+This project is an enhanced version of [https://deniz.co/8-puzzle-solver](https://deniz.co/8-puzzle-solver).
+
 
 ## ✨ Features
 
